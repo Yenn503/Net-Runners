@@ -345,8 +345,9 @@ async function* openaiStreamToAnthropic(
       for (const choice of chunk.choices ?? []) {
         const delta = choice.delta
 
-        // Text content
-        if (delta.content) {
+        // Text content — use != null to distinguish absent field from empty string,
+        // some providers send "" as first delta to signal streaming start
+        if (delta.content != null) {
           if (!hasEmittedContentStart) {
             yield {
               type: 'content_block_start',

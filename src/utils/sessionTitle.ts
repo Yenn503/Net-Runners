@@ -124,6 +124,29 @@ export async function generateSessionTitle(
       level: 'error',
     })
     logEvent('tengu_session_title_generated', { success: false })
-    return null
+
+    // Fallback: derive a title locally from the user's first message.
+    // This ensures 3P providers (Ollama, Gemini, OpenAI) still get
+    // meaningful terminal titles when the Haiku API call is unavailable.
+    return localFallbackTitle(trimmed)
   }
+}
+
+/**
+ * Fallback local title generator for when the Haiku API is unavailable
+ * (e.g. when using third-party providers without an Anthropic API key).
+ */
+function localFallbackTitle(text: string): string | null {
+  const words = text.split(/\s+/).slice(0, 7)
+  if (words.length === 0) return null
+
+  // Create a sentence-case string
+  let fallback = words.join(' ')
+  if (fallback.length > 50) {
+    fallback = fallback.substring(0, 49) + '…'
+  }
+
+  if (fallback.length <= 3) return null
+
+  return fallback.charAt(0).toUpperCase() + fallback.slice(1)
 }

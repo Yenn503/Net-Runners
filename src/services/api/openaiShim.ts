@@ -36,6 +36,7 @@ import {
   resolveCodexApiCredentials,
   resolveProviderRequest,
 } from './providerConfig.js'
+import { redactSecretValueForDisplay } from '../../utils/providerProfile.js'
 
 const GITHUB_MODELS_DEFAULT_BASE = 'https://models.github.ai/inference'
 const GITHUB_API_VERSION = '2022-11-28'
@@ -714,8 +715,11 @@ class OpenAIShimMessages {
         const authHint = credentials.authPath
           ? ` or place a Codex auth.json at ${credentials.authPath}`
           : ''
+        const safeModel =
+          redactSecretValueForDisplay(request.requestedModel, process.env) ??
+          'the requested model'
         throw new Error(
-          `Codex auth is required for ${request.requestedModel}. Set CODEX_API_KEY${authHint}.`,
+          `Codex auth is required for ${safeModel}. Set CODEX_API_KEY${authHint}.`,
         )
       }
       if (!credentials.accountId) {

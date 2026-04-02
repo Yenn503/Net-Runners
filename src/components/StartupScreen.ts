@@ -5,6 +5,8 @@
  * Addresses: https://github.com/Gitlawb/openclaude/issues/55
  */
 
+declare const MACRO: { VERSION: string; DISPLAY_VERSION?: string }
+
 const ESC = '\x1b['
 const RESET = `${ESC}0m`
 const DIM = `${ESC}2m`
@@ -78,12 +80,20 @@ const LOGO_CLAUDE = [
 
 function detectProvider(): { name: string; model: string; baseUrl: string; isLocal: boolean } {
   const useGemini = process.env.CLAUDE_CODE_USE_GEMINI === '1' || process.env.CLAUDE_CODE_USE_GEMINI === 'true'
+  const useGithub = process.env.CLAUDE_CODE_USE_GITHUB === '1' || process.env.CLAUDE_CODE_USE_GITHUB === 'true'
   const useOpenAI = process.env.CLAUDE_CODE_USE_OPENAI === '1' || process.env.CLAUDE_CODE_USE_OPENAI === 'true'
 
   if (useGemini) {
     const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash'
     const baseUrl = process.env.GEMINI_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/openai'
     return { name: 'Google Gemini', model, baseUrl, isLocal: false }
+  }
+
+  if (useGithub) {
+    const model = process.env.OPENAI_MODEL || 'github:copilot'
+    const baseUrl =
+      process.env.OPENAI_BASE_URL || 'https://models.github.ai/inference'
+    return { name: 'GitHub Models', model, baseUrl, isLocal: false }
   }
 
   if (useOpenAI) {
@@ -172,7 +182,7 @@ export function printStartupScreen(): void {
   out.push(boxRow(sRow, W, sLen))
 
   out.push(`${rgb(...BORDER)}\u255a${'\u2550'.repeat(W - 2)}\u255d${RESET}`)
-  out.push(`  ${DIM}${rgb(...DIMCOL)}openclaude v${(globalThis as Record<string, unknown>)['MACRO_DISPLAY_VERSION'] ?? '0.1.4'}${RESET}`)
+  out.push(`  ${DIM}${rgb(...DIMCOL)}openclaude ${RESET}${rgb(...ACCENT)}v${MACRO.DISPLAY_VERSION ?? MACRO.VERSION}${RESET}`)
   out.push('')
 
   process.stdout.write(out.join('\n') + '\n')

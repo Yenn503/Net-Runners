@@ -90,6 +90,24 @@ export OPENAI_BASE_URL=http://localhost:11434/v1
 export OPENAI_MODEL=llama3.3:70b
 ```
 
+### Atomic Chat (local, Apple Silicon)
+
+```bash
+export CLAUDE_CODE_USE_OPENAI=1
+export OPENAI_BASE_URL=http://127.0.0.1:1337/v1
+export OPENAI_MODEL=your-model-name
+```
+
+No API key is needed for Atomic Chat local models.
+
+Or use the profile launcher:
+
+```bash
+bun run dev:atomic-chat
+```
+
+Download Atomic Chat from [atomic.chat](https://atomic.chat/). The app must be running with a model loaded before launching.
+
 ### LM Studio
 
 ```bash
@@ -139,7 +157,7 @@ export OPENAI_MODEL=gpt-4o
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `CLAUDE_CODE_USE_OPENAI` | Yes | Set to `1` to enable the OpenAI provider |
-| `OPENAI_API_KEY` | Yes* | Your API key (`*` not needed for local models like Ollama) |
+| `OPENAI_API_KEY` | Yes* | Your API key (`*` not needed for local models like Ollama or Atomic Chat) |
 | `OPENAI_MODEL` | Yes | Model name such as `gpt-4o`, `deepseek-chat`, or `llama3.3:70b` |
 | `OPENAI_BASE_URL` | No | API endpoint, defaulting to `https://api.openai.com/v1` |
 | `CODEX_API_KEY` | Codex only | Codex or ChatGPT access token override |
@@ -176,7 +194,7 @@ bun run hardening:strict
 Notes:
 
 - `doctor:runtime` fails fast if `CLAUDE_CODE_USE_OPENAI=1` with a placeholder key or a missing key for non-local providers.
-- Local providers such as `http://localhost:11434/v1` can run without `OPENAI_API_KEY`.
+- Local providers such as `http://localhost:11434/v1` and `http://127.0.0.1:1337/v1` can run without `OPENAI_API_KEY`.
 - Codex profiles validate `CODEX_API_KEY` or the Codex CLI auth file and probe `POST /responses` instead of `GET /models`.
 
 ## Provider Launch Profiles
@@ -205,6 +223,9 @@ bun run profile:init -- --provider ollama --model llama3.1:8b
 # ollama bootstrap with intelligent model auto-selection
 bun run profile:init -- --provider ollama --goal coding
 
+# atomic-chat bootstrap (auto-detects running model)
+bun run profile:init -- --provider atomic-chat
+
 # codex bootstrap with a fast model alias
 bun run profile:init -- --provider codex --model codexspark
 
@@ -219,6 +240,9 @@ bun run dev:openai
 
 # Ollama profile (defaults: localhost:11434, llama3.1:8b)
 bun run dev:ollama
+
+# Atomic Chat profile (Apple Silicon local LLMs at 127.0.0.1:1337)
+bun run dev:atomic-chat
 ```
 
 `profile:recommend` ranks installed Ollama models for `latency`, `balanced`, or `coding`, and `profile:auto` can persist the recommendation directly.
@@ -227,8 +251,12 @@ If no profile exists yet, `dev:profile` uses the same goal-aware defaults when p
 
 Use `--provider ollama` when you want a local-only path. Auto mode falls back to OpenAI when no viable local chat model is installed.
 
+Use `--provider atomic-chat` when you want Atomic Chat as the local Apple Silicon provider.
+
 Use `profile:codex` or `--provider codex` when you want the ChatGPT Codex backend.
 
-`dev:openai`, `dev:ollama`, and `dev:codex` run `doctor:runtime` first and only launch the app if checks pass.
+`dev:openai`, `dev:ollama`, `dev:atomic-chat`, and `dev:codex` run `doctor:runtime` first and only launch the app if checks pass.
 
 For `dev:ollama`, make sure Ollama is running locally before launch.
+
+For `dev:atomic-chat`, make sure Atomic Chat is running with a model loaded before launch.

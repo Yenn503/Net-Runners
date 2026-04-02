@@ -16,6 +16,10 @@ All of Claude Code's tools work — bash, file read/write/edit, grep, glob, agen
 npm install -g @gitlawb/openclaude
 ```
 
+If you install via npm and later see `ripgrep not found`, install ripgrep
+system-wide and confirm `rg --version` works in the same terminal before
+starting OpenClaude.
+
 ### Option B: From source (requires Bun)
 
 Use Bun `1.3.11` or newer for source builds on Windows. Older Bun versions such as `1.3.4` can fail with a large batch of unresolved module errors during `bun run build`.

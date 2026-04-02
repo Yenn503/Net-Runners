@@ -58,15 +58,13 @@ const SuggestionItemRow = memo(function SuggestionItemRow({
 }): ReactNode {
   const columns = useTerminalSize().columns
   const selectionPrefix = isSelected ? SELECTED_PREFIX : UNSELECTED_PREFIX
+  const rowBackgroundColor: keyof Theme | undefined = isSelected
+    ? 'suggestion'
+    : undefined
+  const textColor: keyof Theme | undefined = isSelected ? 'inverseText' : undefined
 
   if (isUnifiedSuggestion(item.id)) {
     const icon = getIcon(item.id)
-    const textColor: keyof Theme | undefined = isSelected
-      ? 'inverseText'
-      : undefined
-    const backgroundColor: keyof Theme | undefined = isSelected
-      ? 'suggestion'
-      : undefined
     const dimColor = !isSelected
     const isFile = item.id.startsWith('file-')
     const isMcpResource = item.id.startsWith('mcp-resource-')
@@ -113,15 +111,11 @@ const SuggestionItemRow = memo(function SuggestionItemRow({
     }
 
     return (
-      <Text
-        color={textColor}
-        backgroundColor={backgroundColor}
-        dimColor={dimColor}
-        bold={isSelected}
-        wrap="truncate"
-      >
-        {lineContent}
-      </Text>
+      <Box width="100%" opaque={true} backgroundColor={rowBackgroundColor}>
+        <Text color={textColor} dimColor={dimColor} bold={isSelected} wrap="truncate">
+          {lineContent}
+        </Text>
+      </Box>
     )
   }
 
@@ -130,10 +124,7 @@ const SuggestionItemRow = memo(function SuggestionItemRow({
     maxColumnWidth ?? stringWidth(item.displayText) + 5,
     maxNameWidth,
   )
-  const textColor = isSelected ? 'inverseText' : item.color
-  const backgroundColor: keyof Theme | undefined = isSelected
-    ? 'suggestion'
-    : undefined
+  const displayTextColor = isSelected ? 'inverseText' : item.color
   const shouldDim = !isSelected
 
   let displayText = item.displayText
@@ -156,32 +147,21 @@ const SuggestionItemRow = memo(function SuggestionItemRow({
     : ''
 
   return (
-    <Text wrap="truncate">
-      <Text
-        color={textColor}
-        backgroundColor={backgroundColor}
-        dimColor={shouldDim}
-        bold={isSelected}
-      >
-        {paddedDisplayText}
-      </Text>
-      {tagText ? (
-        <Text
-          color={isSelected ? 'inverseText' : undefined}
-          backgroundColor={backgroundColor}
-          dimColor={!isSelected}
-        >
-          {tagText}
+    <Box width="100%" opaque={true} backgroundColor={rowBackgroundColor}>
+      <Text wrap="truncate">
+        <Text color={displayTextColor} dimColor={shouldDim} bold={isSelected}>
+          {paddedDisplayText}
         </Text>
-      ) : null}
-      <Text
-        color={isSelected ? 'inverseText' : undefined}
-        backgroundColor={backgroundColor}
-        dimColor={!isSelected}
-      >
-        {truncatedDescription}
+        {tagText ? (
+          <Text color={textColor} dimColor={!isSelected}>
+            {tagText}
+          </Text>
+        ) : null}
+        <Text color={textColor} dimColor={!isSelected}>
+          {truncatedDescription}
+        </Text>
       </Text>
-    </Text>
+    </Box>
   )
 })
 
@@ -226,7 +206,7 @@ export function PromptInputFooterSuggestions({
     >
       {visibleItems.map(item => (
         <SuggestionItemRow
-          key={item.id}
+          key={`${item.id}:${item.id === suggestions[selectedSuggestion]?.id ? 'selected' : 'idle'}`}
           item={item}
           maxColumnWidth={maxColumnWidth}
           isSelected={item.id === suggestions[selectedSuggestion]?.id}

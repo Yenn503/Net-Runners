@@ -1,20 +1,24 @@
 import { feature } from 'bun:bundle'
-import { shouldAutoEnableClaudeInChrome } from 'src/utils/claudeInChrome/setup.js'
 import { registerBatchSkill } from './batch.js'
-import { registerClaudeInChromeSkill } from './claudeInChrome.js'
+import { registerAttackPathAnalysisSkill } from './attackPathAnalysis.js'
 import { registerDebugSkill } from './debug.js'
 import { registerEngagementSetupSkill } from './engagementSetup.js'
 import { registerEvidenceCaptureSkill } from './evidenceCapture.js'
+import { registerExploitValidationSkill } from './exploitValidation.js'
 import { registerKeybindingsSkill } from './keybindings.js'
 import { registerLoremIpsumSkill } from './loremIpsum.js'
+import { registerPostExploitationPlanSkill } from './postExploitationPlan.js'
 import { registerReconPlanSkill } from './reconPlan.js'
 import { registerRememberSkill } from './remember.js'
+import { registerReportGenerationSkill } from './reportGeneration.js'
 import { registerSimplifySkill } from './simplify.js'
 import { registerScopeGuardSkill } from './scopeGuard.js'
 import { registerSkillifySkill } from './skillify.js'
 import { registerStuckSkill } from './stuck.js'
+import { registerTargetFingerprintingSkill } from './targetFingerprinting.js'
 import { registerUpdateConfigSkill } from './updateConfig.js'
 import { registerVerifySkill } from './verify.js'
+import { registerVulnAssessmentSkill } from './vulnAssessment.js'
 
 /**
  * Initialize all bundled skills.
@@ -29,7 +33,13 @@ export function initBundledSkills(): void {
   registerEngagementSetupSkill()
   registerScopeGuardSkill()
   registerReconPlanSkill()
+  registerTargetFingerprintingSkill()
   registerEvidenceCaptureSkill()
+  registerVulnAssessmentSkill()
+  registerExploitValidationSkill()
+  registerPostExploitationPlanSkill()
+  registerReportGenerationSkill()
+  registerAttackPathAnalysisSkill()
   registerUpdateConfigSkill()
   registerKeybindingsSkill()
   registerVerifySkill()
@@ -75,8 +85,21 @@ export function initBundledSkills(): void {
     /* eslint-enable @typescript-eslint/no-require-imports */
     registerClaudeApiSkill()
   }
-  if (shouldAutoEnableClaudeInChrome()) {
-    registerClaudeInChromeSkill()
+  try {
+    /* eslint-disable @typescript-eslint/no-require-imports */
+    const {
+      shouldAutoEnableClaudeInChrome,
+    } = require('src/utils/claudeInChrome/setup.js') as typeof import('src/utils/claudeInChrome/setup.js')
+    /* eslint-enable @typescript-eslint/no-require-imports */
+    if (shouldAutoEnableClaudeInChrome()) {
+      /* eslint-disable @typescript-eslint/no-require-imports */
+      const { registerClaudeInChromeSkill } = require('./claudeInChrome.js')
+      /* eslint-enable @typescript-eslint/no-require-imports */
+      registerClaudeInChromeSkill()
+    }
+  } catch {
+    // Browser bridge skill is optional. If its package is absent, keep the
+    // rest of the bundled security skill surface available.
   }
   if (feature('RUN_SKILL_GENERATOR')) {
     /* eslint-disable @typescript-eslint/no-require-imports */

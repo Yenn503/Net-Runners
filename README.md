@@ -1,8 +1,5 @@
 <div align="center">
 
-# Net-Runners 🥷
-
-### Red-Team Assessment Framework
 
 <img src="Futuristic%20NetRunners%20logo%20with%20cyberpunk%20figure.png" alt="Net-Runners cyberpunk logo" width="720" />
 

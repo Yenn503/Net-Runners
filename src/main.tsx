@@ -102,8 +102,6 @@ import { getActiveAgentsFromList, getAgentDefinitionsWithOverrides, isBuiltInAge
 import type { LogOption } from './types/logs.js';
 import type { Message as MessageType } from './types/message.js';
 import { assertMinVersion } from './utils/autoUpdater.js';
-import { CLAUDE_IN_CHROME_SKILL_HINT, CLAUDE_IN_CHROME_SKILL_HINT_WITH_WEBBROWSER } from './utils/claudeInChrome/prompt.js';
-import { setupClaudeInChrome, shouldAutoEnableClaudeInChrome, shouldEnableClaudeInChrome } from './utils/claudeInChrome/setup.js';
 import { getContextWindowForModel } from './utils/context.js';
 import { loadConversationForResume } from './utils/conversationRecovery.js';
 import { buildDeepLinkBanner } from './utils/deepLink/banner.js';
@@ -142,7 +140,6 @@ import { validateUuid } from './utils/uuid.js';
 import { registerMcpAddCommand } from 'src/commands/mcp/addCommand.js';
 import { registerMcpXaaIdpCommand } from 'src/commands/mcp/xaaIdpCommand.js';
 import { logPermissionContextForAnts } from 'src/services/internalLogging.js';
-import { fetchClaudeAIMcpConfigsIfEligible } from 'src/services/mcp/claudeai.js';
 import { clearServerCache } from 'src/services/mcp/client.js';
 import { areMcpConfigsAllowedWithEnterpriseMcpConfig, dedupClaudeAiMcpServers, doesEnterpriseMcpConfigExist, filterMcpServersByPolicy, getClaudeCodeMcpConfigs, getMcpServerSignature, parseMcpConfig, parseMcpConfigFromFilePath } from 'src/services/mcp/config.js';
 import { excludeCommandsByServer, excludeResourcesByServer } from 'src/services/mcp/utils.js';
@@ -1263,16 +1260,10 @@ async function run(): Promise<CommanderCommand> {
     }).remote;
     const remote = remoteOption === true ? '' : remoteOption ?? null;
 
-    // Extract --remote-control / --rc flag (enable bridge in interactive session)
-    const remoteControlOption = (options as {
-      remoteControl?: string | true;
-    }).remoteControl ?? (options as {
-      rc?: string | true;
-    }).rc;
-    // Actual bridge check is deferred to after showSetupScreens() so that
-    // trust is established and GrowthBook has auth headers.
+    // Hosted remote control is disabled in the active Net-Runner runtime.
+    const remoteControlOption = undefined;
     let remoteControl = false;
-    const remoteControlName = typeof remoteControlOption === 'string' && remoteControlOption.length > 0 ? remoteControlOption : undefined;
+    const remoteControlName = undefined;
 
     // Validate session ID if provided
     if (sessionId) {
@@ -1523,59 +1514,12 @@ async function run(): Promise<CommanderCommand> {
       }
     }
 
-    // Extract browser bridge option and enforce hosted-auth checks where required
+    // Preserve the explicit browser-bridge flag value for compatibility, but
+    // do not attach hosted browser integrations in the active Net-Runner runtime.
     const chromeOpts = options as {
       chrome?: boolean;
     };
-    // Store the explicit CLI flag so teammates can inherit it
     setChromeFlagOverride(chromeOpts.chrome);
-    const enableClaudeInChrome = shouldEnableClaudeInChrome(chromeOpts.chrome) && ("external" === 'ant' || isClaudeAISubscriber());
-    const autoEnableClaudeInChrome = !enableClaudeInChrome && shouldAutoEnableClaudeInChrome();
-    if (enableClaudeInChrome) {
-      const platform = getPlatform();
-      try {
-        logEvent('tengu_claude_in_chrome_setup', {
-          platform: platform as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS
-        });
-        const {
-          mcpConfig: chromeMcpConfig,
-          allowedTools: chromeMcpTools,
-          systemPrompt: chromeSystemPrompt
-        } = setupClaudeInChrome();
-        dynamicMcpConfig = {
-          ...dynamicMcpConfig,
-          ...chromeMcpConfig
-        };
-        allowedTools.push(...chromeMcpTools);
-        if (chromeSystemPrompt) {
-          appendSystemPrompt = appendSystemPrompt ? `${chromeSystemPrompt}\n\n${appendSystemPrompt}` : chromeSystemPrompt;
-        }
-      } catch (error) {
-        logEvent('tengu_claude_in_chrome_setup_failed', {
-          platform: platform as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS
-        });
-        logForDebugging(`[Browser Bridge] Error: ${error}`);
-        logError(error);
-        // biome-ignore lint/suspicious/noConsole:: intentional console output
-        console.error(`Error: Failed to run with browser bridge.`);
-        process.exit(1);
-      }
-    } else if (autoEnableClaudeInChrome) {
-      try {
-        const {
-          mcpConfig: chromeMcpConfig
-        } = setupClaudeInChrome();
-        dynamicMcpConfig = {
-          ...dynamicMcpConfig,
-          ...chromeMcpConfig
-        };
-        const hint = feature('WEB_BROWSER_TOOL') && typeof Bun !== 'undefined' && 'WebView' in Bun ? CLAUDE_IN_CHROME_SKILL_HINT_WITH_WEBBROWSER : CLAUDE_IN_CHROME_SKILL_HINT;
-        appendSystemPrompt = appendSystemPrompt ? `${appendSystemPrompt}\n\n${hint}` : hint;
-      } catch (error) {
-        // Silently skip any errors for the auto-enable
-        logForDebugging(`[Browser Bridge] Error (auto-enable): ${error}`);
-      }
-    }
 
     // Extract strict MCP config flag
     const strictMcpConfig = options.strictMcpConfig || false;
@@ -1778,24 +1722,9 @@ async function run(): Promise<CommanderCommand> {
     });
     void assertMinVersion();
 
-    // claude.ai config fetch: -p mode only (interactive uses useManageMCPConnections
-    // two-phase loading). Kicked off here to overlap with setup(); awaited
-    // before runHeadless so single-turn -p sees connectors. Skipped under
-    // enterprise/strict MCP to preserve policy boundaries.
-    const claudeaiConfigPromise: Promise<Record<string, ScopedMcpServerConfig>> = isNonInteractiveSession && !strictMcpConfig && !doesEnterpriseMcpConfigExist() &&
-    // --bare / SIMPLE: skip claude.ai proxy servers (datadog, Gmail,
-    // Slack, BigQuery, PubMed — 6-14s each to connect). Scripted calls
-    // that need MCP pass --mcp-config explicitly.
-    !isBareMode() ? fetchClaudeAIMcpConfigsIfEligible().then(configs => {
-      const {
-        allowed,
-        blocked
-      } = filterMcpServersByPolicy(configs);
-      if (blocked.length > 0) {
-        process.stderr.write(`Warning: claude.ai MCP ${plural(blocked.length, 'server')} blocked by enterprise policy: ${blocked.join(', ')}\n`);
-      }
-      return allowed;
-    }) : Promise.resolve({});
+    // Hosted MCP connector auto-loading is disabled in the active Net-Runner runtime.
+    const claudeaiConfigPromise: Promise<Record<string, ScopedMcpServerConfig>> =
+      Promise.resolve({});
 
     // Kick off MCP config loading early (safe - just reads files, no execution).
     // Both interactive and -p use getClaudeCodeMcpConfigs (local file reads only).
@@ -2238,20 +2167,7 @@ async function run(): Promise<CommanderCommand> {
         durationMs: Math.round(process.uptime() * 1000)
       });
       const setupScreensStart = Date.now();
-      const onboardingShown = await showSetupScreens(root, permissionMode, allowDangerouslySkipPermissions, commands, enableClaudeInChrome, devChannels);
-
-      // Now that trust is established and GrowthBook has auth headers,
-      // resolve the --remote-control / --rc entitlement gate.
-      if (feature('BRIDGE_MODE') && remoteControlOption !== undefined) {
-        const {
-          getBridgeDisabledReason
-        } = await import('./bridge/bridgeEnabled.js');
-        const disabledReason = await getBridgeDisabledReason();
-        remoteControl = disabledReason === null;
-        if (disabledReason) {
-          process.stderr.write(chalk.yellow(`${disabledReason}\n--rc flag ignored.\n`));
-        }
-      }
+      const onboardingShown = await showSetupScreens(root, permissionMode, allowDangerouslySkipPermissions, commands, false, devChannels);
 
       // Check for pending agent memory snapshot updates (only for --agent mode, ant-only)
       if (feature('AGENT_MEMORY_SNAPSHOT') && mainThreadAgentDefinition && isCustomAgent(mainThreadAgentDefinition) && mainThreadAgentDefinition.memory && mainThreadAgentDefinition.pendingSnapshotUpdate) {
@@ -2903,7 +2819,7 @@ async function run(): Promise<CommanderCommand> {
     // All startup opt-in paths (--tools, --brief, defaultView) have fired
     // above; initialIsBriefOnly just reads the resulting state.
     const initialIsBriefOnly = feature('KAIROS') || feature('KAIROS_BRIEF') ? getUserMsgOptIn() : false;
-    const fullRemoteControl = remoteControl || getRemoteControlAtStartup() || kairosEnabled;
+    const fullRemoteControl = kairosEnabled;
     let ccrMirrorEnabled = false;
     if (feature('CCR_MIRROR') && !fullRemoteControl) {
       /* eslint-disable @typescript-eslint/no-require-imports */
@@ -3849,8 +3765,6 @@ async function run(): Promise<CommanderCommand> {
   program.addOption(new Option('--teleport [session]', 'Resume a teleport session, optionally specify session ID').hideHelp());
   program.addOption(new Option('--remote [description]', 'Create a remote session with the given description').hideHelp());
   if (feature('BRIDGE_MODE')) {
-    program.addOption(new Option('--remote-control [name]', 'Start an interactive session with Remote Control enabled (optionally named)').argParser(value => value || true).hideHelp());
-    program.addOption(new Option('--rc [name]', 'Alias for --remote-control').argParser(value => value || true).hideHelp());
   }
   if (feature('HARD_FAIL')) {
     program.addOption(new Option('--hard-fail', 'Crash on logError calls instead of silently logging').hideHelp());
@@ -4080,46 +3994,6 @@ async function run(): Promise<CommanderCommand> {
     });
   }
 
-  // claude auth
-
-  const auth = program.command('auth').description('Manage authentication').configureHelp(createSortedHelpConfig());
-  auth.command('login').description('Sign in to your Anthropic account').option('--email <email>', 'Pre-populate email address on the login page').option('--sso', 'Force SSO login flow').option('--console', 'Use Anthropic Console (API usage billing) instead of a subscription plan').option('--claudeai', 'Use subscription plan (default)').action(async ({
-    email,
-    sso,
-    console: useConsole,
-    claudeai
-  }: {
-    email?: string;
-    sso?: boolean;
-    console?: boolean;
-    claudeai?: boolean;
-  }) => {
-    const {
-      authLogin
-    } = await import('./cli/handlers/auth.js');
-    await authLogin({
-      email,
-      sso,
-      console: useConsole,
-      claudeai
-    });
-  });
-  auth.command('status').description('Show authentication status').option('--json', 'Output as JSON (default)').option('--text', 'Output as human-readable text').action(async (opts: {
-    json?: boolean;
-    text?: boolean;
-  }) => {
-    const {
-      authStatus
-    } = await import('./cli/handlers/auth.js');
-    await authStatus(opts);
-  });
-  auth.command('logout').description('Log out from your Anthropic account').action(async () => {
-    const {
-      authLogout
-    } = await import('./cli/handlers/auth.js');
-    await authLogout();
-  });
-
   /**
    * Helper function to handle marketplace command errors consistently.
    * Logs the error and exits the process with status 1.
@@ -4248,17 +4122,6 @@ async function run(): Promise<CommanderCommand> {
   });
   // END ANT-ONLY
 
-  // Setup token command
-  program.command('setup-token').description('Set up a long-lived authentication token (requires a supported subscription plan)').action(async () => {
-    const [{
-      setupTokenHandler
-    }, {
-      createRoot
-    }] = await Promise.all([import('./cli/handlers/util.js'), import('./ink.js')]);
-    const root = await createRoot(getBaseRenderOptions(false));
-    await setupTokenHandler(root);
-  });
-
   // Agents command - list configured agents
   program.command('agents').description('List configured agents').option('--setting-sources <sources>', 'Comma-separated list of setting sources to load (user, project, local).').action(async () => {
     const {
@@ -4296,26 +4159,6 @@ async function run(): Promise<CommanderCommand> {
     }
   }
 
-  // Remote Control command — connect local environment to the hosted web workspace.
-  // The actual command is intercepted by the fast-path in cli.tsx before
-  // Commander.js runs, so this registration exists only for help output.
-  // Always hidden: isBridgeEnabled() at this point (before enableConfigs)
-  // would throw inside isClaudeAISubscriber → getGlobalConfig and return
-  // false via the try/catch — but not before paying ~65ms of side effects
-  // (25ms settings Zod parse + 40ms sync `security` keychain subprocess).
-  // The dynamic visibility never worked; the command was always hidden.
-  if (feature('BRIDGE_MODE')) {
-    program.command('remote-control', {
-      hidden: true
-    }).alias('rc').description('Connect your local environment for remote-control sessions via the hosted web workspace').action(async () => {
-      // Unreachable — cli.tsx fast-path handles this command before main.tsx loads.
-      // If somehow reached, delegate to bridgeMain.
-      const {
-        bridgeMain
-      } = await import('./bridge/bridgeMain.js');
-      await bridgeMain(process.argv.slice(3));
-    });
-  }
   if (feature('KAIROS')) {
     program.command('assistant [sessionId]').description('Attach the REPL as a client to a running bridge session. Discovers sessions via API if no sessionId given.').action(() => {
       // Argv rewriting above should have consumed `assistant [id]`

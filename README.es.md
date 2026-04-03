@@ -60,6 +60,8 @@ Luego escribe una instrucci&oacute;n en lenguaje natural:
 Evaluar https://objetivo.ejemplo — comenzar con reconocimiento, luego probar vulnerabilidades web.
 ```
 
+Net-Runner detecta tu intención automáticamente, inicializa un engagement con valores seguros y empieza a trabajar.
+
 ---
 
 ## 🤖 Conectar un Proveedor LLM

@@ -55,6 +55,8 @@ node dist/cli.mjs
 https://target.example を評価 — まず偵察から始めて、次にWebの脆弱性をテスト。
 ```
 
+Net-Runner は意図を自動検出し、安全なデフォルトでエンゲージメントを初期化して作業を開始します。
+
 ---
 
 ## 🤖 LLMプロバイダーの接続

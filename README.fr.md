@@ -55,6 +55,8 @@ Puis tapez une instruction en langage naturel :
 &Eacute;valuer https://cible.exemple — commencer par la reconnaissance, puis tester les vuln&eacute;rabilit&eacute;s web.
 ```
 
+Net-Runner d&eacute;tecte automatiquement votre intention, initialise un engagement avec des valeurs s&ucirc;res et commence &agrave; travailler.
+
 ---
 
 ## 🤖 Connecter un Fournisseur LLM

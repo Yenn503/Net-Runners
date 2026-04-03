@@ -10,6 +10,7 @@ import {
   getProjectInstructionDirCandidates,
   getProjectInstructionFileCandidates,
 } from '../utils/projectConfigPaths.ts'
+import { filterInjectedMemoryFiles } from '../utils/netRunnerMd.ts'
 import { getScheduledTasksFilePath } from '../utils/scheduledTasksPaths.ts'
 import {
   getEngagementAgentMemoryDir,
@@ -102,4 +103,53 @@ test('scheduled tasks and agent files default to the .netrunner envelope', () =>
     '/tmp/net-runner-workspace/.netrunner/scheduled_tasks.json',
   )
   assert.equal(AGENT_PATHS.FOLDER_NAME, '.netrunner')
+})
+
+test('relevant-memory prefetch suppresses legacy auto-memory injection when enabled', () => {
+  const originalEnablePrefetch =
+    process.env.NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH
+  const originalDisablePrefetch =
+    process.env.NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH
+
+  process.env.NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH = '1'
+  delete process.env.NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH
+
+  try {
+    const filtered = filterInjectedMemoryFiles([
+      {
+        path: '/tmp/auto/MEMORY.md',
+        type: 'AutoMem',
+        content: '# auto memory',
+      },
+      {
+        path: '/tmp/project/NETRUNNER.md',
+        type: 'Project',
+        content: '# project instructions',
+      },
+      {
+        path: '/tmp/project/.netrunner/NETRUNNER.md',
+        type: 'Local',
+        content: '# local instructions',
+      },
+    ])
+
+    assert.deepEqual(
+      filtered.map(file => file.type),
+      ['Project', 'Local'],
+    )
+  } finally {
+    if (originalEnablePrefetch === undefined) {
+      delete process.env.NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH
+    } else {
+      process.env.NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH =
+        originalEnablePrefetch
+    }
+
+    if (originalDisablePrefetch === undefined) {
+      delete process.env.NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH
+    } else {
+      process.env.NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH =
+        originalDisablePrefetch
+    }
+  }
 })

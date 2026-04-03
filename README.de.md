@@ -55,6 +55,8 @@ Geben Sie eine nat&uuml;rlichsprachliche Anweisung ein:
 Bewerte https://target.example &mdash; beginne mit Aufkl&auml;rung, dann teste auf Web-Schwachstellen.
 ```
 
+Net-Runner erkennt Ihre Absicht automatisch, initialisiert ein Engagement mit sicheren Standardwerten und beginnt dann mit der Ausf&uuml;hrung.
+
 ---
 
 ## 🤖 LLM-Anbieter verbinden

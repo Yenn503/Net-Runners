@@ -55,6 +55,8 @@ node dist/cli.mjs
 评估 https://target.example — 先进行侦察，然后测试 Web 漏洞。
 ```
 
+Net-Runner 会自动识别你的意图，以安全默认值初始化评估流程，并开始执行。
+
 ---
 
 ## 🤖 连接 LLM 提供商

@@ -55,6 +55,8 @@ Digite uma instru&ccedil;&atilde;o em linguagem natural:
 Avaliar https://alvo.exemplo — come&ccedil;ar com reconhecimento, depois testar vulnerabilidades web.
 ```
 
+O Net-Runner detecta sua inten&ccedil;&atilde;o automaticamente, inicializa o engajamento com padr&otilde;es seguros e come&ccedil;a a trabalhar.
+
 ---
 
 ## 🤖 Conectar um Provedor LLM

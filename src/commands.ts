@@ -10,6 +10,7 @@ import clear from './commands/clear/index.js'
 import color from './commands/color/index.js'
 import commit from './commands/commit.js'
 import copy from './commands/copy/index.js'
+import desktop from './commands/desktop/index.js'
 import commitPushPr from './commands/commit-push-pr.js'
 import compact from './commands/compact/index.js'
 import config from './commands/config/index.js'
@@ -26,6 +27,10 @@ import ide from './commands/ide/index.js'
 import init from './commands/init.js'
 import initVerifiers from './commands/init-verifiers.js'
 import keybindings from './commands/keybindings/index.js'
+import login from './commands/login/index.js'
+import logout from './commands/logout/index.js'
+import installGitHubApp from './commands/install-github-app/index.js'
+import installSlackApp from './commands/install-slack-app/index.js'
 import breakCache from './commands/break-cache/index.js'
 import mcp from './commands/mcp/index.js'
 import mobile from './commands/mobile/index.js'
@@ -75,12 +80,20 @@ const remoteControlServerCommand =
   feature('DAEMON') && feature('BRIDGE_MODE')
     ? require('./commands/remoteControlServer/index.js').default
     : null
+const voiceCommand = feature('VOICE_MODE')
+  ? require('./commands/voice/index.js').default
+  : null
 const forceSnip = feature('HISTORY_SNIP')
   ? require('./commands/force-snip.js').default
   : null
 const workflowsCmd = feature('WORKFLOW_SCRIPTS')
   ? (
       require('./commands/workflows/index.js') as typeof import('./commands/workflows/index.js')
+    ).default
+  : null
+const webCmd = feature('CCR_REMOTE_SETUP')
+  ? (
+      require('./commands/remote-setup/index.js') as typeof import('./commands/remote-setup/index.js')
     ).default
   : null
 const clearSkillIndexCache = feature('EXPERIMENTAL_SKILL_SEARCH')
@@ -115,7 +128,9 @@ import thinkback from './commands/thinkback/index.js'
 import thinkbackPlay from './commands/thinkback-play/index.js'
 import permissions from './commands/permissions/index.js'
 import plan from './commands/plan/index.js'
+import fast from './commands/fast/index.js'
 import passes from './commands/passes/index.js'
+import privacySettings from './commands/privacy-settings/index.js'
 import hooks from './commands/hooks/index.js'
 import files from './commands/files/index.js'
 import branch from './commands/branch/index.js'
@@ -135,6 +150,7 @@ import {
 import antTrace from './commands/ant-trace/index.js'
 import perfIssue from './commands/perf-issue/index.js'
 import sandboxToggle from './commands/sandbox-toggle/index.js'
+import chrome from './commands/chrome/index.js'
 import stickers from './commands/stickers/index.js'
 import advisor from './commands/advisor.js'
 import { logError } from './utils/log.js'
@@ -155,6 +171,7 @@ import {
 } from './utils/plugins/loadPluginCommands.js'
 import memoize from 'lodash-es/memoize.js'
 import { isUsing3PServices, isClaudeAISubscriber } from './utils/auth.js'
+import { isFirstPartyAnthropicBaseUrl } from './utils/model/providers.js'
 import env from './commands/env/index.js'
 import exit from './commands/exit/index.js'
 import exportCommand from './commands/export/index.js'
@@ -162,6 +179,7 @@ import model from './commands/model/index.js'
 import tag from './commands/tag/index.js'
 import outputStyle from './commands/output-style/index.js'
 import remoteEnv from './commands/remote-env/index.js'
+import upgrade from './commands/upgrade/index.js'
 import {
   extraUsage,
   extraUsageNonInteractive,
@@ -246,11 +264,13 @@ const COMMANDS = memoize((): Command[] => [
   agents,
   branch,
   btw,
+  chrome,
   clear,
   color,
   compact,
   config,
   copy,
+  desktop,
   context,
   contextNonInteractive,
   cost,
@@ -260,12 +280,15 @@ const COMMANDS = memoize((): Command[] => [
   evidence,
   effort,
   exit,
+  fast,
   files,
   heapDump,
   help,
   ide,
   init,
   keybindings,
+  installGitHubApp,
+  installSlackApp,
   mcp,
   memory,
   mobile,
@@ -293,12 +316,14 @@ const COMMANDS = memoize((): Command[] => [
   rewind,
   securityReview,
   terminalSetup,
+  upgrade,
   extraUsage,
   extraUsageNonInteractive,
   rateLimitOptions,
   usage,
   usageReport,
   vim,
+  ...(webCmd ? [webCmd] : []),
   ...(forkCmd ? [forkCmd] : []),
   ...(buddy ? [buddy] : []),
   ...(proactive ? [proactive] : []),
@@ -306,13 +331,16 @@ const COMMANDS = memoize((): Command[] => [
   ...(assistantCommand ? [assistantCommand] : []),
   ...(bridge ? [bridge] : []),
   ...(remoteControlServerCommand ? [remoteControlServerCommand] : []),
+  ...(voiceCommand ? [voiceCommand] : []),
   thinkback,
   thinkbackPlay,
   permissions,
   plan,
+  privacySettings,
   hooks,
   exportCommand,
   sandboxToggle,
+  ...(!isUsing3PServices() ? [logout, login()] : []),
   passes,
   ...(peersCmd ? [peersCmd] : []),
   tasks,
@@ -394,6 +422,29 @@ const getWorkflowCommands = feature('WORKFLOW_SCRIPTS')
  */
 export function meetsAvailabilityRequirement(cmd: Command): boolean {
   if (!cmd.availability) return true
+  for (const a of cmd.availability) {
+    switch (a) {
+      case 'hosted-auth':
+        if (isClaudeAISubscriber()) return true
+        break
+      case 'console':
+        // Console API key user = direct 1P API customer (not 3P, not hosted OAuth).
+        // Excludes 3P (Bedrock/Vertex/Foundry) who don't set ANTHROPIC_BASE_URL
+        // and gateway users who proxy through a custom base URL.
+        if (
+          !isClaudeAISubscriber() &&
+          !isUsing3PServices() &&
+          isFirstPartyAnthropicBaseUrl()
+        )
+          return true
+        break
+      default: {
+        const _exhaustive: never = a
+        void _exhaustive
+        break
+      }
+    }
+  }
   return false
 }
 

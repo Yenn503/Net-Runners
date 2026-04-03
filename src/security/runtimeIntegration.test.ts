@@ -41,6 +41,7 @@ test('recordSubagentExecution appends runtime execution notes into evidence ledg
     status: 'completed',
     description: 'validate auth bypass path',
     prompt: 'Reproduce auth bypass with controlled requests.',
+    outputFile: '.netrunner/tasks/task-001.md',
     totalDurationMs: 4200,
     totalToolUseCount: 5,
     summary: 'Reproduced missing authorization check on GET /admin endpoint.',
@@ -49,7 +50,13 @@ test('recordSubagentExecution appends runtime execution notes into evidence ledg
 
   const entries = await readEvidenceEntries(cwd)
   const runtimeNotes = entries.filter(entry => entry.type === 'note')
+  const runtimeArtifacts = entries.filter(entry => entry.type === 'artifact')
   assert.equal(runtimeNotes.length, 1)
+  assert.equal(runtimeArtifacts.length, 1)
   assert.match(runtimeNotes[0]?.note ?? '', /subagent=web-testing-specialist/)
   assert.match(runtimeNotes[0]?.note ?? '', /status=completed/)
+  assert.match(
+    runtimeArtifacts[0]?.label ?? '',
+    /subagent-output:web-testing-specialist/,
+  )
 })

@@ -38,6 +38,7 @@ type RecordSubagentExecutionOptions = {
   description: string
   prompt: string
   summary?: string
+  outputFile?: string
   totalToolUseCount?: number
   totalDurationMs?: number
   model?: string
@@ -69,6 +70,9 @@ export async function recordSubagentExecution(
       `duration_ms=${options.totalDurationMs ?? 0}`,
       `prompt=${trimSummary(options.prompt, 220)}`,
     ]
+    if (options.outputFile) {
+      lines.push(`output_file=${options.outputFile}`)
+    }
 
     if (options.summary && options.summary.trim().length > 0) {
       lines.push(`summary=${trimSummary(options.summary)}`)
@@ -78,6 +82,15 @@ export async function recordSubagentExecution(
       type: 'note',
       note: lines.join(' | '),
     })
+
+    if (options.outputFile) {
+      await appendEvidenceEntry(options.cwd, {
+        type: 'artifact',
+        label: `subagent-output:${options.agentType}`,
+        path: options.outputFile,
+        description: `Captured output transcript for ${options.agentType} (${options.status}).`,
+      })
+    }
   } catch {
     return
   }

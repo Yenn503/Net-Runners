@@ -28,7 +28,7 @@ const steps: PipelineStep[] = [
     args: ['run', 'validate:redteam-agent-tools'],
   },
   {
-    name: 'engagement/report command smoke',
+    name: 'engagement/evidence/report command smoke',
     command: 'bun',
     args: ['run', 'smoke:redteam-commands'],
   },

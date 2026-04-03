@@ -3,12 +3,13 @@ import { getSdkAgentProgressSummariesEnabled } from '../../bootstrap/state.js'
 import { getSystemPrompt } from '../../constants/prompts.js'
 import { isCoordinatorMode } from '../../coordinator/coordinatorMode.js'
 import type { CanUseToolFn } from '../../hooks/useCanUseTool.js'
+import { recordSubagentExecution } from '../../security/runtimeIntegration.js'
 import type { ToolUseContext } from '../../Tool.js'
 import { registerAsyncAgent } from '../../tasks/LocalAgentTask/LocalAgentTask.js'
 import { assembleToolPool } from '../../tools.js'
 import { asAgentId } from '../../types/ids.js'
 import { runWithAgentContext } from '../../utils/agentContext.js'
-import { runWithCwdOverride } from '../../utils/cwd.js'
+import { getCwd, runWithCwdOverride } from '../../utils/cwd.js'
 import { logForDebugging } from '../../utils/debug.js'
 import {
   createUserMessage,
@@ -253,6 +254,20 @@ export async function resumeAgentBackground({
           getSdkAgentProgressSummariesEnabled(),
         getWorktreeResult: async () =>
           resumedWorktreePath ? { worktreePath: resumedWorktreePath } : {},
+        onExecutionRecorded: async event => {
+          await recordSubagentExecution({
+            cwd: resumedWorktreePath ?? getCwd(),
+            agentType: selectedAgent.agentType,
+            status: event.status,
+            description: uiDescription,
+            prompt,
+            summary: event.summary,
+            totalToolUseCount: event.totalToolUseCount,
+            totalDurationMs: event.totalDurationMs,
+            model: resolvedAgentModel,
+            outputFile: getTaskOutputPath(agentBackgroundTask.agentId),
+          })
+        },
       }),
     ),
   )

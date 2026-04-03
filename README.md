@@ -101,7 +101,9 @@ These workflows are backed by bundled security skills and specialist agents rath
 ### Runtime Integrations
 
 - When an engagement is active, Net-Runner records security subagent execution summaries in the evidence ledger.
+- Net-Runner also auto-records subagent output-file artifacts for async/resumed agent runs so assessment traces stay reportable by default.
 - Delegated security-agent tasks are checked against the active engagement guardrails before execution.
+- Security specialists include delegation + teammate continuation tooling (`Agent` + `SendMessage`) so orchestration can recurse without manual rewiring.
 - Security specialists run with project-scoped persistent agent memory when auto-memory is enabled.
 - `/memory` opens memory files so assessment learnings can be reviewed or edited between runs.
 - Auto-memory is enabled by default; if disabled (`NET_RUNNER_DISABLE_AUTO_MEMORY=1` or `autoMemoryEnabled=false`), persistent agent-memory prompts are skipped.

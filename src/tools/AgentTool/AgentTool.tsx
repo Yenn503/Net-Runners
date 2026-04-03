@@ -776,7 +776,21 @@ export const AgentTool = buildTool({
         rootSetAppState,
         agentIdForCleanup: asyncAgentId,
         enableSummarization: isCoordinator || isForkSubagentEnabled() || getSdkAgentProgressSummariesEnabled(),
-        getWorktreeResult: cleanupWorktreeIfNeeded
+        getWorktreeResult: cleanupWorktreeIfNeeded,
+        onExecutionRecorded: async event => {
+          await recordSubagentExecution({
+            cwd: engagementCwd,
+            agentType: selectedAgent.agentType,
+            status: event.status,
+            description,
+            prompt,
+            summary: event.summary,
+            totalToolUseCount: event.totalToolUseCount,
+            totalDurationMs: event.totalDurationMs,
+            model: resolvedAgentModel,
+            outputFile: getTaskOutputPath(agentBackgroundTask.agentId),
+          });
+        }
       })));
       const canReadOutputFile = toolUseContext.options.tools.some(t => toolMatchesName(t, FILE_READ_TOOL_NAME) || toolMatchesName(t, BASH_TOOL_NAME));
       return {
@@ -986,7 +1000,8 @@ export const AgentTool = buildTool({
                       summary: extractTextContent(agentResult.content, '\n'),
                       totalToolUseCount: agentResult.totalToolUseCount,
                       totalDurationMs: agentResult.totalDurationMs,
-                      model: resolvedAgentModel
+                      model: resolvedAgentModel,
+                      outputFile: getTaskOutputPath(backgroundedTaskId)
                     });
 
                     // Mark task completed FIRST so TaskOutput(block=true)
@@ -1050,7 +1065,8 @@ export const AgentTool = buildTool({
                         description,
                         prompt,
                         summary: partialResult,
-                        model: resolvedAgentModel
+                        model: resolvedAgentModel,
+                        outputFile: getTaskOutputPath(backgroundedTaskId)
                       });
                       enqueueAgentNotification({
                         taskId: backgroundedTaskId,
@@ -1073,7 +1089,8 @@ export const AgentTool = buildTool({
                       description,
                       prompt,
                       summary: errMsg,
-                      model: resolvedAgentModel
+                      model: resolvedAgentModel,
+                      outputFile: getTaskOutputPath(backgroundedTaskId)
                     });
                     enqueueAgentNotification({
                       taskId: backgroundedTaskId,

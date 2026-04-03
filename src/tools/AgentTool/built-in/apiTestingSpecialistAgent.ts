@@ -12,6 +12,7 @@ import { TODO_WRITE_TOOL_NAME } from 'src/tools/TodoWriteTool/constants.js'
 import { WEB_FETCH_TOOL_NAME } from 'src/tools/WebFetchTool/prompt.js'
 import { WEB_SEARCH_TOOL_NAME } from 'src/tools/WebSearchTool/prompt.js'
 import { getNetRunnerAgentDefinition } from '../../../security/agentDefinitions.js'
+import { AGENT_TOOL_NAME } from '../constants.js'
 import type { BuiltInAgentDefinition } from '../loadAgentsDir.js'
 
 const definition = getNetRunnerAgentDefinition('api-testing-specialist')
@@ -39,6 +40,7 @@ export const API_TESTING_SPECIALIST_AGENT: BuiltInAgentDefinition = {
   whenToUse:
     'Use this agent for API reconnaissance, endpoint validation, auth/session checks, and state-transition testing.',
   tools: [
+    AGENT_TOOL_NAME,
     BASH_TOOL_NAME,
     FILE_EDIT_TOOL_NAME,
     FILE_READ_TOOL_NAME,

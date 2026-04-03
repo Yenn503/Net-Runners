@@ -20,6 +20,7 @@
 3. Run `scope-guard` as a skills layer before any higher-impact step.
 4. Use `recon-plan` to build the phased recon and validation sequence.
 5. Delegate to specialist agents only when a self-contained task is clear.
+   All Net-Runner specialists support delegation and follow-up messaging (`Agent` + `SendMessage`) for multi-hop orchestration.
 6. Use `evidence-capture` to preserve artifacts and report-ready findings.
 7. Use `/evidence` to append findings, artifacts, and notes to the ledger during execution.
 8. Use `/report` to export the current evidence ledger into markdown.

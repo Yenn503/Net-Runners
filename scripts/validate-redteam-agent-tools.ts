@@ -91,12 +91,17 @@ for (const agentType of [
 
 for (const builtInAgent of builtInAgentTooling) {
   const hasSendMessage = builtInAgent.tools.includes(SEND_MESSAGE_TOOL_NAME)
+  const hasAgent = builtInAgent.tools.includes(AGENT_TOOL_NAME)
+  if (!hasAgent) {
+    securityCommunicationErrors.push(
+      `${builtInAgent.agentType} must include ${AGENT_TOOL_NAME} for specialist-to-specialist delegation.`,
+    )
+  }
   if (!hasSendMessage) {
     securityCommunicationErrors.push(
       `${builtInAgent.agentType} must include ${SEND_MESSAGE_TOOL_NAME} for teammate handoffs and async follow-up.`,
     )
   }
-  const hasAgent = builtInAgent.tools.includes(AGENT_TOOL_NAME)
   if (hasAgent && !hasSendMessage) {
     securityCommunicationErrors.push(
       `${builtInAgent.agentType} includes ${AGENT_TOOL_NAME} but is missing ${SEND_MESSAGE_TOOL_NAME}.`,

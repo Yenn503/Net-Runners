@@ -12,6 +12,7 @@ import { TODO_WRITE_TOOL_NAME } from 'src/tools/TodoWriteTool/constants.js'
 import { WEB_FETCH_TOOL_NAME } from 'src/tools/WebFetchTool/prompt.js'
 import { WEB_SEARCH_TOOL_NAME } from 'src/tools/WebSearchTool/prompt.js'
 import { getNetRunnerAgentDefinition } from '../../../security/agentDefinitions.js'
+import { AGENT_TOOL_NAME } from '../constants.js'
 import type { BuiltInAgentDefinition } from '../loadAgentsDir.js'
 
 const definition = getNetRunnerAgentDefinition('evidence-specialist')
@@ -38,6 +39,7 @@ export const EVIDENCE_SPECIALIST_AGENT: BuiltInAgentDefinition = {
   whenToUse:
     'Use this agent to structure artifacts, findings, and evidence metadata for downstream reporting and retest.',
   tools: [
+    AGENT_TOOL_NAME,
     BASH_TOOL_NAME,
     FILE_EDIT_TOOL_NAME,
     FILE_READ_TOOL_NAME,

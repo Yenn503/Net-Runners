@@ -529,6 +529,7 @@ export async function runAsyncAgentLifecycle({
   agentIdForCleanup,
   enableSummarization,
   getWorktreeResult,
+  onExecutionRecorded,
 }: {
   taskId: string
   abortController: AbortController
@@ -545,6 +546,12 @@ export async function runAsyncAgentLifecycle({
     worktreePath?: string
     worktreeBranch?: string
   }>
+  onExecutionRecorded?: (event: {
+    status: 'completed' | 'failed' | 'killed'
+    summary?: string
+    totalToolUseCount?: number
+    totalDurationMs?: number
+  }) => Promise<void>
 }): Promise<void> {
   let stopSummarization: (() => void) | undefined
   const agentMessages: MessageType[] = []
@@ -608,6 +615,12 @@ export async function runAsyncAgentLifecycle({
     stopSummarization?.()
 
     const agentResult = finalizeAgentTool(agentMessages, taskId, metadata)
+    await onExecutionRecorded?.({
+      status: 'completed',
+      summary: extractTextContent(agentResult.content, '\n'),
+      totalToolUseCount: agentResult.totalToolUseCount,
+      totalDurationMs: agentResult.totalDurationMs,
+    })
 
     // Mark task completed FIRST so TaskOutput(block=true) unblocks
     // immediately. classifyHandoffIfNeeded (API call) and getWorktreeResult
@@ -669,6 +682,10 @@ export async function runAsyncAgentLifecycle({
       })
       const worktreeResult = await getWorktreeResult()
       const partialResult = extractPartialResult(agentMessages)
+      await onExecutionRecorded?.({
+        status: 'killed',
+        summary: partialResult,
+      })
       enqueueAgentNotification({
         taskId,
         description,
@@ -683,6 +700,10 @@ export async function runAsyncAgentLifecycle({
     const msg = errorMessage(error)
     failAsyncAgent(taskId, msg, rootSetAppState)
     const worktreeResult = await getWorktreeResult()
+    await onExecutionRecorded?.({
+      status: 'failed',
+      summary: msg,
+    })
     enqueueAgentNotification({
       taskId,
       description,

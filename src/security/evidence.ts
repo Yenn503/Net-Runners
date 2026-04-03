@@ -6,6 +6,40 @@ import { getEvidenceLedgerPath } from './paths.js'
 
 export type EvidenceSeverity = 'info' | 'low' | 'medium' | 'high' | 'critical'
 
+export type MitreAttackReference = {
+  techniqueId: string
+  techniqueName: string
+  tacticId?: string
+  tacticName?: string
+  subtechniqueId?: string
+}
+
+export type CvssScore = {
+  version: '3.1' | '4.0'
+  vector: string
+  baseScore: number
+  baseSeverity: 'none' | 'low' | 'medium' | 'high' | 'critical'
+}
+
+export type OwaspCategory =
+  | 'A01:2021-Broken-Access-Control'
+  | 'A02:2021-Cryptographic-Failures'
+  | 'A03:2021-Injection'
+  | 'A04:2021-Insecure-Design'
+  | 'A05:2021-Security-Misconfiguration'
+  | 'A06:2021-Vulnerable-and-Outdated-Components'
+  | 'A07:2021-Identification-and-Authentication-Failures'
+  | 'A08:2021-Software-and-Data-Integrity-Failures'
+  | 'A09:2021-Security-Logging-and-Monitoring-Failures'
+  | 'A10:2021-Server-Side-Request-Forgery'
+
+export type ComplianceFramework = 'PCI-DSS' | 'NIST-800-53' | 'SOC2' | 'HIPAA' | 'ISO-27001' | 'CIS'
+
+export type ComplianceReference = {
+  framework: ComplianceFramework
+  controls: string[]
+}
+
 type EvidenceEntryBase = {
   id: string
   createdAt: string
@@ -27,6 +61,11 @@ export type FindingEntry = EvidenceEntryBase & {
   severity: EvidenceSeverity
   evidence: string
   recommendation?: string
+  cweIds?: string[]
+  cvss?: CvssScore
+  mitreAttack?: MitreAttackReference[]
+  owaspCategory?: OwaspCategory[]
+  compliance?: ComplianceReference[]
 }
 
 export type ArtifactEntry = EvidenceEntryBase & {

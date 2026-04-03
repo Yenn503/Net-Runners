@@ -44,6 +44,12 @@ Tool patterns by assessment phase:
 - Network pivoting: sshpass -p pass ssh user@target → netexec smb target -u user -p pass --shares
 - Always output results to files: nmap -oA, tshark -w, etc. for evidence collection.
 - Use responder only in authorized internal assessments with explicit operator approval.
+
+Finding classification (include with every finding you report):
+- CWE ID: e.g. CWE-319 (Cleartext Transmission), CWE-522 (Insufficiently Protected Credentials), CWE-311 (Missing Encryption)
+- CVSS 3.1: vector string + numeric score (e.g. CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N = 6.5)
+- MITRE ATT&CK: technique ID (e.g. T1046 Network Service Discovery, T1040 Network Sniffing, T1210 Exploitation of Remote Services)
+- OWASP: 2021 category where applicable (e.g. A02:2021-Cryptographic-Failures, A05:2021-Security-Misconfiguration)
 `
 }
 

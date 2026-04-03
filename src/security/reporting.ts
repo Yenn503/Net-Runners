@@ -18,6 +18,78 @@ function getFindings(entries: EvidenceEntry[]): FindingEntry[] {
     .sort((left, right) => SEVERITY_ORDER[left.severity] - SEVERITY_ORDER[right.severity])
 }
 
+function formatList(items: string[] | undefined, fallback = 'Not recorded'): string {
+  return items && items.length > 0 ? items.join(', ') : fallback
+}
+
+function formatMitreAttack(finding: FindingEntry): string {
+  if (!finding.mitreAttack || finding.mitreAttack.length === 0) {
+    return 'Not recorded'
+  }
+
+  return finding.mitreAttack
+    .map(reference => {
+      const parts = [reference.techniqueId]
+      if (reference.subtechniqueId) {
+        parts.push(reference.subtechniqueId)
+      }
+
+      let label = parts.join(' / ')
+      if (reference.techniqueName) {
+        label += ` ${reference.techniqueName}`
+      }
+      if (reference.tacticName) {
+        label += ` (${reference.tacticName})`
+      }
+
+      return label
+    })
+    .join(', ')
+}
+
+function formatCompliance(finding: FindingEntry): string {
+  if (!finding.compliance || finding.compliance.length === 0) {
+    return 'Not recorded'
+  }
+
+  return finding.compliance
+    .map(reference => `${reference.framework}: ${reference.controls.join(', ')}`)
+    .join(' | ')
+}
+
+function buildFindingSummary(findings: FindingEntry[]): string {
+  if (findings.length === 0) {
+    return '- No findings recorded'
+  }
+
+  const severityCounts = findings.reduce<Record<FindingEntry['severity'], number>>(
+    (counts, finding) => {
+      counts[finding.severity] += 1
+      return counts
+    },
+    {
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
+      info: 0,
+    },
+  )
+
+  const cvssBreakdown = findings
+    .filter(finding => finding.cvss)
+    .map(
+      finding =>
+        `${finding.title}: ${finding.cvss?.baseScore.toFixed(1)} ${finding.cvss?.baseSeverity.toUpperCase()}`,
+    )
+
+  return [
+    `- Total findings: ${findings.length}`,
+    `- Severity counts: critical=${severityCounts.critical}, high=${severityCounts.high}, medium=${severityCounts.medium}, low=${severityCounts.low}, info=${severityCounts.info}`,
+    `- CVSS coverage: ${cvssBreakdown.length > 0 ? cvssBreakdown.join(' | ') : 'No CVSS metadata recorded'}`,
+  ].join('\n')
+}
+
 export function generateMarkdownReport(
   manifest: EngagementManifest,
   entries: EvidenceEntry[],
@@ -28,6 +100,7 @@ export function generateMarkdownReport(
   const guardrails = entries.filter(entry => entry.type === 'guardrail')
   const executionSteps = entries.filter(entry => entry.type === 'execution_step')
   const approvals = entries.filter(entry => entry.type === 'approval')
+  const findingSummary = buildFindingSummary(findings)
 
   const findingSection =
     findings.length === 0
@@ -37,6 +110,12 @@ export function generateMarkdownReport(
             finding =>
               `## [${finding.severity.toUpperCase()}] ${finding.title}
 
+Severity: ${finding.severity.toUpperCase()}${finding.cvss ? ` | CVSS ${finding.cvss.baseScore.toFixed(1)} (${finding.cvss.baseSeverity.toUpperCase()})` : ''}
+CVSS Vector: ${finding.cvss?.vector ?? 'Not recorded'}
+CWE: ${formatList(finding.cweIds)}
+OWASP: ${formatList(finding.owaspCategory)}
+MITRE ATT&CK: ${formatMitreAttack(finding)}
+Compliance: ${formatCompliance(finding)}
 Evidence: ${finding.evidence}
 ${finding.recommendation ? `Recommendation: ${finding.recommendation}` : 'Recommendation: pending'}
 `,
@@ -97,6 +176,10 @@ ${finding.recommendation ? `Recommendation: ${finding.recommendation}` : 'Recomm
 - Scope: ${manifest.authorization.scopeSummary}
 
 ## Findings
+
+${findingSummary}
+
+## Detailed Findings
 
 ${findingSection}
 

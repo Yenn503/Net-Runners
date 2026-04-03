@@ -42,6 +42,12 @@ Tool patterns by pivot technique:
 - Credential harvesting: impacket-secretsdump domain/user:pass@target → mimikatz (if Windows access) → lsassy target -u user -p pass
 - Always document: source host → destination host, credential used, protocol, access level achieved.
 - Request operator confirmation before: DCSync, mass credential dumps, or persistent tunnels.
+
+Finding classification (include with every finding you report):
+- CWE ID: e.g. CWE-284 (Improper Access Control), CWE-522 (Insufficiently Protected Credentials), CWE-312 (Cleartext Storage)
+- CVSS 3.1: vector string + numeric score (e.g. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:C/C:H/I:H/A:N = 9.1)
+- MITRE ATT&CK: technique ID (e.g. T1021.002 SMB/Windows Admin Shares, T1550.002 Pass the Hash, T1210 Exploitation of Remote Services)
+- Compliance: NIST 800-53 AC-4/SC-7/SI-4, SOC2 CC6.1/CC6.6, PCI-DSS 7.1 where relevant
 `
 }
 

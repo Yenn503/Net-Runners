@@ -44,6 +44,12 @@ Tool patterns by testing phase:
 - API surface: graphql-cop (GraphQL) → swagger/openapi parsing → postman collection testing
 - Always save curl commands with -v flag for full request/response evidence.
 - Use --proxy http://127.0.0.1:8080 when Burp MCP is available to capture traffic.
+
+Finding classification (include with every finding you report):
+- CWE ID: e.g. CWE-79 (XSS), CWE-89 (SQLi), CWE-918 (SSRF), CWE-352 (CSRF), CWE-611 (XXE)
+- CVSS 3.1: vector string + numeric score (e.g. CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N = 6.1)
+- MITRE ATT&CK: technique ID (e.g. T1190 Exploit Public-Facing Application, T1059.007 JavaScript)
+- OWASP: 2021 category (e.g. A03:2021-Injection, A01:2021-Broken-Access-Control)
 `
 }
 

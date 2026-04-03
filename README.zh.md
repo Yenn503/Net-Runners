@@ -1,6 +1,6 @@
 <div align="center">
 
-# Net-Runner
+# Net-Runner 🥷
 
 ### 智能红队评估框架
 
@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/许可-教育用途-red?style=for-the-badge)](#许可证)
 
-**12 个专业代理 &middot; 141 个红队工具 &middot; 17 个能力包 &middot; 9 个渗透测试技能 &middot; 6 个工作流**
+**12 个专业代理 &middot; 141 个红队工具 &middot; 17 个能力包 &middot; 10 个渗透测试技能 &middot; 6 个工作流**
 
 *自然语言交流，Net-Runner 处理一切。*
 
@@ -18,10 +18,10 @@
 
 </div>
 
-> **警告**
+> ⚠️ **警告**
 > **仅**在您获得明确授权的目标上使用。Net-Runner 专为合法、授权的渗透测试和教育目的而设计。
 
-## 什么是 Net-Runner？
+## 🔍 什么是 Net-Runner？
 
 Net-Runner 是一个多代理红队框架，将自然语言指令转化为结构化的安全评估。您与**任务负责人**对话——它将侦察、利用、报告等所有工作委派给专门的专业代理。
 
@@ -39,7 +39,7 @@ Net-Runner 是一个多代理红队框架，将自然语言指令转化为结构
 
 ---
 
-## 快速开始
+## 🚀 快速开始
 
 ```bash
 bun install
@@ -55,7 +55,57 @@ node dist/cli.mjs
 
 ---
 
-## 工作原理
+## 🤖 连接 LLM 提供商
+
+Net-Runner 支持多种 LLM 提供商。启动前设置相应的环境变量。
+
+### 使用 `ANTHROPIC_API_KEY`
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+node dist/cli.mjs
+```
+
+### OpenAI
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_MODEL="gpt-4o"          # 可选
+node dist/cli.mjs
+```
+
+### Google Gemini
+
+```bash
+export GEMINI_API_KEY="AIza..."
+export GEMINI_MODEL="gemini-2.5-pro"   # 可选
+node dist/cli.mjs
+```
+
+### Ollama（本地部署）
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+export OPENAI_BASE_URL="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3.1:8b"
+node dist/cli.mjs
+```
+
+### 任何 OpenAI 兼容 API
+
+支持 LM Studio、vLLM、Together AI、Groq、Fireworks 或任何兼容端点：
+
+```bash
+export OPENAI_API_KEY="your-key"
+export OPENAI_BASE_URL="https://your-provider.com/v1"
+export OPENAI_MODEL="your-model-name"
+node dist/cli.mjs
+```
+
+---
+
+## ⚙️ 工作原理
 
 | 步骤 | 执行内容 |
 |------|---------|
@@ -70,7 +120,7 @@ node dist/cli.mjs
 
 ---
 
-## 专业代理
+## 🕵️ 专业代理
 
 | 代理 | 专长 |
 |:-----|:-----|
@@ -89,7 +139,7 @@ node dist/cli.mjs
 
 ---
 
-## 工作流
+## 📋 工作流
 
 | 工作流 | 目标环境 | 关键能力包 |
 |:-------|:---------|:----------|
@@ -102,7 +152,7 @@ node dist/cli.mjs
 
 ---
 
-## 工具覆盖
+## 🛠️ 工具覆盖
 
 **141 个工具，覆盖 17 个能力包** — 包括 `nmap`、`nuclei`、`sqlmap`、`msfconsole`、`bloodhound`、`ghidra`、`volatility3`、`trivy`、`aircrack-ng` 等。
 
@@ -110,7 +160,7 @@ node dist/cli.mjs
 
 ---
 
-## 许可证
+## 📜 许可证
 
 本仓库**仅供教育用途**和**授权安全测试**使用。
 

@@ -46,6 +46,12 @@ Tool patterns by testing phase:
 - Mass assignment: compare GET response fields with PUT/PATCH accepted fields → test adding admin/role fields to registration
 - Save all curl commands with -v flag and capture full request/response headers for evidence.
 - Use --proxy http://127.0.0.1:8080 when Burp MCP is available.
+
+Finding classification (include with every finding you report):
+- CWE ID: e.g. CWE-639 (IDOR), CWE-287 (Improper Auth), CWE-918 (SSRF), CWE-89 (SQLi), CWE-306 (Missing Auth)
+- CVSS 3.1: vector string + numeric score (e.g. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N = 6.5)
+- MITRE ATT&CK: technique ID (e.g. T1190 Exploit Public-Facing Application, T1078 Valid Accounts)
+- OWASP: 2021 category (e.g. A01:2021-Broken-Access-Control, A07:2021-Identification-and-Authentication-Failures)
 `
 }
 

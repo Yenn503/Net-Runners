@@ -42,6 +42,15 @@ Tool patterns (use in this order of escalation):
 - Host enumeration: arp-scan (L2) → nbtscan (NetBIOS) → enum4linux/enum4linux-ng (SMB/RPC)
 - Save all outputs to structured files under the engagement evidence directory.
 - Use uro to deduplicate URL lists before passing to downstream tools.
+
+Target fingerprinting (run after initial recon to optimize specialist routing):
+- Produce a structured fingerprint: OS, web server, frameworks, CMS, languages, databases, cloud provider, WAF, exposed services.
+- Use nmap -sCV, whatweb, httpx -tech-detect, and wappalyzer-style detection to build the fingerprint.
+- Save the fingerprint as target-fingerprint.json in the evidence directory for downstream specialist agents.
+
+Finding classification (include with every finding you report):
+- MITRE ATT&CK: technique ID (e.g. T1595 Active Scanning, T1592 Gather Victim Host Information, T1590 Gather Victim Network Information)
+- CWE ID where applicable: e.g. CWE-200 (Information Exposure), CWE-538 (Externally-Accessible File)
 `
 }
 

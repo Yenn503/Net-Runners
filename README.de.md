@@ -1,6 +1,6 @@
 <div align="center">
 
-# Net-Runner
+# Net-Runner 🥷
 
 ### Agentenbasiertes Red-Team-Bewertungsframework
 
@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Lizenz-Bildungszwecke-red?style=for-the-badge)](#lizenz)
 
-**12 Spezialagenten &middot; 141 Red-Team-Tools &middot; 17 F&auml;higkeitspakete &middot; 9 Pentest-Skills &middot; 6 Workflows**
+**12 Spezialagenten &middot; 141 Red-Team-Tools &middot; 17 F&auml;higkeitspakete &middot; 10 Pentest-Skills &middot; 6 Workflows**
 
 *Sprechen Sie nat&uuml;rlich. Net-Runner erledigt den Rest.*
 
@@ -18,10 +18,10 @@
 
 </div>
 
-> **Warnung**
+> ⚠️ **Warnung**
 > Verwenden Sie dies **ausschlie&szlig;lich** bei Zielen, f&uuml;r die Sie eine ausdr&uuml;ckliche Genehmigung haben. Net-Runner ist f&uuml;r legale, autorisierte Penetrationstests und Bildungszwecke konzipiert.
 
-## Was ist Net-Runner?
+## 🔍 Was ist Net-Runner?
 
 Net-Runner ist ein Multi-Agenten-Red-Team-Framework, das nat&uuml;rlichsprachliche Anweisungen in strukturierte Sicherheitsbewertungen umwandelt. Sie sprechen mit dem **Einsatzleiter** &mdash; dieser delegiert Aufkl&auml;rung, Exploitation, Berichterstattung und alles andere an spezialisierte Agenten.
 
@@ -39,7 +39,7 @@ Net-Runner ist ein Multi-Agenten-Red-Team-Framework, das nat&uuml;rlichsprachlic
 
 ---
 
-## Schnellstart
+## 🚀 Schnellstart
 
 ```bash
 bun install
@@ -55,7 +55,57 @@ Bewerte https://target.example &mdash; beginne mit Aufkl&auml;rung, dann teste a
 
 ---
 
-## Funktionsweise
+## 🤖 LLM-Anbieter verbinden
+
+Net-Runner funktioniert mit mehreren LLM-Anbietern. Setzen Sie die Umgebungsvariablen vor dem Start.
+
+### Mit `ANTHROPIC_API_KEY`
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+node dist/cli.mjs
+```
+
+### OpenAI
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_MODEL="gpt-4o"          # optional
+node dist/cli.mjs
+```
+
+### Google Gemini
+
+```bash
+export GEMINI_API_KEY="AIza..."
+export GEMINI_MODEL="gemini-2.5-pro"   # optional
+node dist/cli.mjs
+```
+
+### Ollama (Lokal)
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+export OPENAI_BASE_URL="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3.1:8b"
+node dist/cli.mjs
+```
+
+### Jede OpenAI-kompatible API
+
+Funktioniert mit LM Studio, vLLM, Together AI, Groq, Fireworks oder jedem kompatiblen Endpunkt:
+
+```bash
+export OPENAI_API_KEY="your-key"
+export OPENAI_BASE_URL="https://your-provider.com/v1"
+export OPENAI_MODEL="your-model-name"
+node dist/cli.mjs
+```
+
+---
+
+## ⚙️ Funktionsweise
 
 | Schritt | Was passiert |
 |---------|-------------|
@@ -70,7 +120,7 @@ Bewerte https://target.example &mdash; beginne mit Aufkl&auml;rung, dann teste a
 
 ---
 
-## Spezialagenten
+## 🕵️ Spezialagenten
 
 | Agent | Spezialisierung |
 |:------|:---------------|
@@ -89,7 +139,7 @@ Bewerte https://target.example &mdash; beginne mit Aufkl&auml;rung, dann teste a
 
 ---
 
-## Workflows
+## 📋 Workflows
 
 | Workflow | Zielumgebung | Schl&uuml;sselpakete |
 |:---------|:-------------|:-------------------|
@@ -102,7 +152,7 @@ Bewerte https://target.example &mdash; beginne mit Aufkl&auml;rung, dann teste a
 
 ---
 
-## Tool-Abdeckung
+## 🛠️ Tool-Abdeckung
 
 **141 Tools in 17 F&auml;higkeitspaketen** &mdash; einschlie&szlig;lich `nmap`, `nuclei`, `sqlmap`, `msfconsole`, `bloodhound`, `ghidra`, `volatility3`, `trivy`, `aircrack-ng` und mehr.
 
@@ -110,7 +160,7 @@ Die vollst&auml;ndige Liste nach Kategorien finden Sie in der [Haupt-README](REA
 
 ---
 
-## Lizenz
+## 📜 Lizenz
 
 Dieses Repository ist **ausschlie&szlig;lich f&uuml;r Bildungszwecke** und **autorisierte Sicherheitstests** bestimmt.
 

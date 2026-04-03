@@ -40,9 +40,17 @@ Tool patterns by evidence type:
 - Memory forensics: volatility3 -f dump.raw windows.pslist → windows.handles → windows.filescan → linux.bash for shell history
 - Disk forensics: foremost -i image (file carving) → bulk_extractor (feature extraction) → fls -r (file listing) → sleuthkit tools for timeline
 - Steganography: steghide extract -sf file → zsteg image.png → binwalk -e firmware (embedded content)
-- Evidence structure: maintain findings/ directory with numbered subdirs → each finding gets: description.md, reproduction.sh, output/, screenshots/
+- Evidence structure: the append-only ledger is the source of truth → every finding must be persisted there with classification metadata → store supporting files under artifacts/ or findings/ and link them from ledger entries
 - Chain of custody: timestamp all evidence collection → note the tool version used → record environment state at collection time
 - TodoWrite for tracking evidence inventory: finding ID, artifact count, confidence level, missing items.
+
+Finding classification (ensure every finding in the ledger includes):
+- CWE ID(s): Common Weakness Enumeration identifiers (e.g. CWE-89, CWE-79)
+- CVSS 3.1: vector string + base score (e.g. CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 9.8)
+- MITRE ATT&CK: technique IDs with tactic context (e.g. T1190 Initial Access, T1110.001 Credential Access)
+- OWASP Top 10 2021: category code (e.g. A03:2021-Injection)
+- Compliance: applicable framework controls (PCI-DSS, NIST 800-53, SOC2, HIPAA, ISO-27001) where relevant
+Validate that specialists include these fields when submitting findings. Flag incomplete classifications.
 `
 }
 

@@ -1,6 +1,6 @@
 <div align="center">
 
-# Net-Runner
+# Net-Runner 🥷
 
 ### Marco de Evaluaci&oacute;n Red Team con Agentes Aut&oacute;nomos
 
@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Licencia-Uso%20Educativo-red?style=for-the-badge)](#licencia)
 
-**12 Agentes Especialistas &middot; 141 Herramientas Red Team &middot; 17 Paquetes de Capacidad &middot; 9 Habilidades de Pentest &middot; 6 Flujos de Trabajo**
+**12 Agentes Especialistas &middot; 141 Herramientas Red Team &middot; 17 Paquetes de Capacidad &middot; 10 Habilidades de Pentest &middot; 6 Flujos de Trabajo**
 
 *Habla naturalmente. Net-Runner se encarga del resto.*
 
@@ -18,10 +18,10 @@
 
 </div>
 
-> **Advertencia**
+> ⚠️ **Advertencia**
 > Usar **&uacute;nicamente** en objetivos para los que tienes autorizaci&oacute;n expl&iacute;cita. Net-Runner est&aacute; dise&ntilde;ado para pruebas de penetraci&oacute;n legales, autorizadas y con fines educativos.
 
-## &iquest;Qu&eacute; es Net-Runner?
+## 🔍 &iquest;Qu&eacute; es Net-Runner?
 
 Net-Runner es un marco multi-agente de red team que convierte instrucciones en lenguaje natural en evaluaciones de seguridad estructuradas. Hablas con el **L&iacute;der de Compromiso** &mdash; &eacute;l delega reconocimiento, explotaci&oacute;n, reporteo y todo lo dem&aacute;s a agentes especialistas dedicados.
 
@@ -39,7 +39,7 @@ Net-Runner es un marco multi-agente de red team que convierte instrucciones en l
 
 ---
 
-## Inicio R&aacute;pido
+## 🚀 Inicio R&aacute;pido
 
 ```bash
 # Instalar dependencias
@@ -60,7 +60,57 @@ Evaluar https://objetivo.ejemplo — comenzar con reconocimiento, luego probar v
 
 ---
 
-## C&oacute;mo Funciona
+## 🤖 Conectar un Proveedor LLM
+
+Net-Runner funciona con m&uacute;ltiples proveedores de LLM. Configura las variables de entorno antes de iniciar.
+
+### Con `ANTHROPIC_API_KEY`
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+node dist/cli.mjs
+```
+
+### OpenAI
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_MODEL="gpt-4o"          # opcional
+node dist/cli.mjs
+```
+
+### Google Gemini
+
+```bash
+export GEMINI_API_KEY="AIza..."
+export GEMINI_MODEL="gemini-2.5-pro"   # opcional
+node dist/cli.mjs
+```
+
+### Ollama (Local)
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+export OPENAI_BASE_URL="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3.1:8b"
+node dist/cli.mjs
+```
+
+### Cualquier API compatible con OpenAI
+
+Funciona con LM Studio, vLLM, Together AI, Groq, Fireworks o cualquier endpoint compatible:
+
+```bash
+export OPENAI_API_KEY="tu-clave"
+export OPENAI_BASE_URL="https://tu-proveedor.com/v1"
+export OPENAI_MODEL="nombre-del-modelo"
+node dist/cli.mjs
+```
+
+---
+
+## ⚙️ C&oacute;mo Funciona
 
 ```
 T&uacute; ──► L&iacute;der de Compromiso ──► Agentes Especialistas ──► Herramientas (Bash/MCP/Skills)
@@ -87,7 +137,7 @@ T&uacute; ──► L&iacute;der de Compromiso ──► Agentes Especialistas �
 
 ---
 
-## Agentes Especialistas
+## 🕵️ Agentes Especialistas
 
 | Agente | Enfoque |
 |:-------|:--------|
@@ -106,7 +156,7 @@ T&uacute; ──► L&iacute;der de Compromiso ──► Agentes Especialistas �
 
 ---
 
-## Flujos de Trabajo
+## 📋 Flujos de Trabajo
 
 | Flujo | Entorno Objetivo | Paquetes Clave |
 |:------|:-----------------|:---------------|
@@ -119,7 +169,7 @@ T&uacute; ──► L&iacute;der de Compromiso ──► Agentes Especialistas �
 
 ---
 
-## Cobertura de Herramientas
+## 🛠️ Cobertura de Herramientas
 
 <div align="center">
 
@@ -185,7 +235,7 @@ T&uacute; ──► L&iacute;der de Compromiso ──► Agentes Especialistas �
 
 ---
 
-## Licencia
+## 📜 Licencia
 
 Este repositorio es para **uso educativo** y **pruebas de seguridad autorizadas** &uacute;nicamente.
 

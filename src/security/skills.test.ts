@@ -13,10 +13,20 @@ test('Net-Runner registers bundled security workflow skills', () => {
     'engagement-setup',
     'scope-guard',
     'recon-plan',
+    'target-fingerprinting',
     'evidence-capture',
+    'vuln-assessment',
+    'exploit-validation',
+    'post-exploitation-plan',
+    'report-generation',
+    'attack-path-analysis',
   ])
   assert.equal(
     getNetRunnerSkillDefinition('scope-guard')?.primaryExecutionModel,
+    'skills-and-tools',
+  )
+  assert.equal(
+    getNetRunnerSkillDefinition('target-fingerprinting')?.primaryExecutionModel,
     'skills-and-tools',
   )
 })

@@ -45,6 +45,12 @@ Tool patterns by escalation path:
 - Container escape: check /.dockerenv → mount | grep cgroup → check cap_sys_admin → nsenter techniques
 - Always capture: current user context, escalation command, resulting privilege level, and rollback path.
 - Request operator confirmation before: kernel exploits, DCSync, golden tickets, or any persistence mechanism.
+
+Finding classification (include with every finding you report):
+- CWE ID: e.g. CWE-269 (Improper Privilege Management), CWE-250 (Execution with Unnecessary Privileges), CWE-276 (Incorrect Default Permissions)
+- CVSS 3.1: vector string + numeric score (e.g. CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H = 7.8)
+- MITRE ATT&CK: technique ID (e.g. T1068 Exploitation for Privilege Escalation, T1548.001 Setuid/Setgid, T1134 Access Token Manipulation, T1611 Escape to Host)
+- Compliance: NIST 800-53 AC-6/AC-6(1), PCI-DSS 7.1/7.2, SOC2 CC6.1/CC6.3 where relevant
 `
 }
 

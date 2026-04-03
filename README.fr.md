@@ -1,6 +1,6 @@
 <div align="center">
 
-# Net-Runner
+# Net-Runner 🥷
 
 ### Framework d'&Eacute;valuation Red Team avec Agents Autonomes
 
@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Licence-Usage%20%C3%89ducatif-red?style=for-the-badge)](#licence)
 
-**12 Agents Sp&eacute;cialistes &middot; 141 Outils Red Team &middot; 17 Packs de Capacit&eacute;s &middot; 9 Comp&eacute;tences Pentest &middot; 6 Workflows**
+**12 Agents Sp&eacute;cialistes &middot; 141 Outils Red Team &middot; 17 Packs de Capacit&eacute;s &middot; 10 Comp&eacute;tences Pentest &middot; 6 Workflows**
 
 *Parlez naturellement. Net-Runner s'occupe du reste.*
 
@@ -18,10 +18,10 @@
 
 </div>
 
-> **Avertissement**
+> ⚠️ **Avertissement**
 > Utilisez **uniquement** sur des cibles pour lesquelles vous avez une autorisation explicite. Net-Runner est con&ccedil;u pour des tests de p&eacute;n&eacute;tration l&eacute;gaux, autoris&eacute;s et &agrave; des fins &eacute;ducatives.
 
-## Qu'est-ce que Net-Runner ?
+## 🔍 Qu'est-ce que Net-Runner ?
 
 Net-Runner est un framework multi-agents de red team qui transforme des instructions en langage naturel en &eacute;valuations de s&eacute;curit&eacute; structur&eacute;es. Vous parlez au **Responsable de Mission** &mdash; il d&eacute;l&egrave;gue la reconnaissance, l'exploitation, le reporting et tout le reste &agrave; des agents sp&eacute;cialistes d&eacute;di&eacute;s.
 
@@ -39,7 +39,7 @@ Net-Runner est un framework multi-agents de red team qui transforme des instruct
 
 ---
 
-## D&eacute;marrage Rapide
+## 🚀 D&eacute;marrage Rapide
 
 ```bash
 bun install
@@ -55,7 +55,57 @@ Puis tapez une instruction en langage naturel :
 
 ---
 
-## Comment &ccedil;a Marche
+## 🤖 Connecter un Fournisseur LLM
+
+Net-Runner fonctionne avec plusieurs fournisseurs LLM. Configurez les variables d'environnement avant de lancer.
+
+### Avec `ANTHROPIC_API_KEY`
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+node dist/cli.mjs
+```
+
+### OpenAI
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_MODEL="gpt-4o"          # optionnel
+node dist/cli.mjs
+```
+
+### Google Gemini
+
+```bash
+export GEMINI_API_KEY="AIza..."
+export GEMINI_MODEL="gemini-2.5-pro"   # optionnel
+node dist/cli.mjs
+```
+
+### Ollama (Local)
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+export OPENAI_BASE_URL="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3.1:8b"
+node dist/cli.mjs
+```
+
+### Toute API compatible OpenAI
+
+Fonctionne avec LM Studio, vLLM, Together AI, Groq, Fireworks ou tout endpoint compatible :
+
+```bash
+export OPENAI_API_KEY="votre-cl&eacute;"
+export OPENAI_BASE_URL="https://votre-fournisseur.com/v1"
+export OPENAI_MODEL="nom-du-mod&egrave;le"
+node dist/cli.mjs
+```
+
+---
+
+## ⚙️ Comment &ccedil;a Marche
 
 | &Eacute;tape | Ce qui se passe |
 |--------|----------------|
@@ -70,7 +120,7 @@ Puis tapez une instruction en langage naturel :
 
 ---
 
-## Agents Sp&eacute;cialistes
+## 🕵️ Agents Sp&eacute;cialistes
 
 | Agent | Domaine |
 |:------|:--------|
@@ -89,7 +139,7 @@ Puis tapez une instruction en langage naturel :
 
 ---
 
-## Workflows
+## 📋 Workflows
 
 | Workflow | Environnement Cible | Packs Cl&eacute;s |
 |:---------|:--------------------|:----------|
@@ -102,7 +152,7 @@ Puis tapez une instruction en langage naturel :
 
 ---
 
-## Couverture d'Outils
+## 🛠️ Couverture d'Outils
 
 **141 outils dans 17 packs de capacit&eacute;s** &mdash; incluant `nmap`, `nuclei`, `sqlmap`, `msfconsole`, `bloodhound`, `ghidra`, `volatility3`, `trivy`, `aircrack-ng` et bien plus.
 
@@ -110,7 +160,7 @@ Consultez le [README principal](README.md) pour la liste compl&egrave;te par cat
 
 ---
 
-## Licence
+## 📜 Licence
 
 Ce d&eacute;p&ocirc;t est destin&eacute; &agrave; un **usage &eacute;ducatif** et &agrave; des **tests de s&eacute;curit&eacute; autoris&eacute;s** uniquement.
 

@@ -18,6 +18,7 @@ test('Net-Runner publishes security specialist agent definitions', () => {
       'exploit-specialist',
       'privilege-escalation-specialist',
       'lateral-movement-specialist',
+      'ad-specialist',
       'retest-specialist',
       'evidence-specialist',
       'reporting-specialist',

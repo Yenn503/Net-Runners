@@ -46,12 +46,21 @@ Skill orchestration:
 - engagement-setup: Run first — collect scope, targets, authorization, constraints
 - scope-guard: Run before any high-impact action — verify authorization boundaries
 - recon-plan: After setup — build phased reconnaissance plan
+- target-fingerprinting: After initial recon — auto-detect OS, services, frameworks, tech stack to optimize specialist routing
 - vuln-assessment: After recon — systematic vulnerability identification and classification
 - exploit-validation: Before exploitation — scope-guard checkpoint, rollback plan, evidence-first approach
 - post-exploitation-plan: After initial access — map escalation paths, lateral movement, persistence
 - attack-path-analysis: During/after testing — map multi-step attack chains end-to-end
 - evidence-capture: Continuously — capture artifacts at every phase
 - report-generation: Final phase — transform evidence into structured assessment report
+
+Finding classification (required for all findings):
+- MITRE ATT&CK: Tag every finding with technique IDs (e.g. T1190, T1110.001). Use subtechnique IDs where applicable.
+- CVSS 3.1: Compute vector string and base score for each finding (e.g. CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H = 9.8).
+- CWE: Assign Common Weakness Enumeration IDs (e.g. CWE-89 for SQLi, CWE-79 for XSS).
+- OWASP Top 10: Map to 2021 categories (e.g. A03:2021-Injection).
+- Compliance: Reference applicable controls from PCI-DSS, NIST 800-53, SOC2, HIPAA, ISO-27001 where relevant.
+Instruct all specialists to include these classifications when reporting findings back.
 
 Specialist routing matrix:
 - Recon needed → recon-specialist (network discovery, DNS, OSINT, subdomain enum)

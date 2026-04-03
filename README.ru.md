@@ -1,6 +1,6 @@
 <div align="center">
 
-# Net-Runner
+# Net-Runner 🥷
 
 ### Агентный фреймворк для Red Team оценки
 
@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Лицензия-Образовательное%20использование-red?style=for-the-badge)](#лицензия)
 
-**12 агентов-специалистов &middot; 141 инструмент Red Team &middot; 17 пакетов возможностей &middot; 9 навыков пентеста &middot; 6 рабочих процессов**
+**12 агентов-специалистов &middot; 141 инструмент Red Team &middot; 17 пакетов возможностей &middot; 10 навыков пентеста &middot; 6 рабочих процессов**
 
 *Говорите естественно. Net-Runner позаботится об остальном.*
 
@@ -18,10 +18,10 @@
 
 </div>
 
-> **Предупреждение**
+> ⚠️ **Предупреждение**
 > Используйте **только** на целях, на которые у вас есть явное разрешение. Net-Runner предназначен для легального, авторизованного тестирования на проникновение и образовательных целей.
 
-## Что такое Net-Runner?
+## 🔍 Что такое Net-Runner?
 
 Net-Runner — это мультиагентный фреймворк для Red Team, который превращает инструкции на естественном языке в структурированные оценки безопасности. Вы общаетесь с **Руководителем задания** — он делегирует разведку, эксплуатацию, отчётность и всё остальное специализированным агентам.
 
@@ -39,7 +39,7 @@ Net-Runner — это мультиагентный фреймворк для Red
 
 ---
 
-## Быстрый старт
+## 🚀 Быстрый старт
 
 ```bash
 bun install
@@ -55,7 +55,57 @@ node dist/cli.mjs
 
 ---
 
-## Как это работает
+## 🤖 Подключение LLM-провайдера
+
+Net-Runner работает с несколькими LLM-провайдерами. Установите переменные окружения перед запуском.
+
+### С `ANTHROPIC_API_KEY`
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+node dist/cli.mjs
+```
+
+### OpenAI
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_MODEL="gpt-4o"          # опционально
+node dist/cli.mjs
+```
+
+### Google Gemini
+
+```bash
+export GEMINI_API_KEY="AIza..."
+export GEMINI_MODEL="gemini-2.5-pro"   # опционально
+node dist/cli.mjs
+```
+
+### Ollama (Локально)
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+export OPENAI_BASE_URL="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3.1:8b"
+node dist/cli.mjs
+```
+
+### Любой OpenAI-совместимый API
+
+Работает с LM Studio, vLLM, Together AI, Groq, Fireworks или любым совместимым эндпоинтом:
+
+```bash
+export OPENAI_API_KEY="your-key"
+export OPENAI_BASE_URL="https://your-provider.com/v1"
+export OPENAI_MODEL="your-model-name"
+node dist/cli.mjs
+```
+
+---
+
+## ⚙️ Как это работает
 
 | Шаг | Что происходит |
 |-----|---------------|
@@ -70,7 +120,7 @@ node dist/cli.mjs
 
 ---
 
-## Агенты-специалисты
+## 🕵️ Агенты-специалисты
 
 | Агент | Специализация |
 |:------|:-------------|
@@ -89,7 +139,7 @@ node dist/cli.mjs
 
 ---
 
-## Рабочие процессы
+## 📋 Рабочие процессы
 
 | Процесс | Целевая среда | Ключевые пакеты |
 |:--------|:-------------|:---------------|
@@ -102,7 +152,7 @@ node dist/cli.mjs
 
 ---
 
-## Покрытие инструментов
+## 🛠️ Покрытие инструментов
 
 **141 инструмент в 17 пакетах возможностей** — включая `nmap`, `nuclei`, `sqlmap`, `msfconsole`, `bloodhound`, `ghidra`, `volatility3`, `trivy`, `aircrack-ng` и другие.
 
@@ -110,7 +160,7 @@ node dist/cli.mjs
 
 ---
 
-## Лицензия
+## 📜 Лицензия
 
 Этот репозиторий предназначен **только для образовательного использования** и **авторизованного тестирования безопасности**.
 

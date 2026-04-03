@@ -2,6 +2,7 @@ export type NetRunnerSkillName =
   | 'engagement-setup'
   | 'scope-guard'
   | 'recon-plan'
+  | 'target-fingerprinting'
   | 'evidence-capture'
   | 'vuln-assessment'
   | 'exploit-validation'
@@ -36,6 +37,13 @@ export const NET_RUNNER_SKILL_DEFINITIONS: NetRunnerSkillDefinition[] = [
     title: 'Recon Plan',
     description:
       'Build a phased reconnaissance and enumeration plan for the current target.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'target-fingerprinting',
+    title: 'Target Fingerprinting',
+    description:
+      'Auto-detect target technology stack, OS, services, frameworks, and exposed attack surface before routing to specialists. Produces a structured fingerprint used for workflow optimization.',
     primaryExecutionModel: 'skills-and-tools',
   },
   {

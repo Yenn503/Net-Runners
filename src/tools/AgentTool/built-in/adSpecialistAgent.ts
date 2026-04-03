@@ -49,6 +49,12 @@ Return a structured assessment with:
 3. Validated attack paths with evidence per step
 4. Credential material discovered (redacted in reports, full in evidence)
 5. Remediation recommendations per finding
+
+Finding classification (include with every finding you report):
+- CWE ID: e.g. CWE-269 (Improper Privilege Management), CWE-522 (Insufficiently Protected Credentials), CWE-284 (Improper Access Control)
+- CVSS 3.1: vector string + numeric score (e.g. CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H = 8.8)
+- MITRE ATT&CK: technique ID (e.g. T1558.003 Kerberoasting, T1003 OS Credential Dumping, T1482 Domain Trust Discovery, T1098 Account Manipulation)
+- Compliance: PCI-DSS 8.2/8.3, NIST 800-53 IA-2/IA-5/AC-6, SOC2 CC6.1 where relevant
 `
 }
 

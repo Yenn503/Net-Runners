@@ -1,6 +1,6 @@
 <div align="center">
 
-# Net-Runner
+# Net-Runner 🥷
 
 ### Framework de Avalia&ccedil;&atilde;o Red Team com Agentes Aut&ocirc;nomos
 
@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Licen%C3%A7a-Uso%20Educacional-red?style=for-the-badge)](#licen%C3%A7a)
 
-**12 Agentes Especialistas &middot; 141 Ferramentas Red Team &middot; 17 Pacotes de Capacidade &middot; 9 Habilidades de Pentest &middot; 6 Workflows**
+**12 Agentes Especialistas &middot; 141 Ferramentas Red Team &middot; 17 Pacotes de Capacidade &middot; 10 Habilidades de Pentest &middot; 6 Workflows**
 
 *Fale naturalmente. O Net-Runner cuida do resto.*
 
@@ -18,10 +18,10 @@
 
 </div>
 
-> **Aviso**
+> ⚠️ **Aviso**
 > Use **apenas** em alvos para os quais voc&ecirc; tem autoriza&ccedil;&atilde;o expl&iacute;cita. O Net-Runner foi projetado para testes de penetra&ccedil;&atilde;o legais, autorizados e para fins educacionais.
 
-## O que &eacute; o Net-Runner?
+## 🔍 O que &eacute; o Net-Runner?
 
 Net-Runner &eacute; um framework multi-agente de red team que transforma instru&ccedil;&otilde;es em linguagem natural em avalia&ccedil;&otilde;es de seguran&ccedil;a estruturadas. Voc&ecirc; fala com o **L&iacute;der de Engajamento** &mdash; ele delega reconhecimento, explora&ccedil;&atilde;o, relat&oacute;rios e tudo mais para agentes especialistas dedicados.
 
@@ -39,7 +39,7 @@ Net-Runner &eacute; um framework multi-agente de red team que transforma instru&
 
 ---
 
-## In&iacute;cio R&aacute;pido
+## 🚀 In&iacute;cio R&aacute;pido
 
 ```bash
 bun install
@@ -55,7 +55,57 @@ Avaliar https://alvo.exemplo — come&ccedil;ar com reconhecimento, depois testa
 
 ---
 
-## Como Funciona
+## 🤖 Conectar um Provedor LLM
+
+Net-Runner funciona com m&uacute;ltiplos provedores de LLM. Configure as vari&aacute;veis de ambiente antes de iniciar.
+
+### Com `ANTHROPIC_API_KEY`
+
+```bash
+export ANTHROPIC_API_KEY="sk-ant-..."
+node dist/cli.mjs
+```
+
+### OpenAI
+
+```bash
+export OPENAI_API_KEY="sk-..."
+export OPENAI_MODEL="gpt-4o"          # opcional
+node dist/cli.mjs
+```
+
+### Google Gemini
+
+```bash
+export GEMINI_API_KEY="AIza..."
+export GEMINI_MODEL="gemini-2.5-pro"   # opcional
+node dist/cli.mjs
+```
+
+### Ollama (Local)
+
+```bash
+ollama serve
+ollama pull llama3.1:8b
+export OPENAI_BASE_URL="http://localhost:11434/v1"
+export OPENAI_MODEL="llama3.1:8b"
+node dist/cli.mjs
+```
+
+### Qualquer API compat&iacute;vel com OpenAI
+
+Funciona com LM Studio, vLLM, Together AI, Groq, Fireworks ou qualquer endpoint compat&iacute;vel:
+
+```bash
+export OPENAI_API_KEY="sua-chave"
+export OPENAI_BASE_URL="https://seu-provedor.com/v1"
+export OPENAI_MODEL="nome-do-modelo"
+node dist/cli.mjs
+```
+
+---
+
+## ⚙️ Como Funciona
 
 | Etapa | O que Acontece |
 |-------|---------------|
@@ -70,7 +120,7 @@ Avaliar https://alvo.exemplo — come&ccedil;ar com reconhecimento, depois testa
 
 ---
 
-## Agentes Especialistas
+## 🕵️ Agentes Especialistas
 
 | Agente | Foco |
 |:-------|:-----|
@@ -89,7 +139,7 @@ Avaliar https://alvo.exemplo — come&ccedil;ar com reconhecimento, depois testa
 
 ---
 
-## Workflows
+## 📋 Workflows
 
 | Workflow | Ambiente Alvo | Pacotes Chave |
 |:---------|:-------------|:-------------|
@@ -102,7 +152,7 @@ Avaliar https://alvo.exemplo — come&ccedil;ar com reconhecimento, depois testa
 
 ---
 
-## Cobertura de Ferramentas
+## 🛠️ Cobertura de Ferramentas
 
 **141 ferramentas em 17 pacotes de capacidade** &mdash; incluindo `nmap`, `nuclei`, `sqlmap`, `msfconsole`, `bloodhound`, `ghidra`, `volatility3`, `trivy`, `aircrack-ng` e muito mais.
 
@@ -110,7 +160,7 @@ Para a lista completa por categoria, consulte o [README principal](README.md).
 
 ---
 
-## Licen&ccedil;a
+## 📜 Licen&ccedil;a
 
 Este reposit&oacute;rio &eacute; para **uso educacional** e **testes de seguran&ccedil;a autorizados** apenas.
 

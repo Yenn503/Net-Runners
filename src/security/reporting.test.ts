@@ -27,6 +27,27 @@ test('report generation includes engagement metadata and findings', async () => 
       severity: 'high',
       evidence: 'GET /admin returned a 200 without authentication.',
       recommendation: 'Require authentication and retest.',
+      cweIds: ['CWE-862'],
+      cvss: {
+        version: '3.1',
+        vector: 'CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N',
+        baseScore: 9.1,
+        baseSeverity: 'critical',
+      },
+      mitreAttack: [
+        {
+          techniqueId: 'T1190',
+          techniqueName: 'Exploit Public-Facing Application',
+          tacticName: 'Initial Access',
+        },
+      ],
+      owaspCategory: ['A01:2021-Broken-Access-Control'],
+      compliance: [
+        {
+          framework: 'NIST-800-53',
+          controls: ['AC-3', 'AC-6'],
+        },
+      ],
     },
   ]
 
@@ -37,4 +58,9 @@ test('report generation includes engagement metadata and findings', async () => 
   assert.match(markdown, /Net-Runner Report/)
   assert.match(markdown, /Missing auth on admin route/)
   assert.match(persisted, /GET \/admin returned a 200/)
+  assert.match(markdown, /CVSS:3\.1\/AV:N\/AC:L\/PR:N\/UI:N\/S:U\/C:H\/I:H\/A:N/)
+  assert.match(markdown, /CWE-862/)
+  assert.match(markdown, /T1190/)
+  assert.match(markdown, /A01:2021-Broken-Access-Control/)
+  assert.match(markdown, /NIST-800-53: AC-3, AC-6/)
 })

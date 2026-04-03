@@ -8,7 +8,7 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/License-Educational%20Use-red?style=for-the-badge)](#license)
 
-**12 Specialist Agents &middot; 141 Red-Team Tools &middot; 17 Capability Packs &middot; 9 Pentest Skills &middot; 6 Workflows**
+**12 Specialist Agents &middot; 141 Red-Team Tools &middot; 17 Capability Packs &middot; 10 Pentest Skills &middot; 6 Workflows**
 
 *Speak naturally. Net-Runner handles the rest.*
 
@@ -66,14 +66,14 @@ Net-Runner auto-detects your intent, bootstraps a safe engagement, and starts wo
 
 Net-Runner works with multiple LLM providers. Set the right environment variables before launching.
 
-### Anthropic (Claude) — Default
+### Using `ANTHROPIC_API_KEY`
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 node dist/cli.mjs
 ```
 
-Claude is the default provider. No additional configuration needed — just set your API key and go.
+If your provider uses the `ANTHROPIC_API_KEY` path, set the key and launch.
 
 ### OpenAI
 
@@ -122,7 +122,7 @@ node dist/cli.mjs
 <details>
 <summary><strong>💡 Provider Tips</strong></summary>
 
-- **Best results** come from Claude Sonnet 4 / Opus — they handle multi-step tool use and agent orchestration the best
+- **Best results** come from tool-capable frontier models that are strong at multi-step reasoning and tool orchestration
 - **GPT-4o** works well for most workflows
 - **Gemini 2.5 Pro** is a strong alternative with large context windows
 - **Local models** (Ollama) work for basic recon and evidence tasks but may struggle with complex multi-agent orchestration
@@ -212,19 +212,36 @@ All 12 agents share evidence through the engagement envelope, communicate via th
 
 ## 🧠 Skills
 
-Nine pentest-specific skills structure execution flow — agents invoke them automatically based on workflow phase.
+Ten pentest-specific skills structure execution flow — agents invoke them automatically based on workflow phase.
 
 | Skill | Phase | Purpose |
 |:------|:------|:--------|
 | `engagement-setup` | Start | Collect scope, targets, authorization, constraints |
 | `scope-guard` | Pre-action | Verify authorization boundaries before risky actions |
 | `recon-plan` | Discovery | Build phased recon and enumeration plan |
+| `target-fingerprinting` | Discovery | Auto-detect OS, services, frameworks, tech stack for specialist routing |
 | `vuln-assessment` | Analysis | Systematic vulnerability identification and classification |
 | `exploit-validation` | Exploitation | Scope-guard checkpoint, rollback plan, controlled PoC |
 | `post-exploitation-plan` | Post-access | Map escalation paths and lateral movement options |
 | `attack-path-analysis` | Synthesis | Map multi-step attack chains and dependencies |
 | `evidence-capture` | Continuous | Capture artifacts and findings at every phase |
 | `report-generation` | Final | Transform evidence into assessment report |
+
+---
+
+## 🏷️ Finding Classification
+
+Every finding is automatically tagged with industry-standard classification metadata:
+
+| Standard | What Gets Tagged | Example |
+|:---------|:-----------------|:--------|
+| **MITRE ATT&CK** | Technique IDs + tactic context | T1190 (Exploit Public-Facing Application) |
+| **CVSS 3.1** | Vector string + numeric base score | CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H → 9.8 Critical |
+| **CWE** | Common Weakness Enumeration IDs | CWE-89 (SQL Injection) |
+| **OWASP Top 10** | 2021 category codes | A03:2021-Injection |
+| **Compliance** | Framework control references | PCI-DSS 6.5.1, NIST 800-53 SI-10, SOC2 CC6.1 |
+
+Classification data flows through the evidence ledger into the final report — every finding includes severity, CVSS score, CWE, OWASP category, MITRE technique, and applicable compliance controls.
 
 ---
 
@@ -406,7 +423,8 @@ src/
 │   ├── workflows.ts            # 6 security workflows + 17 capability packs
 │   ├── agentTypes.ts           # 12 agent type definitions
 │   ├── agentDefinitions.ts     # Agent-to-workflow mappings
-│   ├── skillDefinitions.ts     # 9 pentest skill definitions
+│   ├── skillDefinitions.ts     # 10 pentest skill definitions
+│   ├── findingClassification.ts # MITRE ATT&CK, CVSS, CWE, OWASP, compliance mapping
 │   ├── engagement.ts           # Engagement lifecycle management
 │   ├── guardrails.ts           # Scope-guard and impact assessment
 │   ├── evidence.ts             # Evidence chain and artifact management

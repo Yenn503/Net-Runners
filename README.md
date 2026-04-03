@@ -51,6 +51,9 @@ Give Net-Runner a target and goal in plain language. It creates a project-scoped
 
 ## 🚀 Getting Started
 
+<details>
+<summary><strong>Open setup and first run</strong></summary>
+
 ### 1. Install and build
 
 ```bash
@@ -107,6 +110,8 @@ node dist/cli.mjs
 ```text
 Assess https://target.example. Start with recon, map the attack surface, validate findings, and capture evidence.
 ```
+
+</details>
 
 ---
 

@@ -30,9 +30,22 @@ Net-Runner is a final-year university project and research prototype for LLM-ass
 Give Net-Runner a target and goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow, routes tasks to specialist agents, and captures evidence throughout the assessment.
 
 - Workflow-aware execution with evidence, memory, and reports in one runtime
+- Retrieval-backed memory and research through relevant-memory recall, project memory, agent memory, and session summarization
+- Specialist-agent routing through the core engine, with scoped delegation when a task boundary is clear
+- Guardrails that enforce scope, impact boundaries, and review points before higher-risk actions
+- Provider-portable local runtime with optional remote-session support and selective hosted integrations
 - Supports web, API, mobile, lab, Active Directory, WiFi, and CTF assessments
-- Routes tasks to specialist agents for recon, exploitation, privilege escalation, and reporting
-- Skills-first architecture with direct tool execution and selective MCP integration
+
+---
+
+## 🧠 Core Engine Features
+
+- **Retrieval-backed context** — Net-Runner can pull useful context back into later runs through relevant-memory retrieval, agent memory, and session-memory summaries instead of treating every prompt as stateless
+- **Evidence-first workflow** — findings, artifacts, notes, and reports stay tied to the same `.netrunner/` engagement instead of being scattered across chats and files
+- **Scoped delegation** — the main runtime keeps control of the assessment loop and hands bounded work to specialist agents when that improves accuracy or speed
+- **Guardrail enforcement** — bash, fetch, and delegated actions all run through engagement-aware guardrails so intrusive steps are blocked or pushed to review when needed
+- **Skills-first execution** — assessment method lives in reusable skills and runtime structure, while MCP stays available for the integrations that actually need it
+- **Remote and local modes** — the local runtime is the default path, but the engine still retains optional remote-session capability from the upstream base
 
 ---
 
@@ -100,10 +113,11 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 ## ⚙️ Execution Flow
 
 1. Net-Runner detects assessment intent and target type
-2. Initializes `.netrunner/` state for the project
-3. Injects scope, impact, and workflow context
-4. Routes tasks to specialist agents and tools
-5. Records evidence, findings, and reports in the project runtime
+2. Initializes `.netrunner/engagement.json` and run-state for the project
+3. Injects workflow, scope, impact, skills, and retrieved context from memory
+4. Runs with shell, file, web, code, and specialist-agent tooling
+5. Applies engagement guardrails before higher-risk or out-of-scope actions
+6. Records evidence, findings, artifacts, and reports in the project runtime
 
 ---
 

@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/الترخيص-استخدام%20تعليمي-red?style=for-the-badge)](#الترخيص)
 
-**12 وكيلًا متخصصًا · 141 أداة ريد تيم · 17 حزمة قدرات · 10 مهارات اختبار اختراق · 6 مسارات عمل**
+**12 وكيلًا متخصصًا · 153 أداة ريد تيم · 18 حزمة قدرات · 10 مهارات اختبار اختراق · 7 مسارات عمل**
 
-*تحدث بشكل طبيعي. Net-Runner يتولى الباقي.*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · **العربية** · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 

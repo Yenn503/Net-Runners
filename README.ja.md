@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/ライセンス-教育利用-red?style=for-the-badge)](#ライセンス)
 
-**12 の専門エージェント · 141 の Red-Team ツール · 17 の能力パック · 10 のペンテストスキル · 6 のワークフロー**
+**12 の専門エージェント · 153 の Red-Team ツール · 18 の能力パック · 10 のペンテストスキル · 7 のワークフロー**
 
-*自然に話せば大丈夫です。あとは Net-Runner が処理します。*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · **日本語** · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 

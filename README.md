@@ -1,63 +1,30 @@
-<div align="center">
+# Net-Runner
 
-# Net-Runner 🥷
+Net-Runner is a final-year university project and research prototype for LLM-assisted red-team assessments. It is built on the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork and adapted into a framework with workflow-aware execution, specialist agents, evidence capture, and project-scoped runtime state.
 
-### Agentic Red-Team Assessment Framework
-
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
-[![License](https://img.shields.io/badge/License-Educational%20Use-red?style=for-the-badge)](#license)
-
-**12 Specialist Agents · 141 Red-Team Tools · 17 Capability Packs · 10 Pentest Skills · 6 Workflows**
-
-*Natural-language red-team runtime with evidence, memory, and specialist agents in one flow.*
+Current build: `12` specialist agents, `153` imported pentest tools, `18` capability packs, `10` pentest skills, and `7` workflows.
 
 **English** · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 
----
+> Warning
+> Use this framework only on targets you are explicitly authorized to test. Net-Runner is for legal security testing, lab work, and research use.
 
-</div>
+## Project Scope
 
-> ⚠️ **Warning**
-> Use **only** on targets you are explicitly authorized to test. Net-Runner is designed for legal, authorized penetration testing and educational purposes.
+- research prototype for authorized red-team and security assessment work
+- operator-facing README for setup and usage
+- deeper research, provenance, and architecture notes under `docs/`
 
-## 🔍 What Is Net-Runner?
+## What Net-Runner Does
 
-Net-Runner is a multi-agent security testing framework built for natural-language operation.
+You give Net-Runner a target and a goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow context, routes scoped tasks to specialist agents when needed, and records evidence as the assessment runs.
 
-It keeps the operator flow simple while keeping the runtime state, evidence, memory, and specialist execution in the same system.
+- keeps workflow, evidence, memory, and reports in the same runtime
+- supports web, API, mobile, lab, Active Directory, WiFi, and CTF-style work
+- uses specialist agents for recon, web, API, network, exploit, AD, retest, evidence, and reporting tasks
+- keeps methodology in skills and uses MCP only where it adds a clear integration benefit
 
-The current build is adapted from the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork and reshaped for red-team assessment workflows.
-
-You connect an LLM, describe the target and goal in plain English, and Net-Runner brings the full engine into play:
-
-- it detects assessment intent
-- it creates a project-scoped `.netrunner/` runtime envelope
-- it injects scope and workflow context into the session
-- it routes work to specialist agents when needed
-- it records evidence, memory, and reports as the assessment runs
-
-For most users, the experience is simple:
-
-```text
-You describe the job.
-Net-Runner plans, delegates, executes, remembers, and reports.
-```
-
----
-
-## Why It Is Built This Way
-
-- **Natural language first** — you do not need to start by memorising commands
-- **One inline system** — agents, tools, evidence, memory, and reporting stay in the same flow
-- **Specialist agents** — recon, web, API, network, exploit, AD, retest, evidence, and reporting roles are already wired in
-- **Persistent memory** — useful context can be pulled back in across sessions
-- **Evidence-first operation** — findings, execution steps, approvals, and reports stay tied to the same engagement
-- **Skills-first direction** — core workflow logic stays in skills and runtime structure instead of being pushed into MCP by default
-
----
-
-## 🚀 Start Here
+## Quick Start
 
 ### 1. Install and build
 
@@ -66,18 +33,16 @@ bun install
 bun run build
 ```
 
-### 2. Connect a model
+### 2. Set a model provider
 
-Pick the provider you want and set the matching environment variables.
-
-#### `ANTHROPIC_API_KEY`
+`ANTHROPIC_API_KEY`
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 node dist/cli.mjs
 ```
 
-#### OpenAI
+`OPENAI_API_KEY`
 
 ```bash
 export OPENAI_API_KEY="sk-..."
@@ -85,7 +50,7 @@ export OPENAI_MODEL="gpt-4o"
 node dist/cli.mjs
 ```
 
-#### Google Gemini
+`GEMINI_API_KEY`
 
 ```bash
 export GEMINI_API_KEY="AIza..."
@@ -93,7 +58,7 @@ export GEMINI_MODEL="gemini-2.5-pro"
 node dist/cli.mjs
 ```
 
-#### Ollama
+Ollama
 
 ```bash
 ollama serve
@@ -103,7 +68,7 @@ export OPENAI_MODEL="llama3.1:8b"
 node dist/cli.mjs
 ```
 
-#### Any OpenAI-compatible API
+Any OpenAI-compatible API
 
 ```bash
 export OPENAI_API_KEY="your-key"
@@ -112,82 +77,48 @@ export OPENAI_MODEL="your-model-name"
 node dist/cli.mjs
 ```
 
-### 3. Speak naturally
-
-Example:
+### 3. Start an assessment
 
 ```text
-Assess https://target.example. Start with recon, find the main attack surface, validate the most likely issues, and keep evidence as you go.
+Assess https://target.example. Start with recon, map the main attack surface, validate the most likely issues, and keep evidence as you go.
 ```
 
-Net-Runner will detect the target, start an engagement, inject the right context, and begin using its agentic runtime.
+## What Happens When You Run It
 
----
+1. Net-Runner detects assessment intent and target type.
+2. It initializes `.netrunner/` state for the project if needed.
+3. It injects scope, impact, and workflow context into the session.
+4. It uses the main runtime plus specialist agents and tools to carry the work forward.
+5. It records evidence, notes, findings, and reports inside the same project envelope.
 
-## ⚙️ How It Works
+## Workflows
 
-```text
-You
-  ↓
-Main LLM session
-  ↓
-Net-Runner runtime context
-  ↓
-Specialist agents + tools + memory + evidence
-  ↓
-Structured assessment output
-```
+- `web-app-testing` for route mapping, auth testing, and web finding validation
+- `api-testing` for endpoint discovery, schema checks, auth/state testing, and API-specific findings
+- `mobile-app-testing` for Android app review and dynamic testing with tools such as `adb`, `apktool`, `jadx`, `frida`, `objection`, `MobSF`, `drozer`, and `apkleaks`
+- `lab-target-testing` for internal labs, host/service work, privilege escalation, and lateral movement
+- `ctf-mode` for challenge-style runs where speed and iteration matter more than formal reporting
+- `ad-testing` for Active Directory, Kerberos, trust-path, and AD CS work
+- `wifi-testing` for wireless assessments, handshake capture, rogue AP testing, and 802.11 analysis
 
-### What happens after one prompt
+The recon stack also includes tools for cloud and identity enumeration such as `cloud_enum`, `GHunt`, `holehe`, and `haklistgen`.
 
-| Step | What Net-Runner does |
-|------|----------------------|
-| **1. Detect** | Recognizes assessment intent, target type, and likely workflow |
-| **2. Bootstrap** | Creates `.netrunner/` state for the engagement if it does not already exist |
-| **3. Inject** | Adds scope, impact boundary, workflow, and default skills into the live session |
-| **4. Route** | Uses the main runtime and specialist agents together instead of making you micromanage commands |
-| **5. Guard** | Applies internal guardrails to destructive, persistence-heavy, and out-of-scope actions |
-| **6. Record** | Saves evidence, execution steps, findings, reviews, memory, and reports inside the same envelope |
+## Specialist Agents
 
-### What the user experiences
+- `engagement-lead`
+- `recon-specialist`
+- `web-testing-specialist`
+- `api-testing-specialist`
+- `network-testing-specialist`
+- `exploit-specialist`
+- `privilege-escalation-specialist`
+- `lateral-movement-specialist`
+- `ad-specialist`
+- `retest-specialist`
+- `evidence-specialist`
+- `reporting-specialist`
 
-You do not need to keep re-prompting the system with setup steps.
-
-In the normal path, you can:
-
-- give it a target
-- tell it what kind of assessment to run
-- ask it to continue, deepen, retest, summarize, or report
-- let it use the environment, tools, memory, and agents already available to it
-
----
-
-## 🕵️ Agents
-
-Net-Runner keeps the original general agentic flow intact and adds specialist security roles on top.
-
-| Agent | What it does |
-|:------|:-------------|
-| **Engagement Lead** | Orchestrates the assessment, chooses workflow phases, and routes work |
-| **Recon Specialist** | Finds hosts, services, subdomains, technologies, and attack surface |
-| **Web Testing Specialist** | Tests routes, parameters, auth flows, and web vulnerabilities |
-| **API Testing Specialist** | Tests APIs, schemas, JWTs, IDOR paths, and state transitions |
-| **Network Testing Specialist** | Handles service enumeration, network validation, and host-level testing |
-| **Exploit Specialist** | Validates proof-of-impact in a controlled way |
-| **Privilege Escalation Specialist** | Handles post-access escalation paths |
-| **Lateral Movement Specialist** | Handles pivots, trust paths, and multi-host movement |
-| **AD Specialist** | Handles Active Directory and Kerberos-focused testing |
-| **Retest Specialist** | Reproduces findings and validates fixes |
-| **Evidence Specialist** | Organizes artifacts and traceable evidence |
-| **Reporting Specialist** | Turns evidence into a clean assessment report |
-
-Core runtime agents such as `general-purpose`, `Explore`, `Plan`, and `verification` still remain part of the system.
-
----
-
-## 🧱 Project Structure
-
-Net-Runner keeps assessment state in a project-scoped `.netrunner/` directory.
+## Runtime Layout
 
 ```text
 .netrunner/
@@ -205,62 +136,18 @@ Net-Runner keeps assessment state in a project-scoped `.netrunner/` directory.
 └── instructions/
 ```
 
-What those parts are for:
-
-- `engagement.json` — current workflow, targets, impact boundary, restrictions
-- `run-state.json` — execution steps and pending reviews
-- `evidence/` — append-only evidence ledger
-- `findings/` — structured finding outputs
-- `reports/` — generated assessment reports
-- `artifacts/` — collected outputs and supporting files
-- `memory/` — persistent operator, team, and agent memory
-- `instructions/` — project-scoped runtime instructions
-
----
-
-## 💬 Example Prompts
-
-```text
-Assess https://target.example and map the external attack surface.
-```
-
-```text
-Continue the current engagement, focus on authentication weaknesses, and capture evidence for anything real.
-```
-
-```text
-Escalate to intrusive validation and verify whether the identified issue is actually exploitable.
-```
-
-```text
-Generate a report from the current evidence and summarize the highest-risk findings first.
-```
-
----
-
-## 📚 Documentation
-
-The English README is the canonical version for the project narrative. The translated READMEs are convenience copies and may lag behind the main research-facing wording.
-
-Keep the main README for the operator path. Use the docs for deeper technical detail.
+## Documentation
 
 - [Workflow Overview](docs/workflows/overview.md)
 - [Research Alignment](docs/project/research-alignment.md)
 - [Upstream Provenance](docs/project/upstream-provenance.md)
 - [Skills-First Architecture](docs/capabilities/skills-first-architecture.md)
 - [Service Surfaces](docs/capabilities/service-surfaces.md)
-- `docs/` for implementation detail, capability mapping, and deeper runtime notes
 
----
+## Provenance
 
-## 📜 License
+The public upstream base for this repository is [OpenClaude](https://github.com/Gitlawb/openclaude). Net-Runner changes that base into a red-team assessment framework; the research and provenance notes live under `docs/project/`.
 
-This repository is for **educational use** and **authorized security testing** only.
+## License
 
----
-
-<div align="center">
-
-*Built as a skills-first red-team runtime for authorized testing, evidence-backed workflows, and final-year research into better agent architecture.*
-
-</div>
+This repository is for educational use and authorized security testing only.

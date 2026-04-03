@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Licence-Usage%20%C3%89ducatif-red?style=for-the-badge)](#licence)
 
-**12 agents spécialistes · 141 outils Red Team · 17 packs de capacités · 10 compétences de pentest · 6 workflows**
+**12 agents spécialistes · 153 outils Red Team · 18 packs de capacités · 10 compétences de pentest · 7 workflows**
 
-*Parlez naturellement. Net-Runner s’occupe du reste.*
 
 [English](README.md) · [Español](README.es.md) · **Français** · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 

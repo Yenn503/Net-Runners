@@ -1,72 +1,57 @@
 # Skills-First Architecture
 
-`Net-Runner` is intentionally not an MCP-first framework.
+Net-Runner uses a skills-first runtime.
 
-That is a deliberate project decision, not just a slogan.
+That means the framework does not treat MCP as the default place to put core behavior. Most assessment method lives in skills, workflow definitions, and the built-in execution surfaces already available in the runtime.
 
-The current version aligns with the original project idea by keeping the framework modular, reducing tool and protocol bloat, and using MCP only where it adds real value.
+## Runtime parts
 
-## Primary execution model
+The main pieces are:
 
-The primary execution model is:
+- workflow definitions that decide which capability packs, skills, and specialist agents belong to a run
+- skills that hold the actual method for planning, recon, validation, evidence capture, and reporting
+- built-in shell, file, web, and code execution surfaces for the work itself
+- specialist agents for bounded tasks such as recon, API testing, exploitation, retesting, and reporting
+- MCP integrations for cases where an external system or typed interface is genuinely useful
 
-- skills
-- direct code execution
-- built-in shell, file, and web tools
-- specialist agents running on top of those primitives
+## Default execution path
 
-This is the fastest path to reproducible testing workflows because:
+In the normal path:
 
-- methodology lives in reusable skill prompts instead of being buried in ad hoc sessions
-- the agent can create and adapt tooling through normal code execution
-- workflows still work in minimal environments without a large MCP estate
-- it keeps more of the assessment logic inside one runtime path instead of spreading it across too many wrappers
+1. the operator gives Net-Runner a target and a goal
+2. the runtime selects or initializes the workflow
+3. the active skills shape how the assessment is run
+4. the main agent uses built-in tools directly
+5. specialist agents are used when a task has a clear boundary
+6. evidence, notes, and findings are written back into the same `.netrunner/` project state
 
 ## Where MCP fits
 
-MCP is still useful, but selectively.
+MCP is still supported, but it is not the first answer to every problem.
 
-Use MCP for:
+Use MCP when:
 
-- provider-built APIs
-- external systems
-- environment control
-- evidence stores
-- ticketing or reporting integrations
-- cases where a typed protocol is genuinely better than direct tool use
+- the framework needs to talk to an external platform
+- a typed service boundary makes the workflow safer or easier to repeat
+- the environment needs explicit orchestration or control outside the main runtime
 
-This includes API and endpoint-heavy testing workflows where MCP gives cleaner typed contracts and safer repeatability than ad hoc shell chains.
+Do not add MCP just to wrap work that the main runtime can already do cleanly with skills and direct tool use.
 
-Do not use MCP as the default place to encode core framework behavior when skills and code execution already solve the problem cleanly.
+## Practical rule for new capabilities
 
-For this project, the rule is simple:
+When adding a new capability:
 
-- skills hold methodology
-- runtime tools do most of the work
-- MCP handles selected integration boundaries
+1. check whether the workflow can be expressed with an existing skill and tool surface
+2. if not, check whether direct code execution is enough
+3. only add MCP when an external integration or typed boundary is actually needed
 
-## Practical rule
+That rule keeps the framework smaller, easier to reason about, and closer to the way the assessment loop is already working.
 
-When adding a new `Net-Runner` capability:
+## Why it matters in this project
 
-1. Ask whether a skill plus the existing tool surface is enough.
-2. If yes, prefer that path.
-3. If no, check whether direct code execution is the right extension point.
-4. Only then introduce MCP as an integration layer.
+The proposal discussed MCP-compatible execution because it was a sensible design direction at the time. The current repository narrows that down into a more practical rule.
 
-That keeps the framework portable, operator-friendly, and aligned with the way the underlying agentic runtime succeeds in practice.
+Net-Runner now treats MCP as one integration layer among others, not as the default expression of the whole framework. That is the main architectural shift in the current build.
 
-## Why this matters for the final-year project
-
-The original proposal discussed MCP-compatible execution because it was a sensible direction at the time. The current repository refines that position rather than rejecting it.
-
-The updated position is:
-
-- MCP is useful
-- MCP is not the default answer for every capability
-- skills plus good runtimes and solid tool-calling are often the better foundation for the main red-team loop
-
-That refinement is what makes this version better aligned with the original project aim rather than less aligned.
-
-Use `/engagement capabilities` to audit runtime readiness for each workflow and identify missing binaries, API keys, or MCP integrations before execution.
-Use `/engagement alignment` to audit specialist-agent capability ownership and workflow coverage before production engagement runs.
+Use `/engagement capabilities` to check workflow readiness before a run.
+Use `/engagement alignment` to inspect agent-to-capability coverage in the current build.

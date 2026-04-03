@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Lizenz-Bildungszwecke-red?style=for-the-badge)](#lizenz)
 
-**12 Spezialagenten · 141 Red-Team-Tools · 17 Fähigkeitspakete · 10 Pentest-Skills · 6 Workflows**
+**12 Spezialagenten · 153 Red-Team-Tools · 18 Fähigkeitspakete · 10 Pentest-Skills · 7 Workflows**
 
-*Sprechen Sie natürlich. Net-Runner erledigt den Rest.*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · **Deutsch**
 

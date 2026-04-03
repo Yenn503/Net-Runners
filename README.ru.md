@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/Лицензия-Обучение-red?style=for-the-badge)](#лицензия)
 
-**12 специализированных агентов · 141 red-team инструмент · 17 пакетов возможностей · 10 pentest-скиллов · 6 workflow**
+**12 специализированных агентов · 153 red-team инструмент · 18 пакетов возможностей · 10 pentest-скиллов · 7 workflow**
 
-*Говорите естественно. Net-Runner берёт остальное на себя.*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · **Русский** · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 

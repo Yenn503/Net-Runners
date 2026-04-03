@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/라이선스-교육용-red?style=for-the-badge)](#라이선스)
 
-**12개의 전문 에이전트 · 141개의 레드팀 도구 · 17개의 능력 팩 · 10개의 펜테스트 스킬 · 6개의 워크플로우**
+**12개의 전문 에이전트 · 153개의 레드팀 도구 · 18개의 능력 팩 · 10개의 펜테스트 스킬 · 7개의 워크플로우**
 
-*자연스럽게 말하면 됩니다. 나머지는 Net-Runner가 처리합니다.*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · **한국어** · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 

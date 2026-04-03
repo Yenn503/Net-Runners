@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/许可-教育用途-red?style=for-the-badge)](#许可证)
 
-**12 个专业代理 · 141 个红队工具 · 17 个能力包 · 10 个渗透测试技能 · 6 个工作流**
+**12 个专业代理 · 153 个红队工具 · 18 个能力包 · 10 个渗透测试技能 · 7 个工作流**
 
-*自然交流，Net-Runner 处理剩下的事。*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · **中文** · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 

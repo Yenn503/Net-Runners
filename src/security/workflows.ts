@@ -8,6 +8,7 @@ export type CapabilityPackName =
   | 'recon'
   | 'web'
   | 'api'
+  | 'mobile'
   | 'exploitation'
   | 'privilege-escalation'
   | 'lateral-movement'
@@ -31,7 +32,14 @@ export type CapabilityPack = {
 }
 
 export type SecurityWorkflow = {
-  id: 'web-app-testing' | 'api-testing' | 'lab-target-testing' | 'ctf-mode' | 'ad-testing' | 'wifi-testing'
+  id:
+    | 'web-app-testing'
+    | 'api-testing'
+    | 'mobile-app-testing'
+    | 'lab-target-testing'
+    | 'ctf-mode'
+    | 'ad-testing'
+    | 'wifi-testing'
   label: string
   description: string
   capabilityPacks: CapabilityPackName[]
@@ -55,6 +63,12 @@ export const CAPABILITY_PACKS: CapabilityPack[] = [
     name: 'api',
     description: 'Endpoint validation and API exploration workflows.',
     primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'mobile',
+    description: 'Mobile application static, dynamic, and device-assisted testing workflows.',
+    primaryExecutionModel: 'skills-and-tools',
+    optionalIntegrations: ['proxying', 'device-bridge'],
   },
   {
     name: 'exploitation',
@@ -174,6 +188,32 @@ export const SECURITY_WORKFLOWS: SecurityWorkflow[] = [
     specialistAgents: [
       'engagement-lead',
       'recon-specialist',
+      'api-testing-specialist',
+      'exploit-specialist',
+      'retest-specialist',
+      'evidence-specialist',
+      'reporting-specialist',
+    ],
+  },
+  {
+    id: 'mobile-app-testing',
+    label: 'Mobile App Testing',
+    description: 'Security testing workflow for Android and mobile application targets.',
+    capabilityPacks: [
+      'recon',
+      'mobile',
+      'api',
+      'binary',
+      'exploitation',
+      'evidence',
+      'reporting',
+      'coordination',
+    ],
+    defaultSkills: ['engagement-setup', 'scope-guard', 'recon-plan', 'target-fingerprinting', 'evidence-capture', 'vuln-assessment', 'report-generation'],
+    specialistAgents: [
+      'engagement-lead',
+      'recon-specialist',
+      'web-testing-specialist',
       'api-testing-specialist',
       'exploit-specialist',
       'retest-specialist',

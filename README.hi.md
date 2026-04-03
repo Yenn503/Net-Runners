@@ -8,9 +8,8 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/लाइसेंस-शैक्षिक%20उपयोग-red?style=for-the-badge)](#लाइसेंस)
 
-**12 विशेषज्ञ एजेंट · 141 रेड टीम टूल · 17 क्षमता पैक · 10 पेनटेस्ट स्किल्स · 6 वर्कफ़्लो**
+**12 विशेषज्ञ एजेंट · 153 रेड टीम टूल · 18 क्षमता पैक · 10 पेनटेस्ट स्किल्स · 7 वर्कफ़्लो**
 
-*स्वाभाविक रूप से बात करें। बाकी Net-Runner संभालता है।*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **हिन्दी** · [Deutsch](README.de.md)
 

@@ -9,8 +9,13 @@ import {
 
 test('workflow registry is skill-first and includes web + lab testing flows', () => {
   assert.ok(findWorkflow('web-app-testing'))
+  assert.ok(findWorkflow('mobile-app-testing'))
   assert.ok(findWorkflow('lab-target-testing'))
   assert.ok(findWorkflow('ctf-mode'))
+  assert.equal(
+    getCapabilityPack('mobile')?.primaryExecutionModel,
+    'skills-and-tools',
+  )
   assert.equal(getCapabilityPack('web')?.primaryExecutionModel, 'skills-and-tools')
   assert.equal(
     getCapabilityPack('exploitation')?.primaryExecutionModel,

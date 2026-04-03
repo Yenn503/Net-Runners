@@ -16,7 +16,7 @@
 ## Common execution shape
 
 1. Use bundled skills like `engagement-setup` to collect scope, targets, goals, and constraints.
-2. Use `/engagement init` to create the workspace-local `.netrunner/` envelope and baseline engagement manifest.
+2. Use a plain-language assessment prompt (auto-bootstrap) or `/engagement init` to create the workspace-local `.netrunner/` envelope and baseline engagement manifest.
 3. Run `scope-guard` as a skills layer before any higher-impact step.
 4. Use `recon-plan` to build the phased recon and validation sequence.
 5. Delegate to specialist agents only when a self-contained task is clear.

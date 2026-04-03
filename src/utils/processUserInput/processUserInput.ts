@@ -7,6 +7,7 @@ import type {
 import { randomUUID } from 'crypto'
 import type { QuerySource } from 'src/constants/querySource.js'
 import { logEvent } from 'src/services/analytics/index.js'
+import { maybeAutoBootstrapEngagement } from 'src/security/autoEngagement.js'
 import { getContentText } from 'src/utils/messages.js'
 import {
   findCommand,
@@ -52,6 +53,7 @@ import {
   createSystemMessage,
   createUserMessage,
 } from '../messages.js'
+import { getCwd } from '../cwd.js'
 import { queryCheckpoint } from '../queryProfiler.js'
 import { parseSlashCommand } from '../slashCommandParsing.js'
 import {
@@ -570,6 +572,23 @@ async function processUserInputBase(
         is_subagent_only: isSubagentOnly,
         is_prefix: isPrefix,
       })
+    }
+  }
+
+  if (
+    inputString !== null &&
+    mode === 'prompt' &&
+    !isMeta &&
+    !inputString.startsWith('/')
+  ) {
+    const autoBootstrap = await maybeAutoBootstrapEngagement(
+      getCwd(),
+      inputString,
+    )
+    if (autoBootstrap.initialized && autoBootstrap.manifest) {
+      imageMetadataTexts.push(
+        `[Net-Runner auto-engagement initialized: workflow=${autoBootstrap.manifest.workflowId}, target=${autoBootstrap.target ?? 'unknown'}]`,
+      )
     }
   }
 

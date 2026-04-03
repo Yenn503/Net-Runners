@@ -88,6 +88,16 @@ The current Net-Runner slice is organized around explicit operator workflows:
 
 These workflows are backed by bundled security skills and specialist agents rather than by an MCP-heavy framework design.
 
+### Natural-Language Start
+
+You do not need slash commands to begin. You can type normal instructions like:
+
+- `Start assessment against https://target.example and run recon first`
+- `Pentest API target api.example.com and validate auth`
+- `Run red-team assessment against 10.10.10.10`
+
+If no engagement exists and your prompt includes both assessment intent and a concrete target, Net-Runner auto-initializes engagement state and continues with specialist orchestration.
+
 ### Commands
 
 - `/engagement init [workflow] [target]` creates the project-scoped `.netrunner/` envelope and defaults to `web-app-testing` when no workflow is provided.
@@ -100,6 +110,7 @@ These workflows are backed by bundled security skills and specialist agents rath
 
 ### Runtime Integrations
 
+- Plain-language assessment prompts can auto-initialize engagement state when none exists (disable with `NET_RUNNER_DISABLE_AUTO_ENGAGEMENT=1`).
 - When an engagement is active, Net-Runner records security subagent execution summaries in the evidence ledger.
 - Net-Runner also auto-records subagent output-file artifacts for async/resumed agent runs so assessment traces stay reportable by default.
 - Delegated security-agent tasks are checked against the active engagement guardrails before execution.
@@ -111,7 +122,7 @@ These workflows are backed by bundled security skills and specialist agents rath
 ## How Engagement Works
 
 1. Start scope framing with bundled skills like `engagement-setup`, `scope-guard`, and `recon-plan`.
-2. Run `/engagement init` to persist workflow and target context to `.netrunner/engagement.json`.
+2. Start with a plain-language assessment prompt or run `/engagement init` to persist workflow and target context to `.netrunner/engagement.json`.
 3. Run specialists for recon, testing, exploitation validation, evidence shaping, and reporting.
 4. Keep high-impact actions explicit with `/engagement guard`.
 5. Append findings, artifacts, and notes with `/evidence`.

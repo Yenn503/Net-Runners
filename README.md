@@ -22,13 +22,15 @@
 > Use **only** on targets you are explicitly authorized to test. Net-Runner is designed for legal, authorized penetration testing and educational purposes.
 
 > **Final-year project note**
-> This repository is the current implementation of my final-year project. It started from the same core idea in the original proposal, but the architecture matured as the AI tooling space moved quickly. The current version keeps the original goal intact while aligning the runtime around skills-first orchestration, direct tool execution, good agent routing, and selective MCP use where it actually helps.
+> This repository is the current implementation of my final-year project. It comes from the same core idea as the original proposal, but the architecture got sharper as the AI space moved quickly. This version keeps the original aim intact while pushing the runtime toward skills-first orchestration, direct tool execution, stronger agent routing, and selective MCP use where it actually makes sense.
 
 ## 🔍 What Is Net-Runner?
 
 Net-Runner is a multi-agent security testing framework built for natural-language operation.
 
-It is also the current research build for a final-year project focused on a next-generation red-team framework that stays modular, reduces unnecessary MCP dependence, and keeps strong runtime support for tool calling, evidence capture, and specialist execution.
+It is also the current research build for my final-year project, focused on building a next-generation red-team framework that stays modular, reduces unnecessary MCP dependence, and keeps strong runtime support for tool calling, evidence capture, and specialist execution.
+
+The implementation is built on top of the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork. That matters for the project because the contribution here is not just the runtime base. It is the red-team adaptation, the skills-first architecture decisions, and the way the runtime has been reshaped around the research question.
 
 You connect an LLM, describe the target and goal in plain English, and Net-Runner brings the full engine into play:
 
@@ -58,7 +60,7 @@ Net-Runner plans, delegates, executes, remembers, and reports.
 
 ## 🧭 Research Alignment
 
-This version is not a departure from the original project idea. It is the version that aligns with it best.
+This version is not a departure from the original project idea. It is the version that lines up with it best.
 
 The original goal was to build a modular AI-driven red-team framework that avoided tool bloat, reduced reasoning drift, and gave the runtime a cleaner way to execute offensive-security workflows. After further research and implementation work, the strongest version of that idea turned out to be:
 
@@ -67,7 +69,19 @@ The original goal was to build a modular AI-driven red-team framework that avoid
 - specialist agents for scoped tasks
 - MCP kept as a selective integration layer instead of the default architecture
 
-That means the core idea stayed the same, but the implementation got better and more aligned with current agent research and practical runtime behavior.
+So the core idea stayed the same, but the implementation got better and more aligned with current agent research and practical runtime behavior.
+
+## 🧬 Upstream Base
+
+Net-Runner is built on the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork as its upstream runtime base.
+
+That is the right way to describe the project:
+
+- the upstream runtime gave a strong agentic CLI foundation
+- this project reworked that base into a red-team framework
+- the research contribution is in the architecture direction, workflow design, specialist security roles, evidence model, and the move toward skills-first execution
+
+In other words, the value of this project is not "I took a coding CLI and renamed it". The value is that the runtime has been pushed into a more focused security-testing system that matches the original research aim far better.
 
 ---
 
@@ -274,6 +288,7 @@ Keep the main README for the operator path. Use the docs for deeper technical de
 
 - [Workflow Overview](docs/workflows/overview.md)
 - [Research Alignment](docs/project/research-alignment.md)
+- [Upstream Provenance](docs/project/upstream-provenance.md)
 - [Skills-First Architecture](docs/capabilities/skills-first-architecture.md)
 - [Service Surfaces](docs/capabilities/service-surfaces.md)
 - `docs/` for implementation detail, capability mapping, and deeper runtime notes

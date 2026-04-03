@@ -1,6 +1,6 @@
 # Research Alignment
 
-This document explains how the current `Net-Runner` build aligns with the original proposal, the later progress/risk document, and the current implementation direction for the final-year project.
+This document explains how the current `Net-Runner` build lines up with the original proposal, the later progress/risk document, and the implementation direction the project has now reached.
 
 ## What the project is now
 
@@ -14,11 +14,13 @@ The project direction is now:
 - specialist-agent driven
 - selective with MCP instead of depending on it by default
 
-That still fits the original goal. The goal was never "use as much MCP as possible". The goal was to build a stronger AI red-team framework with better reasoning, less bloat, and cleaner execution.
+That still fits the original goal. The point was never "use as much MCP as possible". The point was to build a stronger AI red-team framework with better reasoning, less bloat, and cleaner execution.
+
+The implementation base is the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork, and that is the correct public upstream to reference when describing the project.
 
 ## Why the project changed more than once
 
-The AI tooling space moved quickly during development, so the implementation changed as the research and experimentation matured.
+The AI tooling space moved quickly while I was building this, so the implementation changed as the research and experimentation got sharper.
 
 That change path is:
 
@@ -27,9 +29,17 @@ That change path is:
 2. **Interim platform phase**
    Later work explored building on top of another agent platform so the project could benefit from existing orchestration, memory, and extension systems rather than rebuilding everything from scratch.
 3. **Current Net-Runner phase**
-   The current implementation keeps the same core research idea but aligns it around skills, direct tool execution, runtime structure, and selective MCP use where it is genuinely useful.
+   The current implementation keeps the same core research idea but aligns it around skills, direct tool execution, runtime structure, and selective MCP use where it is genuinely useful, using OpenClaude as the public runtime base.
 
-This is not a contradiction. It is the project becoming more accurate about what actually works best in practice.
+This is not a contradiction. It is the project getting more accurate about what actually works best in practice.
+
+## Industry context
+
+The project also sits inside a fast-moving AI tooling landscape. That matters because architectural choices were being reassessed in real time across the industry.
+
+One relevant event was the accidental Claude Code source exposure on **March 31, 2026**, reported by [Axios](https://www.axios.com/2026/03/31/anthropic-leaked-source-code-ai), and the later cleanup/takedown confusion reported by [Ars Technica](https://arstechnica.com/ai/2026/04/anthropic-says-its-leak-focused-dmca-effort-unintentionally-hit-legit-github-forks/). That event matters as dissertation context because it accelerated discussion around agent harnesses, runtime design, and what parts of those systems were actually worth reusing or rethinking.
+
+That event should be treated as context, not as the main claim of project value.
 
 ## What stayed the same
 
@@ -61,7 +71,7 @@ The biggest change is architectural emphasis.
 - specialist agents for scoped work
 - MCP for external integrations and typed boundaries only when it adds real value
 
-This change makes the project closer to the original intention of being modular and less bloated.
+This change actually brings the project closer to the original intention of being modular and less bloated.
 
 ## How to explain the pivot in the final report
 
@@ -72,7 +82,7 @@ The cleanest way to explain it is:
 3. Newer agent runtimes showed that reusable skills plus strong execution surfaces can solve a large part of the same problem with less architectural drag.
 4. The project therefore refined its implementation approach while keeping the same core research question.
 
-That turns the project evolution into a strength instead of a weakness.
+That turns the project evolution into a strength instead of a weakness, because it shows the build adapted to evidence instead of freezing around an earlier assumption.
 
 ## Skills-first position
 
@@ -104,3 +114,4 @@ The repository docs should reflect the project honestly:
 - this version aligns with the original idea more cleanly than the earlier pivots
 - the architecture changed because the evidence changed
 - the current runtime is skills-first, not MCP-first
+- the public upstream base is OpenClaude, while wider Claude Code events belong in the research context rather than the repo headline

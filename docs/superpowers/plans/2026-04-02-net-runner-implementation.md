@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED: Use superpowers:subagent-driven-development (if subagents available) or superpowers:executing-plans to implement this plan. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Convert the Net-Runner repo into the first working `Net-Runner` slice: skill-first security-testing branding, workflow scaffolding, built-in specialist agents, and aligned operator docs.
+**Goal:** Keep the Net-Runner repo aligned as a skill-first security-testing framework with workflow scaffolding, built-in specialist agents, and aligned operator docs.
 
 **Architecture:** Add a small `src/security/` runtime surface for product metadata, workflow registry, and security skill definitions, then thread that through existing Net-Runner registration points instead of replacing the query loop. Keep MCP available, but make skills plus built-in tools the primary execution model and treat MCP as selective integration plumbing.
 
@@ -34,11 +34,9 @@
 ### Existing files to modify
 
 - Modify: `package.json`
-  - Rename package/bin surface and update metadata/scripts where required.
+  - Keep package/bin metadata aligned with the Net-Runner CLI surface.
 - Modify: `bin/net-runner`
   - Update boot message and compatibility text.
-- Create: `bin/net-runner`
-  - Primary CLI entrypoint.
 - Modify: `README.md`
   - Reframe product, install, quickstart, workflows, and architecture.
 - Modify: `src/skills/bundled/index.ts`
@@ -197,7 +195,7 @@ Expected: FAIL on the new assertions.
 
 Update:
 
-- package name/bin metadata to make `net-runner` the primary CLI while retaining `net-runner` compatibility alias
+- package name/bin metadata to keep `net-runner` as the primary CLI
 - entrypoint script text in `bin/net-runner`
 - add `bin/net-runner` with the same runtime bootstrap
 - README framing, install, quickstart, workflow overview, and skill-first architecture notes
@@ -429,4 +427,3 @@ Verify this slice covers:
 git add -A
 git commit -m "chore: finalize Net-Runner foundation slice"
 ```
-

@@ -1,12 +1,12 @@
 # Net-Runner Design
 
 Date: 2026-04-02
-Base codebase: `research/net-runner`
-Target product name: `Net-Runner`
+Codebase: `Net-Runner`
+Product name: `Net-Runner`
 
 ## Goal
 
-Turn the current Net-Runner implementation into `Net-Runner`, a security-first agentic testing framework that keeps Net-Runner's core orchestration, MCP, skills, memory, provider portability, and remote session capabilities, while reorienting the default product around authorized security testing workflows.
+Keep `Net-Runner` as a security-first agentic testing framework that preserves its core orchestration, MCP, skills, memory, provider portability, and remote session capabilities while orienting the default product around authorized security testing workflows.
 
 The result should be an operator-grade framework for running structured testing engagements against authorized targets such as labs, CTFs, HTB environments, internal test systems, and customer-approved scopes. It must remain extensible enough to support broader workflows without hard-coding itself to a single benchmark or platform.
 

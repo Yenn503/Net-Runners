@@ -21,6 +21,8 @@
 > ⚠️ **Aviso**
 > Use **apenas** em alvos para os quais voc&ecirc; tem autoriza&ccedil;&atilde;o expl&iacute;cita. O Net-Runner foi projetado para testes de penetra&ccedil;&atilde;o legais, autorizados e para fins educacionais.
 
+> Nota: Este README traduzido é uma visão geral resumida. A referência completa e atualizada para operadores está em [README.md](README.md) e `docs/`.
+
 ## 🔍 O que &eacute; o Net-Runner?
 
 Net-Runner &eacute; um framework multi-agente de red team que transforma instru&ccedil;&otilde;es em linguagem natural em avalia&ccedil;&otilde;es de seguran&ccedil;a estruturadas. Voc&ecirc; fala com o **L&iacute;der de Engajamento** &mdash; ele delega reconhecimento, explora&ccedil;&atilde;o, relat&oacute;rios e tudo mais para agentes especialistas dedicados.

@@ -384,8 +384,8 @@ Net-Runner maintains full assessment continuity across sessions.
 
 | Variable | Effect |
 |:---------|:-------|
-| `NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH=1` | Fall back to MEMORY.md index |
-| `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1` | Force RAG retrieval on |
+| `NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH=1` | Disable relevant-memory prefetch and keep normal memory-file injection active |
+| `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1` | Force relevant-memory prefetch on where the runtime supports it |
 | `NETRUNNER_DISABLE_SESSION_MEMORY=1` | Disable session memory |
 | `NETRUNNER_ENABLE_SESSION_MEMORY=1` | Force session memory on |
 | `NETRUNNER_AUTO_BACKGROUND_TASKS=1` | Auto-background delegated agents |

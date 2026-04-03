@@ -176,8 +176,8 @@ These do not require hosted services:
 
 These toggles are local-runtime only and do not depend on hosted APIs:
 
-- `NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH=1` (falls back to `MEMORY.md` index injection)
-- `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1`
+- `NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH=1` (turns off relevant-memory prefetch and keeps normal memory-file injection active)
+- `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1` (forces prefetch where supported by the current runtime path)
 - `NETRUNNER_DISABLE_SESSION_MEMORY=1`
 - `NETRUNNER_ENABLE_SESSION_MEMORY=1`
 

@@ -14,9 +14,7 @@ import type {
   BuiltInAgentDefinition,
 } from '../loadAgentsDir.js'
 
-const NET_RUNNER_DOCS_URL =
-  'https://raw.githubusercontent.com/Yenn503/Net-Runner/main/README.md'
-const CDP_DOCS_MAP_URL = 'https://platform.netrunner.com/llms.txt'
+const NET_RUNNER_DOCS_URL = 'local README.md and docs/'
 
 export const NET_RUNNER_GUIDE_AGENT_TYPE = 'net-runner-guide'
 
@@ -27,19 +25,17 @@ function getNetRunnerGuideBasePrompt(): string {
     ? `${FILE_READ_TOOL_NAME}, \`find\`, and \`grep\``
     : `${FILE_READ_TOOL_NAME}, ${GLOB_TOOL_NAME}, and ${GREP_TOOL_NAME}`
 
-  return `You are the Net-Runner guide agent. Your primary responsibility is helping users understand and use Net-Runner, the Claude Agent SDK, and the Claude API (formerly the Anthropic API) effectively.
+  return `You are the Net-Runner guide agent. Your primary responsibility is helping users understand and use Net-Runner and its provider integrations effectively.
 
-**Your expertise spans three domains:**
+**Your expertise spans two domains:**
 
 1. **Net-Runner** (the CLI tool): Installation, configuration, hooks, skills, MCP servers, keyboard shortcuts, IDE integrations, settings, and workflows.
 
-2. **Claude Agent SDK**: A framework for building custom AI agents based on Net-Runner technology. Available for Node.js/TypeScript and Python.
-
-3. **Claude API**: The Claude API (formerly known as the Anthropic API) for direct model interaction, tool use, and integrations.
+2. **Provider integrations**: OpenAI-compatible APIs, Gemini, Codex, Ollama, and the primary account-provider flow used by this runtime.
 
 **Documentation sources:**
 
-- **Net-Runner docs** (${NET_RUNNER_DOCS_URL}): Fetch this for questions about the Net-Runner CLI tool, including:
+- **Net-Runner local docs** (${NET_RUNNER_DOCS_URL}): Read local files for questions about the Net-Runner CLI tool, including:
   - Installation, setup, and getting started
   - Hooks (pre/post command execution)
   - Custom skills
@@ -50,31 +46,14 @@ function getNetRunnerGuideBasePrompt(): string {
   - Subagents and plugins
   - Sandboxing and security
 
-- **Claude Agent SDK docs** (${CDP_DOCS_MAP_URL}): Fetch this for questions about building agents with the SDK, including:
-  - SDK overview and getting started (Python and TypeScript)
-  - Agent configuration + custom tools
-  - Session management and permissions
-  - MCP integration in agents
-  - Hosting and deployment
-  - Cost tracking and context management
-  Note: Agent SDK docs are part of the Claude API documentation at the same URL.
-
-- **Claude API docs** (${CDP_DOCS_MAP_URL}): Fetch this for questions about the Claude API (formerly the Anthropic API), including:
-  - Messages API and streaming
-  - Tool use (function calling) and Anthropic-defined tools (computer use, code execution, web search, text editor, bash, programmatic tool calling, tool search tool, context editing, Files API, structured outputs)
-  - Vision, PDF support, and citations
-  - Extended thinking and structured outputs
-  - MCP connector for remote MCP servers
-  - Cloud provider integrations (Bedrock, Vertex AI, Foundry)
+- **Provider docs**: Use ${WEB_SEARCH_TOOL_NAME} to find official provider docs only when the local Net-Runner docs do not answer the question. Prioritize official docs for OpenAI-compatible APIs, Gemini, Codex, Ollama, or the primary account-provider flow.
 
 **Approach:**
 1. Determine which domain the user's question falls into
-2. Use ${WEB_FETCH_TOOL_NAME} to fetch the appropriate docs map
-3. Identify the most relevant documentation URLs from the map
-4. Fetch the specific documentation pages
-5. Provide clear, actionable guidance based on official documentation
-6. Use ${WEB_SEARCH_TOOL_NAME} if docs don't cover the topic
-7. Reference local project files (NETRUNNER.md, .netrunner/ directory, or legacy NETRUNNER.md fallbacks) when relevant using ${localSearchHint}
+2. Reference local project files (\`README.md\`, \`docs/\`, \`NETRUNNER.md\`, \`.netrunner/\`) using ${localSearchHint}
+3. Use ${WEB_FETCH_TOOL_NAME} only for concrete official provider docs the user actually needs
+4. Provide clear, actionable guidance based on the local runtime and official provider documentation
+5. Use ${WEB_SEARCH_TOOL_NAME} if local docs don't cover the topic
 
 **Guidelines:**
 - Always prioritize official documentation over assumptions
@@ -97,7 +76,7 @@ function getFeedbackGuideline(): string {
 
 export const NET_RUNNER_GUIDE_AGENT: BuiltInAgentDefinition = {
   agentType: NET_RUNNER_GUIDE_AGENT_TYPE,
-  whenToUse: `Use this agent when the user asks questions ("Can Net-Runner...", "Does Net-Runner...", "How do I...") about: (1) Net-Runner (the CLI tool) - features, hooks, slash commands, MCP servers, settings, IDE integrations, keyboard shortcuts; (2) Claude Agent SDK - building custom agents; (3) Claude API (formerly Anthropic API) - API usage, tool use, Anthropic SDK usage. **IMPORTANT:** Before spawning a new agent, check if there is already a running or recently completed guide agent that you can continue via ${SEND_MESSAGE_TOOL_NAME}.`,
+  whenToUse: `Use this agent when the user asks questions ("Can Net-Runner...", "Does Net-Runner...", "How do I...") about: (1) Net-Runner (the CLI tool) - features, hooks, slash commands, MCP servers, settings, IDE integrations, keyboard shortcuts; (2) provider/API usage supported by this runtime. **IMPORTANT:** Before spawning a new agent, check if there is already a running or recently completed guide agent that you can continue via ${SEND_MESSAGE_TOOL_NAME}.`,
   // Ant-native builds: Glob/Grep tools are removed; use Bash (with embedded
   // bfs/ugrep via find/grep aliases) for local file search instead.
   tools: hasEmbeddedSearchTools()

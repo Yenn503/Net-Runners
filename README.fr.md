@@ -21,6 +21,8 @@
 > ⚠️ **Avertissement**
 > Utilisez **uniquement** sur des cibles pour lesquelles vous avez une autorisation explicite. Net-Runner est con&ccedil;u pour des tests de p&eacute;n&eacute;tration l&eacute;gaux, autoris&eacute;s et &agrave; des fins &eacute;ducatives.
 
+> Remarque : ce README traduit est un aperçu concis. La référence complète et à jour pour les opérateurs se trouve dans [README.md](README.md) et `docs/`.
+
 ## 🔍 Qu'est-ce que Net-Runner ?
 
 Net-Runner est un framework multi-agents de red team qui transforme des instructions en langage naturel en &eacute;valuations de s&eacute;curit&eacute; structur&eacute;es. Vous parlez au **Responsable de Mission** &mdash; il d&eacute;l&egrave;gue la reconnaissance, l'exploitation, le reporting et tout le reste &agrave; des agents sp&eacute;cialistes d&eacute;di&eacute;s.

@@ -12,6 +12,10 @@
   - For HTB-style targets, internal labs, and scoped training or research environments.
 - `ctf-mode`
   - For challenge-oriented workflows where speed, evidence, and iteration matter more than polished reporting.
+- `ad-testing`
+  - For Active Directory enumeration, Kerberos abuse, trust-path analysis, and domain escalation validation.
+- `wifi-testing`
+  - For wireless assessments, WPA/WPA2 attack paths, rogue AP testing, and 802.11 analysis.
 
 ## Runtime flow
 
@@ -47,6 +51,8 @@
   - Focuses on privilege-boundary testing in post-access phases.
 - `lateral-movement-specialist`
   - Focuses on pivot-path and trust-boundary validation in multi-host targets.
+- `ad-specialist`
+  - Focuses on Active Directory, Kerberos, trust relationships, and domain attack-path validation.
 - `retest-specialist`
   - Focuses on remediation verification and false-positive reduction.
 - `evidence-specialist`
@@ -63,11 +69,16 @@
 - `privilege-escalation`
 - `lateral-movement`
 - `exfiltration`
+- `cloud`
+- `binary`
 - `network`
 - `evidence`
 - `reporting`
 - `coordination`
 - `lab-control`
+- `active-directory`
+- `wifi`
+- `database`
 
 Optional operator checks before deep execution:
 - Run `/engagement capabilities [workflow]` to inspect missing local commands or env dependencies for a workflow.

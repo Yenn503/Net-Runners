@@ -20,19 +20,15 @@ import { getPlatform } from '../../utils/platform.js';
 import { clearAllCaches } from '../../utils/plugins/cacheUtils.js';
 import { isPluginInstalled } from '../../utils/plugins/installedPluginsManager.js';
 import { addMarketplaceSource, clearMarketplacesCache, loadKnownMarketplacesConfig, refreshMarketplace } from '../../utils/plugins/marketplaceManager.js';
-import { OFFICIAL_MARKETPLACE_NAME } from '../../utils/plugins/officialMarketplace.js';
+import { OFFICIAL_MARKETPLACE_NAME, getOfficialMarketplaceSource } from '../../utils/plugins/officialMarketplace.js';
 import { loadAllPlugins } from '../../utils/plugins/pluginLoader.js';
 import { installSelectedPlugins } from '../../utils/plugins/pluginStartupCheck.js';
 
-// Marketplace and plugin identifiers - varies by user type
-const INTERNAL_MARKETPLACE_NAME = 'claude-code-marketplace';
-const INTERNAL_MARKETPLACE_REPO = 'anthropics/claude-code-marketplace';
-const OFFICIAL_MARKETPLACE_REPO = 'anthropics/claude-plugins-official';
 function getMarketplaceName(): string {
-  return "external" === 'ant' ? INTERNAL_MARKETPLACE_NAME : OFFICIAL_MARKETPLACE_NAME;
+  return OFFICIAL_MARKETPLACE_NAME;
 }
-function getMarketplaceRepo(): string {
-  return "external" === 'ant' ? INTERNAL_MARKETPLACE_REPO : OFFICIAL_MARKETPLACE_REPO;
+function getMarketplaceRepo(): string | null {
+  return getOfficialMarketplaceSource()?.repo ?? null;
 }
 function getPluginId(): string {
   return `thinkback@${getMarketplaceName()}`;
@@ -168,6 +164,11 @@ function ThinkbackInstaller({
         const marketplaceName = getMarketplaceName();
         const marketplaceRepo = getMarketplaceRepo();
         const pluginId = getPluginId();
+
+        if (!marketplaceRepo) {
+          throw new Error('Thinkback requires NETRUNNER_OFFICIAL_MARKETPLACE_REPO to be configured.');
+        }
+
         const marketplaceInstalled = marketplaceName in knownMarketplaces;
 
         // Check if plugin is already installed first

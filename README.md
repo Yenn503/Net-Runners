@@ -17,7 +17,7 @@
 
 </div>
 
-Net-Runner is a final-year university project and research prototype for red-team assessments with language-model support. It builds on the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork and turns that base into a workflow-driven assessment framework with specialist agents, evidence capture, and project-scoped runtime state.
+Net-Runner is a final-year university project and research prototype that lets an LLM autonomously run security assessments. Give it a target, and it handles the rest — picking the right workflow, launching specialist agents, running tools, enforcing scope, and logging evidence. Built on the public [OpenClaude](https://github.com/Gitlawb/openclaude) runtime.
 
 > ⚠️ **Warning**
 > Use this framework only on targets you are explicitly authorized to test. Net-Runner is for legal security testing, lab work, and research use.
@@ -26,28 +26,24 @@ Net-Runner is a final-year university project and research prototype for red-tea
 
 ## 🔍 How It Works
 
-Give Net-Runner a target and goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow, pulls relevant context back in, and captures evidence throughout the assessment.
+Give Net-Runner a target and goal in plain language. It sets up a `.netrunner/` project folder, picks the right workflow, and runs the full assessment autonomously — capturing evidence as it goes.
 
-- Keeps workflow state, evidence, findings, artifacts, and reports in one runtime
-- Pulls useful context back in through relevant-memory recall, project memory, agent memory, session summaries, and background memory consolidation
-- Can run in its normal direct-tool path or in optional coordinator mode, where the coordinator delegates tool work to workers
-- Uses specialist agents when a task has a clear boundary
-- Applies guardrails before higher-risk or out-of-scope actions
-- Runs locally by default and keeps optional remote-session support from the upstream base
-- Keeps shared team memory available as an optional per-repo sync path when OAuth and a GitHub-backed repo are available
-- Supports web, API, mobile, lab, Active Directory, WiFi, and CTF work
+- Stores all evidence, findings, artifacts, and reports in one project folder
+- The LLM and each specialist agent remember what they found before, so multi-session assessments stay on track
+- Picks from 153 red-team tools and delegates to 12 specialist agents when domain expertise is needed
+- Blocks or flags any action that goes out of scope or exceeds the allowed impact level
+- Supports web, API, mobile, lab, Active Directory, WiFi, and CTF assessments
 
 ---
 
 ## 🧠 Core Engine Features
 
-- **Retrieval-backed context** — relevant-memory recall, agent memory, session summaries, and background consolidation keep useful context available across longer assessments
-- **Evidence-first workflow** — findings, artifacts, notes, and reports stay tied to the same `.netrunner/` engagement
-- **Optional coordinator mode** — when `NETRUNNER_COORDINATOR_MODE=1` is set, the coordinator handles routing and workers handle delegated tool use
-- **Shared team memory** — local memory stays on by default, and shared team memory can sync per repo when OAuth and GitHub remote support are available
-- **Guardrail enforcement** — bash, fetch, and delegated actions all run through engagement-aware guardrails
-- **Skills-first execution** — assessment method lives in reusable skills and runtime structure, while MCP stays for the integrations that actually need it
-- **Remote and local modes** — local execution is the default path, but the engine still keeps optional remote-session support from the upstream base
+- **Persistent memory** — the LLM and each specialist agent remember what they found in previous sessions, so multi-day assessments stay coherent and every agent picks up where it left off
+- **Evidence-first workflow** — every finding, artifact, and report is saved to the `.netrunner/` project folder automatically
+- **Guardrail enforcement** — every action is checked against your declared scope and impact level before it runs
+- **Skills-first execution** — reusable pentest playbooks (recon, exploit validation, reporting, etc.) that the LLM can trigger on demand
+- **12 specialist agents** — each agent focuses on a specific domain (recon, web, network, AD, etc.) and is deployed when its expertise is needed
+- **Auto-engagement setup** — type a target and goal in plain English; Net-Runner detects the intent, picks the workflow, and starts the assessment
 
 ---
 
@@ -113,14 +109,14 @@ node dist/cli.mjs
 Assess https://target.example. Start with recon, map the attack surface, validate findings, and capture evidence.
 ```
 
-### 4. Optional coordinator mode
+### 4. Coordinator mode (experimental)
 
 ```bash
 export NETRUNNER_COORDINATOR_MODE=1
 node dist/cli.mjs
 ```
 
-Use this when you want the main runtime to stay in a coordinator role and push bounded tool work to workers.
+In this mode, the main LLM acts as a coordinator and delegates tool work to separate worker agents.
 
 </details>
 
@@ -128,12 +124,12 @@ Use this when you want the main runtime to stay in a coordinator role and push b
 
 ## ⚙️ Execution Flow
 
-1. Net-Runner detects assessment intent and target type
-2. Initializes `.netrunner/engagement.json` and run-state for the project
-3. Injects workflow, scope, impact, skills, and retrieved context from persistent memory
-4. Runs directly with shell, file, web, and code tooling, or uses coordinator mode to delegate bounded tool work to workers
-5. Applies engagement guardrails before higher-risk or out-of-scope actions
-6. Records evidence, findings, artifacts, and reports in the project runtime
+1. Net-Runner detects assessment intent and target type from your prompt
+2. Creates a `.netrunner/` project folder with engagement config and run state
+3. Loads the matching workflow, scope rules, skills, and any memory from previous sessions
+4. Runs tools autonomously — shell commands, file operations, web requests, and specialist agents
+5. Checks every action against your scope and impact rules before executing
+6. Saves evidence, findings, artifacts, and reports throughout the assessment
 
 ---
 
@@ -204,12 +200,11 @@ Use the full grouped list here: [Pentest Tool Catalog](docs/capabilities/tool-ca
 ├── artifacts/
 ├── memory/
 │   ├── private.md
-│   ├── team.md
 │   └── agents/
 └── instructions/
 ```
 
-`.netrunner/` is the project runtime for the current assessment. Persistent memory, session summaries, and shared team memory live under the Net-Runner config directory. Shared team memory sync is optional and requires OAuth plus a GitHub-backed repo.
+`.netrunner/` is the project folder for the current assessment. Everything the LLM finds, logs, and produces stays here. Each specialist agent also stores its own memory under `memory/agents/`, so it remembers what it found when it runs again in a future session.
 
 ---
 
@@ -226,7 +221,7 @@ Use the full grouped list here: [Pentest Tool Catalog](docs/capabilities/tool-ca
 
 ## 🔗 Provenance
 
-The public upstream base for this repository is [OpenClaude](https://github.com/Gitlawb/openclaude). Net-Runner changes that base into a red-team assessment framework. Research and provenance notes are under `docs/project/`.
+Net-Runner is built on top of the public [OpenClaude](https://github.com/Gitlawb/openclaude) runtime. All red-team features — agents, workflows, skills, guardrails, evidence capture, and the tool catalog — are Net-Runner additions. Research and provenance notes are under `docs/project/`.
 
 ---
 

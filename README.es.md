@@ -26,13 +26,13 @@
 
 ## Resumen
 
-Net-Runner es un proyecto final de universidad y un framework de evaluación red team con soporte de modelos de lenguaje. Parte del fork público [OpenClaude](https://github.com/Gitlawb/openclaude) y lo adapta a un flujo de trabajo centrado en evidencia, memoria, guardrails y agentes especialistas.
+Net-Runner es un proyecto final de universidad que permite a un LLM ejecutar evaluaciones de seguridad de forma autónoma. Dale un objetivo y se encarga del resto: elige el workflow, lanza agentes especialistas, ejecuta herramientas, respeta el alcance y registra evidencia. Construido sobre el runtime público [OpenClaude](https://github.com/Gitlawb/openclaude).
 
-- Crea un runtime `.netrunner/` por proyecto para estado, artefactos, hallazgos y reportes
-- Usa workflows para web, API, móvil, AD, WiFi, laboratorio y CTF
-- Recupera contexto útil con memoria del proyecto, memoria de agentes y resúmenes de sesión
-- Delega tareas acotadas a especialistas cuando eso mejora la evaluación
-- Mantiene MCP como integración puntual, no como la base del sistema
+- Guarda toda la evidencia, hallazgos, artefactos y reportes en una carpeta de proyecto `.netrunner/`
+- El LLM y cada agente especialista recuerdan lo que encontraron en sesiones anteriores, para que las evaluaciones largas no pierdan el hilo
+- Delega tareas a agentes especialistas cuando se necesita experiencia específica
+- Bloquea o señala cualquier acción fuera de alcance o que supere el nivel de impacto permitido
+- Soporta evaluaciones web, API, móvil, laboratorio, Active Directory, WiFi y CTF
 
 ## Inicio rápido
 

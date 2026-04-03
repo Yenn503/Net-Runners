@@ -23,22 +23,16 @@ Net-Runner is a final-year university project and research prototype for LLM-ass
 > Warning
 > Use this framework only on targets you are explicitly authorized to test. Net-Runner is for legal security testing, lab work, and research use.
 
-## Project Scope
+## How It Works
 
-- research prototype for authorized red-team and security assessment work
-- operator-facing README for setup and usage
-- deeper research, provenance, and architecture notes under `docs/`
+Give Net-Runner a target and goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow, routes tasks to specialist agents, and captures evidence throughout the assessment.
 
-## What Net-Runner Does
+- Workflow-aware execution with evidence, memory, and reports in one runtime
+- Supports web, API, mobile, lab, Active Directory, WiFi, and CTF assessments
+- Routes tasks to specialist agents for recon, exploitation, privilege escalation, and reporting
+- Skills-first architecture with direct tool execution and selective MCP integration
 
-You give Net-Runner a target and a goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow context, routes scoped tasks to specialist agents when needed, and records evidence as the assessment runs.
-
-- keeps workflow, evidence, memory, and reports in the same runtime
-- supports web, API, mobile, lab, Active Directory, WiFi, and CTF-style work
-- uses specialist agents for recon, web, API, network, exploit, AD, retest, evidence, and reporting tasks
-- keeps methodology in skills and uses MCP only where it adds a clear integration benefit
-
-## Quick Start
+## Getting Started
 
 ### 1. Install and build
 
@@ -47,7 +41,7 @@ bun install
 bun run build
 ```
 
-### 2. Set a model provider
+### 2. Configure model provider
 
 `ANTHROPIC_API_KEY`
 
@@ -91,31 +85,31 @@ export OPENAI_MODEL="your-model-name"
 node dist/cli.mjs
 ```
 
-### 3. Start an assessment
+### 3. Run an assessment
 
 ```text
-Assess https://target.example. Start with recon, map the main attack surface, validate the most likely issues, and keep evidence as you go.
+Assess https://target.example. Start with recon, map the attack surface, validate findings, and capture evidence.
 ```
 
-## What Happens When You Run It
+## Execution Flow
 
-1. Net-Runner detects assessment intent and target type.
-2. It initializes `.netrunner/` state for the project if needed.
-3. It injects scope, impact, and workflow context into the session.
-4. It uses the main runtime plus specialist agents and tools to carry the work forward.
-5. It records evidence, notes, findings, and reports inside the same project envelope.
+1. Net-Runner detects assessment intent and target type
+2. Initializes `.netrunner/` state for the project
+3. Injects scope, impact, and workflow context
+4. Routes tasks to specialist agents and tools
+5. Records evidence, findings, and reports in the project runtime
 
 ## Workflows
 
-- `web-app-testing` for route mapping, auth testing, and web finding validation
-- `api-testing` for endpoint discovery, schema checks, auth/state testing, and API-specific findings
-- `mobile-app-testing` for Android app review and dynamic testing with tools such as `adb`, `apktool`, `jadx`, `frida`, `objection`, `MobSF`, `drozer`, and `apkleaks`
-- `lab-target-testing` for internal labs, host/service work, privilege escalation, and lateral movement
-- `ctf-mode` for challenge-style runs where speed and iteration matter more than formal reporting
-- `ad-testing` for Active Directory, Kerberos, trust-path, and AD CS work
-- `wifi-testing` for wireless assessments, handshake capture, rogue AP testing, and 802.11 analysis
+- `web-app-testing` — route mapping, auth testing, and vulnerability validation
+- `api-testing` — endpoint discovery, schema checks, auth/state testing
+- `mobile-app-testing` — Android app analysis with `adb`, `apktool`, `jadx`, `frida`, `objection`, `MobSF`, `drozer`, `apkleaks`
+- `lab-target-testing` — host/service enumeration, privilege escalation, lateral movement
+- `ctf-mode` — challenge-focused runs with rapid iteration
+- `ad-testing` — Active Directory, Kerberos, trust paths, AD CS
+- `wifi-testing` — wireless assessments, handshake capture, rogue AP testing, 802.11 analysis
 
-The recon stack also includes tools for cloud and identity enumeration such as `cloud_enum`, `GHunt`, `holehe`, and `haklistgen`.
+The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GHunt`, `holehe`, `haklistgen`.
 
 ## Specialist Agents
 
@@ -160,7 +154,7 @@ The recon stack also includes tools for cloud and identity enumeration such as `
 
 ## Provenance
 
-The public upstream base for this repository is [OpenClaude](https://github.com/Gitlawb/openclaude). Net-Runner changes that base into a red-team assessment framework; the research and provenance notes live under `docs/project/`.
+The public upstream base for this repository is [OpenClaude](https://github.com/Gitlawb/openclaude). Net-Runner adapts that base into a red-team assessment framework. Research and provenance notes are under `docs/project/`.
 
 ## License
 

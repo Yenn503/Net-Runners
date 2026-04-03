@@ -9,6 +9,7 @@ export type NetRunnerSkillName =
   | 'post-exploitation-plan'
   | 'report-generation'
   | 'attack-path-analysis'
+  | 'apt-simulation'
 
 export type NetRunnerSkillDefinition = {
   name: NetRunnerSkillName
@@ -86,6 +87,13 @@ export const NET_RUNNER_SKILL_DEFINITIONS: NetRunnerSkillDefinition[] = [
     title: 'Attack Path Analysis',
     description:
       'Map multi-step attack chains from initial access through privilege escalation to objective completion, identifying critical path dependencies and alternative routes.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'apt-simulation',
+    title: 'APT Simulation',
+    description:
+      'Launch a threat simulation based on a specific APT group or target industry. Follows real-world attack chains mapped to MITRE ATT&CK techniques for realistic red-team exercises.',
     primaryExecutionModel: 'skills-and-tools',
   },
 ] as const

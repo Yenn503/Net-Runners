@@ -19,6 +19,7 @@ import { registerTargetFingerprintingSkill } from './targetFingerprinting.js'
 import { registerUpdateConfigSkill } from './updateConfig.js'
 import { registerVerifySkill } from './verify.js'
 import { registerVulnAssessmentSkill } from './vulnAssessment.js'
+import { registerAptSimulationSkill } from './aptSimulation.js'
 
 /**
  * Initialize all bundled skills.
@@ -40,6 +41,7 @@ export function initBundledSkills(): void {
   registerPostExploitationPlanSkill()
   registerReportGenerationSkill()
   registerAttackPathAnalysisSkill()
+  registerAptSimulationSkill()
   registerUpdateConfigSkill()
   registerKeybindingsSkill()
   registerVerifySkill()

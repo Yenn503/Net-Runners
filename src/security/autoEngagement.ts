@@ -71,6 +71,9 @@ function inferWorkflow(prompt: string): SecurityWorkflow['id'] {
   if (/\b(ctf|capture the flag|challenge)\b/i.test(prompt)) {
     return 'ctf-mode'
   }
+  if (isAptSimulationIntent(prompt)) {
+    return 'lab-target-testing'
+  }
   if (
     /\b(lab|htb|hack the box|internal host|subnet|lateral movement|privilege escalation|nmap|port scan)\b/i.test(
       prompt,
@@ -81,8 +84,23 @@ function inferWorkflow(prompt: string): SecurityWorkflow['id'] {
   if (/\b(api|endpoint|openapi|swagger|graphql)\b/i.test(prompt)) {
     return 'api-testing'
   }
+  if (/\b(active directory|ad testing|domain controller|kerberos|bloodhound)\b/i.test(prompt)) {
+    return 'ad-testing'
+  }
+  if (/\b(wifi|wireless|802\.11|wpa|wep)\b/i.test(prompt)) {
+    return 'wifi-testing'
+  }
   return 'web-app-testing'
 }
+
+const APT_SIMULATION_PATTERN =
+  /\b(apt[ -]?\d+|apt[ -]?simulation|threat[ -]?simulation|threat[ -]?actor|attack[ -]?chain|cozy bear|fancy bear|lazarus|sandworm|volt typhoon|salt typhoon|silk typhoon|scattered spider|fin7|oilrig|muddywater|charming kitten|kimsuky|turla|hafnium|midnight blizzard)\b/i
+
+function isAptSimulationIntent(prompt: string): boolean {
+  return APT_SIMULATION_PATTERN.test(prompt)
+}
+
+export { isAptSimulationIntent }
 
 function inferMaxImpact(prompt: string): 'read-only' | 'limited' | 'intrusive' {
   if (/\b(read[ -]?only|passive|recon only)\b/i.test(prompt)) {

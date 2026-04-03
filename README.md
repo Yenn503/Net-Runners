@@ -1,166 +1,400 @@
+<div align="center">
+
 # Net-Runner
 
-Net-Runner is an agentic red-team assessment framework.
+### Agentic Red-Team Assessment Framework
 
-It gives you one inline system:
-- natural-language operator control
-- specialist agents for each assessment phase
-- tool execution (skills, shell, files, web, MCP)
-- built-in guardrails
-- evidence + reporting
-- persistent memory
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
+[![License](https://img.shields.io/badge/License-Educational%20Use-red?style=for-the-badge)](#license)
 
-Use only on targets you are explicitly authorized to test.
+**12 Specialist Agents &middot; 141 Red-Team Tools &middot; 17 Capability Packs &middot; 9 Pentest Skills &middot; 6 Workflows**
 
-## How It Works
+*Speak naturally. Net-Runner handles the rest.*
 
-When you give Net-Runner a normal prompt like:
+**English** · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 
-`Assess https://target.example and start with recon.`
+---
 
-it runs a single runtime loop:
+</div>
 
-1. Detect assessment intent and target.
-2. Auto-create engagement state in `.netrunner/` (safe defaults first).
-3. Inject engagement context into model turns (scope, authorization, impact, restrictions).
-4. Let the main runtime use direct tools and, when useful, delegate scoped work to specialist agents.
-5. Enforce guardrails before higher-impact actions.
-6. Record evidence and execution state continuously.
-7. Keep project and auto memory available across sessions.
-8. Produce report-ready output.
+> **Warning**
+> Use **only** on targets you are explicitly authorized to test. Net-Runner is designed for legal, authorized penetration testing and educational purposes.
 
-You can run it in plain language. Slash commands are optional operator controls, not required startup steps, but automatic engagement bootstrap only fires on non-slash prompts that include assessment intent plus a detectable URL, IP, or domain target.
+## What Is Net-Runner?
 
-## Safe Defaults
+Net-Runner is a multi-agent red-team framework that turns natural-language instructions into structured security assessments. You talk to the **Engagement Lead** — it delegates reconnaissance, exploitation, reporting, and everything in between to purpose-built specialist agents.
 
-Auto-initialized engagements start with:
-- `authorization: unconfirmed`
-- `max impact: read-only`
+<details>
+<summary><strong>Why Net-Runner?</strong></summary>
 
-Then confirm in plain language, for example:
+- **Natural language** — no memorizing flags or syntax; describe what you want tested
+- **Multi-agent orchestration** — parallel specialist agents, each with deep tool knowledge
+- **Guardrails built in** — scope-guard checkpoints prevent out-of-bounds actions
+- **Evidence-first** — every action is logged, every finding is traceable
+- **Memory that persists** — RAG-backed retrieval across sessions, per-agent and per-project
+- **141 tools wired** — from `nmap` to `BloodHound` to `Ghidra`, ready to execute
 
-`I confirm authorization for this engagement. Keep impact limited.`
+</details>
 
-Net-Runner updates engagement state from that instruction and continues with the same runtime flow.
-
-If Net-Runner does not auto-initialize or auto-confirm from chat, use `/engagement init [workflow] [target]` and verify with `/engagement status`.
+---
 
 ## Quick Start
 
-Install:
-
 ```bash
+# Install dependencies
 bun install
+
+# Build the project
 bun run build
+
+# Launch
 node dist/cli.mjs
 ```
 
-Then connect your preferred provider/model (OpenAI-compatible or local endpoint supported by runtime config) and start with a normal assessment instruction.
+Then type a natural-language instruction:
+
+```
+Assess https://target.example — start with recon, then test for web vulnerabilities.
+```
+
+Net-Runner auto-detects your intent, bootstraps a safe engagement, and starts working.
+
+---
+
+## How It Works
+
+```
+You ──► Engagement Lead ──► Specialist Agents ──► Tools (Bash/MCP/Skills)
+                │                    │                      │
+                ▼                    ▼                      ▼
+         Guardrails            Evidence Chain          Tool Output
+                │                    │                      │
+                └────────────────────┴──────────────────────┘
+                                     │
+                              .netrunner/
+                     (state, evidence, memory, reports)
+```
+
+| Step | What Happens |
+|------|-------------|
+| **1. Detect** | Parse assessment intent, identify targets |
+| **2. Bootstrap** | Create `.netrunner/` envelope with safe defaults (`unconfirmed` auth, `read-only` impact) |
+| **3. Inject** | Attach scope, authorization, and restrictions to every model turn |
+| **4. Delegate** | Route work to specialist agents based on workflow and findings |
+| **5. Guard** | Scope-guard checkpoint before any high-impact action |
+| **6. Record** | Log evidence, execution state, and findings in real time |
+| **7. Remember** | Persist knowledge per-agent and per-project for future sessions |
+| **8. Report** | Generate structured, evidence-backed assessment output |
+
+### Safe Defaults
+
+Every auto-initialized engagement starts locked down:
+
+| Setting | Default |
+|---------|---------|
+| Authorization | `unconfirmed` |
+| Max Impact | `read-only` |
+
+Confirm scope in plain language:
+
+```
+I confirm authorization for this engagement. Max impact: limited.
+```
+
+---
 
 ## Specialist Agents
 
-Net-Runner includes dedicated agents for:
-- engagement coordination
-- recon
-- web testing
-- API testing
-- network testing
-- exploitation
-- privilege escalation
-- lateral movement
-- retesting
-- evidence quality
-- reporting
+<table>
+<tr>
+<td width="50%">
 
-Agents are wired for orchestration and follow-up task routing. Security agents use persistent project memory.
+| Agent | Focus |
+|:------|:------|
+| **Engagement Lead** | Orchestration, workflow routing, skill coordination |
+| **Recon Specialist** | Network discovery, DNS, OSINT, subdomain enumeration |
+| **Web Testing** | XSS, SQLi, SSRF, auth bypass, CMS scanning |
+| **API Testing** | GraphQL, JWT, IDOR, mass assignment, schema analysis |
+| **Network Testing** | SMB, SSH, FTP, service exploit, traffic analysis |
+| **Exploit Specialist** | Payload gen, PoC execution, controlled exploitation |
 
-## Evidence And Memory
+</td>
+<td width="50%">
 
-Net-Runner keeps assessment continuity through one runtime path:
-- engagement state and evidence live under `.netrunner/`
-- run-state lives under `.netrunner/run-state.json` (execution steps + pending reviews)
-- auto memory is also used by default and lives outside the repo under `~/.netrunner/projects/<repo>/memory/` unless overridden
-- specialist agent memory lives under `.netrunner/memory/agents/` and is reused across sessions
-- sub-agent outputs are logged back into the evidence chain
-- relevant-memory retrieval is on by default and pulls context from auto memory plus engagement agent memory
-- session-memory summarization is on by default for long-running conversations
-- when you `@agent-...` mention a specialist, retrieval narrows to that agent's memory scope for isolation
+| Agent | Focus |
+|:------|:------|
+| **Privilege Escalation** | SUID, kernel exploits, token abuse, container escape |
+| **Lateral Movement** | Credential reuse, pivoting, port forwarding |
+| **AD Specialist** | LDAP/Kerberos, trust abuse, ADCS, BloodHound |
+| **Retest Specialist** | Reproduce findings, validate remediation |
+| **Evidence Specialist** | Artifact curation, chain of custody, forensics |
+| **Reporting Specialist** | Severity framing, exec summary, remediation |
 
-Main outputs:
-- `.netrunner/engagement.json`
-- `.netrunner/run-state.json`
-- `.netrunner/evidence/ledger.jsonl`
-- `.netrunner/memory/`
-- `.netrunner/reports/*.md`
+</td>
+</tr>
+</table>
 
-Optional memory toggles:
-- disable relevant-memory prefetch and fall back to `MEMORY.md` index injection: `NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH=1`
-- force relevant-memory retrieval on: `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1`
-- disable session memory: `NETRUNNER_DISABLE_SESSION_MEMORY=1`
-- force session memory on: `NETRUNNER_ENABLE_SESSION_MEMORY=1`
+All 12 agents share evidence through the engagement envelope, communicate via the Agent tool, and maintain persistent memory across sessions.
 
-Agent runtime toggles:
-- force auto-background for delegated agents: `NETRUNNER_AUTO_BACKGROUND_TASKS=1`
-- disable built-in agents in SDK/noninteractive usage: `NETRUNNER_AGENT_SDK_DISABLE_BUILTIN_AGENTS=1`
+---
 
-## Optional Control Commands
+## Skills
 
-Use these only when you want manual control:
-- `/engagement init [workflow] [target]`
-- `/engagement status`
-- `/engagement capabilities [workflow]`
-- `/engagement alignment`
-- `/engagement guard <planned action>`
-- `/engagement review`
-- `/engagement approve <review-id>`
-- `/engagement reject <review-id>`
-- `/evidence status|note|finding|artifact|close`
-- `/report [file-name]`
+Nine pentest-specific skills structure execution flow — agents invoke them automatically based on workflow phase.
 
-## Kali Tooling Coverage
+| Skill | Phase | Purpose |
+|:------|:------|:--------|
+| `engagement-setup` | Start | Collect scope, targets, authorization, constraints |
+| `scope-guard` | Pre-action | Verify authorization boundaries before risky actions |
+| `recon-plan` | Discovery | Build phased recon and enumeration plan |
+| `vuln-assessment` | Analysis | Systematic vulnerability identification and classification |
+| `exploit-validation` | Exploitation | Scope-guard checkpoint, rollback plan, controlled PoC |
+| `post-exploitation-plan` | Post-access | Map escalation paths and lateral movement options |
+| `attack-path-analysis` | Synthesis | Map multi-step attack chains and dependencies |
+| `evidence-capture` | Continuous | Capture artifacts and findings at every phase |
+| `report-generation` | Final | Transform evidence into assessment report |
 
-Net-Runner specialists are wired to execute and coordinate common Kali/Linux red-team tooling through `Bash` plus skill/MCP paths.
+---
 
-Capability readiness checks include commands such as:
-- `nmap`, `nuclei`, `ffuf`, `nikto`, `sqlmap`, `gobuster`
-- `amass`, `subfinder`, `dnsrecon`, `whatweb`
-- `hydra`, `john`, `hashcat`, `msfconsole`
-- `smbclient`, `impacket-secretsdump`, `tcpdump`, `tshark`
-- `masscan`, `rustscan`, `katana`, `feroxbuster`, `dirsearch`, `wafw00f`, `wpscan`
-- `dalfox`, `jaeles`, `gau`, `waybackurls`, `arjun`, `paramspider`, `x8`, `qsreplace`, `uro`
-- `enum4linux`, `smbmap`, `dnsenum`, `fierce`, `theHarvester`, `responder`, `netexec`
-- `volatility3`, `binwalk`, `exiftool`, `ghidra`, `radare2`, `gdb`, `ropper`, `ROPgadget`
-- cloud/container/IaC: `trivy`, `checkov`, `terrascan`, `prowler`, `kube-bench`, `kube-hunter`, `pacu`
-- optional C2: `sliver-client`, `mythic-cli`
+## Workflows
 
-Use `/engagement capabilities [workflow]` to see exactly what is missing on the current host before deep execution.
+Choose a workflow that matches your engagement. Each bundles the right capability packs, specialists, and default skills.
 
-Tool catalog design references proven registry patterns from community projects (for example HexStrike’s categorized tool registry) and maps them into Net-Runner’s TypeScript runtime capability model.
+| Workflow | Target Environment | Key Packs | Specialists |
+|:---------|:-------------------|:----------|:------------|
+| `web-app-testing` | Web applications | recon, web, exploitation | Web, API, Exploit, Retest, Evidence, Reporting |
+| `api-testing` | REST / GraphQL / SOAP | recon, api, exploitation | API, Exploit, Retest, Evidence, Reporting |
+| `lab-target-testing` | HTB / Labs / Internal | recon, network, exploit, AD, privesc | Full offensive pipeline (10 specialists) |
+| `ctf-mode` | CTF challenges | recon, web, binary, exploit, privesc | All offensive specialists, no reporting |
+| `ad-testing` | Active Directory | AD, network, database, privesc | AD, Network, PrivEsc, Lateral Movement |
+| `wifi-testing` | Wireless 802.11 | wifi, network, exploitation | Network, Exploit, Evidence, Reporting |
+
+---
+
+## Tool Coverage
+
+<div align="center">
+
+**141 tools across 17 capability packs**
+
+</div>
+
+<details>
+<summary><strong>Recon & OSINT</strong> — 22 tools</summary>
+
+`nmap` · `masscan` · `rustscan` · `amass` · `subfinder` · `sublist3r` · `fierce` · `dnsenum` · `theHarvester` · `whois` · `httpx` · `katana` · `whatweb` · `bbot` · `recon-ng` · `spiderfoot` · `sherlock` · `maltego` · `gau` · `waybackurls` · `parsero` · `autorecon`
+
+</details>
+
+<details>
+<summary><strong>Web & API Testing</strong> — 28 tools</summary>
+
+`nuclei` · `nikto` · `gobuster` · `ffuf` · `feroxbuster` · `dirsearch` · `dirb` · `wpscan` · `joomscan` · `dalfox` · `xsser` · `jaeles` · `dotdotpwn` · `wafw00f` · `wfuzz` · `hakrawler` · `burpsuite` · `zap` · `sqlmap` · `commix` · `graphql-scanner` · `jwt-tool` · `arjun` · `paramspider` · `x8` · `qsreplace` · `uro` · `api-schema-analyzer`
+
+</details>
+
+<details>
+<summary><strong>Exploitation & Brute Force</strong> — 12 tools</summary>
+
+`msfconsole` · `msfvenom` · `searchsploit` · `hydra` · `medusa` · `patator` · `hashcat` · `john` · `ophcrack` · `hashid` · `responder` · `pwntools`
+
+</details>
+
+<details>
+<summary><strong>Network & Lateral Movement</strong> — 14 tools</summary>
+
+`netexec` · `crackmapexec` · `evil-winrm` · `smbmap` · `enum4linux` · `enum4linux-ng` · `rpcclient` · `nbtscan` · `arp-scan` · `tcpdump` · `tshark` · `wireshark` · `testssl` · `sslyze`
+
+</details>
+
+<details>
+<summary><strong>Active Directory</strong> — 9 tools</summary>
+
+`bloodhound` · `impacket-ad-enum` · `impacket-remote-exec` · `ldapdomaindump` · `certipy` · `kerbrute` · `rubeus` · `mimikatz` · `adidnsdump`
+
+</details>
+
+<details>
+<summary><strong>WiFi</strong> — 13 tools</summary>
+
+`aircrack-ng` · `airmon-ng` · `airodump-ng` · `aireplay-ng` · `airbase-ng` · `airdecap-ng` · `bettercap` · `wifite` · `eaphammer` · `hcxdumptool` · `hcxpcapngtool` · `mdk4` · `kismet`
+
+</details>
+
+<details>
+<summary><strong>Binary Analysis & Reverse Engineering</strong> — 13 tools</summary>
+
+`ghidra` · `radare2` · `gdb` · `checksec` · `binwalk` · `ropgadget` · `ropper` · `one-gadget` · `angr` · `objdump` · `libc-database` · `pwninit` · `stegsolve`
+
+</details>
+
+<details>
+<summary><strong>Cloud & Container Security</strong> — 12 tools</summary>
+
+`trivy` · `prowler` · `scout-suite` · `pacu` · `cloudmapper` · `checkov` · `terrascan` · `kube-bench` · `kube-hunter` · `docker-bench` · `clair` · `falco`
+
+</details>
+
+<details>
+<summary><strong>Forensics & Evidence</strong> — 13 tools</summary>
+
+`volatility3` · `foremost` · `photorec` · `scalpel` · `bulk-extractor` · `sleuthkit` · `autopsy` · `testdisk` · `exiftool` · `steghide` · `zsteg` · `outguess` · `hashpump`
+
+</details>
+
+<details>
+<summary><strong>C2 Frameworks</strong> — 2 tools</summary>
+
+`sliver-c2` · `mythic-c2`
+
+</details>
+
+<details>
+<summary><strong>Database</strong> — 3 tools</summary>
+
+`mysql` · `mssqlclient` · `sqlite3`
+
+</details>
+
+> Run `/engagement capabilities [workflow]` to check what's available on your host before deep execution.
+
+---
+
+## Evidence & Memory
+
+Net-Runner maintains full assessment continuity across sessions.
+
+### Project Structure
+
+```
+.netrunner/
+├── engagement.json          # Scope, authorization, targets, workflow
+├── run-state.json           # Execution steps, pending reviews
+├── evidence/
+│   └── ledger.jsonl         # Timestamped evidence chain
+├── findings/                # Structured finding directories
+├── reports/                 # Generated assessment reports
+├── secrets.env              # Engagement-scoped credentials
+└── memory/
+    └── agents/              # Per-agent persistent memory
+        ├── recon-specialist/
+        ├── exploit-specialist/
+        └── ...
+```
+
+### Memory Architecture
+
+| Scope | Location | Purpose |
+|:------|:---------|:--------|
+| **Per-agent** | `.netrunner/memory/agents/<type>/` | Tool knowledge, target-specific findings |
+| **Per-project** | `~/.netrunner/projects/<repo>/memory/` | Cross-session auto memory |
+| **RAG retrieval** | Automatic | Pulls relevant context from both scopes |
+| **Agent-scoped** | `@agent-...` mentions | Narrows retrieval to specific agent memory |
+
+### Environment Configuration
+
+| Variable | Effect |
+|:---------|:-------|
+| `NETRUNNER_DISABLE_RELEVANT_MEMORY_PREFETCH=1` | Fall back to MEMORY.md index |
+| `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1` | Force RAG retrieval on |
+| `NETRUNNER_DISABLE_SESSION_MEMORY=1` | Disable session memory |
+| `NETRUNNER_ENABLE_SESSION_MEMORY=1` | Force session memory on |
+| `NETRUNNER_AUTO_BACKGROUND_TASKS=1` | Auto-background delegated agents |
+| `NETRUNNER_COORDINATOR_MODE=1` | Enable coordinator mode (experimental) |
+| `NETRUNNER_AGENT_SDK_DISABLE_BUILTIN_AGENTS=1` | Blank slate for SDK usage |
+
+---
+
+## Operator Commands
+
+Optional manual controls — most work happens through natural language.
+
+| Command | Purpose |
+|:--------|:--------|
+| `/engagement init [workflow] [target]` | Initialize engagement manually |
+| `/engagement status` | View current engagement state |
+| `/engagement capabilities [workflow]` | Check tool readiness on this host |
+| `/engagement alignment` | Verify agent-tool alignment |
+| `/engagement guard <action>` | Run scope-guard on a planned action |
+| `/engagement review` | View pending review items |
+| `/engagement approve <id>` | Approve a pending review |
+| `/engagement reject <id>` | Reject a pending review |
+| `/evidence status\|note\|finding\|artifact\|close` | Manage evidence chain |
+| `/report [filename]` | Generate assessment report |
+
+---
+
+## Architecture
+
+```
+src/
+├── security/
+│   ├── capabilities.ts         # 38 core + 141 imported capability definitions
+│   ├── pentestToolCatalog.ts   # 141 red-team tool entries
+│   ├── workflows.ts            # 6 security workflows + 17 capability packs
+│   ├── agentTypes.ts           # 12 agent type definitions
+│   ├── agentDefinitions.ts     # Agent-to-workflow mappings
+│   ├── skillDefinitions.ts     # 9 pentest skill definitions
+│   ├── engagement.ts           # Engagement lifecycle management
+│   ├── guardrails.ts           # Scope-guard and impact assessment
+│   ├── evidence.ts             # Evidence chain and artifact management
+│   └── reporting.ts            # Report generation pipeline
+├── tools/AgentTool/
+│   ├── built-in/               # 12 specialist agent prompt files
+│   ├── builtInAgents.ts        # Agent registration and memory injection
+│   ├── agentMemory.ts          # Persistent agent memory system
+│   └── agentMemorySnapshot.ts  # Memory snapshot and restoration
+└── coordinator/
+    └── coordinatorMode.ts      # Multi-agent coordinator orchestration
+```
+
+---
 
 ## Validation
 
 ```bash
+# Full red-team pipeline
 bun run pipeline:redteam
+
+# Security-specific tests
 npm run test:security-slice
+
+# Alignment verification
 bun run validate:redteam-alignment
 bun run validate:redteam-agent-tools
+
+# Tool command smoke test
 bun run smoke:redteam-commands
+
+# Build verification
 bun run build
 ```
 
-## Workflows
+---
 
-- `web-app-testing`
-- `api-testing`
-- `lab-target-testing`
-- `ctf-mode`
+## Documentation
 
-## More Docs
+| Document | Description |
+|:---------|:------------|
+| [`docs/workflows/overview.md`](docs/workflows/overview.md) | Workflow architecture and selection guide |
+| [`docs/capabilities/skills-first-architecture.md`](docs/capabilities/skills-first-architecture.md) | Skills-first execution model |
+| [`docs/capabilities/service-surfaces.md`](docs/capabilities/service-surfaces.md) | Service surface coverage |
+| [`src/security/README.md`](src/security/README.md) | Security module internals |
+| [`src/tools/AgentTool/built-in/README.md`](src/tools/AgentTool/built-in/README.md) | Agent design and prompt architecture |
 
-- `docs/workflows/overview.md`
-- `docs/capabilities/skills-first-architecture.md`
-- `docs/capabilities/service-surfaces.md`
+---
 
 ## License
 
-This repository is for educational use and authorized security testing.
+This repository is for **educational use** and **authorized security testing** only.
+
+You are solely responsible for ensuring compliance with all applicable laws, regulations, and authorization requirements before using Net-Runner against any target.
+
+---
+
+<div align="center">
+
+*Built for operators who think in objectives, not flags.*
+
+</div>

@@ -33,6 +33,18 @@ Guidelines:
 - Record user/context, required preconditions, and affected trust boundaries.
 - Flag persistence, service disruption, and lateral pivot actions for explicit review.
 - Produce clear escalation evidence and defensive recommendations.
+
+Tool patterns by escalation path:
+- Linux enumeration: id && whoami → sudo -l → find / -perm -4000 2>/dev/null (SUID) → cat /etc/crontab → linpeas.sh / linux-exploit-suggester
+- Linux kernel: uname -a → searchsploit linux kernel → compile and test PoC → dirtypipe/dirtycow checks
+- Linux misconfig: writable /etc/passwd → cron job abuse → path hijack → capability abuse (getcap -r / 2>/dev/null) → docker/lxc group escape
+- Windows enumeration: whoami /all → systeminfo → winpeas.exe / Seatbelt → PowerUp.ps1 → SharpUp
+- Windows tokens: whoami /priv → PrintSpoofer/GodPotato (SeImpersonate) → JuicyPotato (legacy)
+- Windows services: sc query → accesschk.exe (weak permissions) → service binary hijack → unquoted service path
+- AD escalation: certipy (ADCS ESC1-8) → impacket-secretsdump (DCSync) → bloodhound-python (attack path graph)
+- Container escape: check /.dockerenv → mount | grep cgroup → check cap_sys_admin → nsenter techniques
+- Always capture: current user context, escalation command, resulting privilege level, and rollback path.
+- Request operator confirmation before: kernel exploits, DCSync, golden tickets, or any persistence mechanism.
 `
 }
 

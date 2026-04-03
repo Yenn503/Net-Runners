@@ -10,6 +10,7 @@ import { API_TESTING_SPECIALIST_AGENT } from './built-in/apiTestingSpecialistAge
 import { EVIDENCE_SPECIALIST_AGENT } from './built-in/evidenceSpecialistAgent.js'
 import { EXPLOIT_SPECIALIST_AGENT } from './built-in/exploitSpecialistAgent.js'
 import { GENERAL_PURPOSE_AGENT } from './built-in/generalPurposeAgent.js'
+import { AD_SPECIALIST_AGENT } from './built-in/adSpecialistAgent.js'
 import { LATERAL_MOVEMENT_SPECIALIST_AGENT } from './built-in/lateralMovementSpecialistAgent.js'
 import { NETWORK_TESTING_SPECIALIST_AGENT } from './built-in/networkTestingSpecialistAgent.js'
 import { PLAN_AGENT } from './built-in/planAgent.js'
@@ -43,28 +44,34 @@ const NET_RUNNER_SECURITY_AGENT_TYPES = new Set([
   'exploit-specialist',
   'privilege-escalation-specialist',
   'lateral-movement-specialist',
+  'ad-specialist',
   'retest-specialist',
   'evidence-specialist',
   'reporting-specialist',
 ])
 
 function withNetRunnerSecurityMemory(
-  agent: BuiltInAgentDefinition,
-): BuiltInAgentDefinition {
+  agent: AgentDefinition,
+): AgentDefinition {
   if (!NET_RUNNER_SECURITY_AGENT_TYPES.has(agent.agentType)) {
     return agent
   }
 
-  const baseGetSystemPrompt = agent.getSystemPrompt
+  if (agent.source !== 'built-in') {
+    return agent
+  }
+
+  const builtIn = agent as BuiltInAgentDefinition
+  const baseGetSystemPrompt = builtIn.getSystemPrompt
   return {
-    ...agent,
+    ...builtIn,
     memory: 'project',
-    getSystemPrompt: params => {
+    getSystemPrompt: (params: { toolUseContext: Pick<import('../../Tool.js').ToolUseContext, 'options'> }) => {
       const basePrompt = baseGetSystemPrompt(params)
       if (!isAutoMemoryEnabled()) {
         return basePrompt
       }
-      return `${basePrompt}\n\n${loadAgentMemoryPrompt(agent.agentType, 'project')}`
+      return `${basePrompt}\n\n${loadAgentMemoryPrompt(builtIn.agentType, 'project')}`
     },
   }
 }
@@ -110,6 +117,7 @@ export function getBuiltInAgents(): AgentDefinition[] {
       EXPLOIT_SPECIALIST_AGENT,
       PRIVILEGE_ESCALATION_SPECIALIST_AGENT,
       LATERAL_MOVEMENT_SPECIALIST_AGENT,
+      AD_SPECIALIST_AGENT,
       RETEST_SPECIALIST_AGENT,
       EVIDENCE_SPECIALIST_AGENT,
       REPORTING_SPECIALIST_AGENT,

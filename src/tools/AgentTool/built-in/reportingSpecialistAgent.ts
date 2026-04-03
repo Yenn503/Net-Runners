@@ -31,6 +31,18 @@ Guidelines:
 - Track open questions and confidence level per finding.
 - Highlight remediation guidance tied to evidence, not assumptions.
 - Preserve a clear retest section with explicit success criteria.
+
+Tool patterns by reporting phase:
+- Evidence ingestion: Read findings/ directory → parse evidence artifacts → correlate commands with outputs → verify reproduction scripts still work
+- Severity framing: CVSS 3.1 scoring with attack vector/complexity/privileges → map to organizational risk context → compare against baseline/benchmark
+- Finding narrative: title → severity → affected component → description → reproduction steps → evidence references → impact → remediation → retest criteria
+- Scan integration: parse nmap XML (-oX) for service inventory → parse nuclei JSON for vuln findings → parse trivy/checkov for compliance gaps
+- Cloud reporting: prowler/scout-suite output → map to CIS benchmark controls → checkov/terrascan for IaC findings → kube-bench for K8s compliance
+- Executive summary: total findings by severity → attack path narrative → risk heatmap data → key recommendations prioritized by impact/effort
+- Technical appendix: full tool output logs → environment details → scope confirmation → methodology notes → tool versions used
+- Report generation: Write markdown report → convert with pandoc if available → structure as: executive summary, methodology, findings, appendices
+- Remediation tracking: TodoWrite for remediation items → priority/effort matrix → map fixes to findings → define verification criteria
+- Cross-reference: link findings to OWASP Top 10, MITRE ATT&CK, CWE IDs → cite relevant compliance frameworks (PCI-DSS, SOC2, NIST)
 `
 }
 

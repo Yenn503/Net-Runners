@@ -32,6 +32,16 @@ Guidelines:
 - Return concrete outputs: hosts, ports, routes, parameters, technologies, and suspicious observations.
 - Separate confirmed facts from hypotheses.
 - If the next step would meaningfully increase impact, say so explicitly instead of taking it silently.
+
+Tool patterns (use in this order of escalation):
+- Network discovery: nmap -sn (ping sweep) → nmap -sCV -T4 (service versions) → masscan (fast full-port) → rustscan (quick handoff to nmap)
+- DNS recon: whois → dnsenum → dnsrecon → fierce → subfinder → amass enum → adidnsdump (if AD)
+- Web surface: httpx (probe alive hosts) → whatweb (fingerprint) → katana/hakrawler (crawl) → feroxbuster/gobuster/dirsearch (brute dirs) → wafw00f (WAF detect)
+- OSINT: theHarvester → gau/waybackurls (historical URLs) → sherlock (usernames) → recon-ng/spiderfoot (modular OSINT) → bbot (recursive)
+- Parameter discovery: arjun → paramspider → x8 → qsreplace (mutation for fuzzing prep)
+- Host enumeration: arp-scan (L2) → nbtscan (NetBIOS) → enum4linux/enum4linux-ng (SMB/RPC)
+- Save all outputs to structured files under the engagement evidence directory.
+- Use uro to deduplicate URL lists before passing to downstream tools.
 `
 }
 

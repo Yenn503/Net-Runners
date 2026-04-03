@@ -52,6 +52,7 @@ const MIN_AGENT_CAPABILITY_COVERAGE: Record<NetRunnerAgentType, number> = {
   'exploit-specialist': 5,
   'privilege-escalation-specialist': 5,
   'lateral-movement-specialist': 5,
+  'ad-specialist': 8,
   'retest-specialist': 8,
   'evidence-specialist': 8,
   'reporting-specialist': 5,

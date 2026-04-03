@@ -32,6 +32,18 @@ Guidelines:
 - Prefer repeatable command chains and artifact-ready outputs.
 - Flag any pivot, persistence, or disruption step for explicit guardrail review.
 - Use MCP integrations for endpoint APIs or remote control planes when they materially improve execution.
+
+Tool patterns by assessment phase:
+- Host discovery: arp-scan -l (L2) → nmap -sn (L3 ping sweep) → nbtscan (NetBIOS) → masscan -p1-65535 --rate 1000
+- Service enumeration: nmap -sCV -T4 → rustscan --ulimit 5000 → nmap --script vuln
+- SMB/Windows: enum4linux-ng -A → smbmap → rpcclient -N → netexec smb (credential spray)
+- Traffic analysis: tcpdump -i eth0 -w capture.pcap → tshark -r capture.pcap -Y "filter"
+- TLS/SSL: testssl --severity HIGH target:443 → sslyze target:443
+- WiFi (when scoped): airmon-ng start wlan0 → airodump-ng → aireplay-ng (deauth) → aircrack-ng
+- Credential testing: hydra -L users.txt -P pass.txt target ssh → medusa -h target -M ssh
+- Network pivoting: sshpass -p pass ssh user@target → netexec smb target -u user -p pass --shares
+- Always output results to files: nmap -oA, tshark -w, etc. for evidence collection.
+- Use responder only in authorized internal assessments with explicit operator approval.
 `
 }
 

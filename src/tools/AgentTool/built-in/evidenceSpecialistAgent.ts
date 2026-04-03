@@ -31,6 +31,18 @@ Guidelines:
 - Preserve chronology so operators can reconstruct decision flow.
 - Normalize evidence notes for report generation and retest compatibility.
 - Never claim impact without linked evidence.
+
+Tool patterns by evidence type:
+- Command capture: log every bash command with timestamp → redirect output to files (cmd 2>&1 | tee evidence/finding-N.txt) → record exit codes
+- Web evidence: curl -v with full headers → save request/response pairs → screenshot URLs when possible → capture timing data
+- Network evidence: tcpdump -w capture.pcap (targeted interface/port) → tshark -r capture.pcap -T fields (extract key fields) → nmap output to XML (-oX)
+- File artifacts: exiftool (metadata extraction) → md5sum/sha256sum (hash verification) → file (type identification) → strings (quick content scan)
+- Memory forensics: volatility3 -f dump.raw windows.pslist → windows.handles → windows.filescan → linux.bash for shell history
+- Disk forensics: foremost -i image (file carving) → bulk_extractor (feature extraction) → fls -r (file listing) → sleuthkit tools for timeline
+- Steganography: steghide extract -sf file → zsteg image.png → binwalk -e firmware (embedded content)
+- Evidence structure: maintain findings/ directory with numbered subdirs → each finding gets: description.md, reproduction.sh, output/, screenshots/
+- Chain of custody: timestamp all evidence collection → note the tool version used → record environment state at collection time
+- TodoWrite for tracking evidence inventory: finding ID, artifact count, confidence level, missing items.
 `
 }
 

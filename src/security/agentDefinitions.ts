@@ -57,6 +57,12 @@ export const NET_RUNNER_AGENT_DEFINITIONS: NetRunnerAgentDefinition[] = [
       'Lateral movement specialist for segmented-network pivot simulation and credential path verification.',
   },
   {
+    agentType: 'ad-specialist',
+    workflowId: 'ad-testing',
+    description:
+      'Active Directory domain specialist for LDAP/Kerberos enumeration, trust abuse, credential attacks, and domain escalation paths.',
+  },
+  {
     agentType: 'retest-specialist',
     workflowId: 'web-app-testing',
     description:

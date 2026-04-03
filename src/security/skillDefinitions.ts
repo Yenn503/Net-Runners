@@ -3,6 +3,11 @@ export type NetRunnerSkillName =
   | 'scope-guard'
   | 'recon-plan'
   | 'evidence-capture'
+  | 'vuln-assessment'
+  | 'exploit-validation'
+  | 'post-exploitation-plan'
+  | 'report-generation'
+  | 'attack-path-analysis'
 
 export type NetRunnerSkillDefinition = {
   name: NetRunnerSkillName
@@ -38,6 +43,41 @@ export const NET_RUNNER_SKILL_DEFINITIONS: NetRunnerSkillDefinition[] = [
     title: 'Evidence Capture',
     description:
       'Capture artifacts, findings, and operator notes in a report-friendly structure.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'vuln-assessment',
+    title: 'Vulnerability Assessment',
+    description:
+      'Systematic vulnerability identification using scanner output correlation, manual validation, and severity classification.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'exploit-validation',
+    title: 'Exploit Validation',
+    description:
+      'Controlled proof-of-impact execution with scope-guard checkpoints, rollback plans, and evidence-first validation.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'post-exploitation-plan',
+    title: 'Post-Exploitation Plan',
+    description:
+      'Build a structured post-access plan: privilege escalation paths, lateral movement options, persistence mechanisms, and data access targets.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'report-generation',
+    title: 'Report Generation',
+    description:
+      'Transform structured evidence and findings into a complete assessment report with executive summary, technical details, and remediation guidance.',
+    primaryExecutionModel: 'skills-and-tools',
+  },
+  {
+    name: 'attack-path-analysis',
+    title: 'Attack Path Analysis',
+    description:
+      'Map multi-step attack chains from initial access through privilege escalation to objective completion, identifying critical path dependencies and alternative routes.',
     primaryExecutionModel: 'skills-and-tools',
   },
 ] as const

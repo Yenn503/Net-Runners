@@ -7,6 +7,7 @@ export const NET_RUNNER_AGENT_TYPES = [
   'exploit-specialist',
   'privilege-escalation-specialist',
   'lateral-movement-specialist',
+  'ad-specialist',
   'retest-specialist',
   'evidence-specialist',
   'reporting-specialist',

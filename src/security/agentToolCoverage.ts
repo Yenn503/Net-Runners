@@ -6,6 +6,7 @@ import {
   NET_RUNNER_AGENT_TYPES,
   type NetRunnerAgentType,
 } from './agentTypes.js'
+import { AD_SPECIALIST_AGENT } from '../tools/AgentTool/built-in/adSpecialistAgent.js'
 import { API_TESTING_SPECIALIST_AGENT } from '../tools/AgentTool/built-in/apiTestingSpecialistAgent.js'
 import { ENGAGEMENT_LEAD_AGENT } from '../tools/AgentTool/built-in/engagementLeadAgent.js'
 import { EVIDENCE_SPECIALIST_AGENT } from '../tools/AgentTool/built-in/evidenceSpecialistAgent.js'
@@ -53,12 +54,13 @@ const SECURITY_BUILT_IN_AGENTS: BuiltInAgentSnapshot[] = [
   EXPLOIT_SPECIALIST_AGENT,
   PRIVILEGE_ESCALATION_SPECIALIST_AGENT,
   LATERAL_MOVEMENT_SPECIALIST_AGENT,
+  AD_SPECIALIST_AGENT,
   RETEST_SPECIALIST_AGENT,
   EVIDENCE_SPECIALIST_AGENT,
   REPORTING_SPECIALIST_AGENT,
 ].map(agent => ({
   agentType: agent.agentType as NetRunnerAgentType,
-  tools: [...agent.tools],
+  tools: [...(agent.tools ?? [])],
 }))
 
 export function getSecurityBuiltInAgentTooling(): BuiltInAgentSnapshot[] {

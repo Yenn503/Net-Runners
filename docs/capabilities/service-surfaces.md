@@ -1,6 +1,6 @@
 # Service Surfaces
 
-Net-Runner is primarily a local agentic runtime, but some optional features depend on hosted services.
+Net-Runner runs locally first, but some optional features still depend on hosted services.
 
 This document defines the retained service contracts so future updates can replace, self-host, or remove them cleanly.
 

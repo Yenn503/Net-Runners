@@ -121,22 +121,43 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 
 ---
 
+## 🧰 Tool Catalog
+
+The current build registers **153 imported red-team tools** from [pentestToolCatalog.ts](src/security/pentestToolCatalog.ts).
+
+- Recon: `22`
+- Web: `28`
+- API: `3`
+- Mobile: `8`
+- Network: `13`
+- Exploitation: `11`
+- Active Directory: `12`
+- Cloud: `13`
+- Binary / Reverse Engineering: `22`
+- WiFi: `13`
+- Evidence / Forensics: `5`
+- Coordination / C2: `2`
+
+Use the full grouped list here: [Pentest Tool Catalog](docs/capabilities/tool-catalog.md)
+
+---
+
 ## 🤖 Specialist Agents
 
-| Agent | Role | Primary Tools |
-|-------|------|---------------|
+| Agent | Role | Coverage |
+|-------|------|----------|
 | **Engagement Lead** | Coordinates scoped testing engagements and workflow execution | Workflow orchestration, scope validation, task routing |
-| **Recon Specialist** | Discovery and attack surface mapping | nmap, masscan, subfinder, amass, theHarvester, httpx, whatweb |
-| **Web Testing Specialist** | HTTP and web application security validation | feroxbuster, sqlmap, nuclei, nikto, ffuf, dalfox, burp |
-| **API Testing Specialist** | API endpoint discovery and security testing | Swagger/OpenAPI analysis, schema validation, auth testing |
-| **Network Testing Specialist** | Network and service assessment | Service enumeration, protocol analysis, network mapping |
-| **Exploit Specialist** | Controlled proof-of-impact validation | msfconsole, searchsploit, msfvenom, exploit research |
-| **Privilege Escalation Specialist** | Post-access privilege boundary testing | LinPEAS, WinPEAS, GTFOBins, sudo misconfig detection |
-| **Lateral Movement Specialist** | Network pivot and credential path validation | Pass-the-hash, credential enumeration, trust path analysis |
-| **AD Specialist** | Active Directory and Kerberos security testing | BloodHound, Rubeus, Impacket, LDAP enumeration, AD CS attacks |
-| **Retest Specialist** | Finding validation and false positive reduction | Reproduction testing, evidence verification |
-| **Evidence Specialist** | Artifact collection and finding documentation | Evidence capture, screenshot annotation, proof documentation |
-| **Reporting Specialist** | Security assessment report generation | Finding narratives, severity scoring, executive summaries |
+| **Recon Specialist** | Discovery and attack surface mapping | External recon, asset discovery, cloud and identity enumeration |
+| **Web Testing Specialist** | HTTP and web application security validation | Route discovery, content fuzzing, web vuln validation |
+| **API Testing Specialist** | API endpoint discovery and security testing | API schemas, auth/state testing, GraphQL and JWT checks |
+| **Network Testing Specialist** | Network and service assessment | Service enumeration, protocol testing, packet capture |
+| **Exploit Specialist** | Controlled proof-of-impact validation | Exploit research, payload generation, runtime validation |
+| **Privilege Escalation Specialist** | Post-access privilege boundary testing | Local privilege checks, escalation-path validation, post-access review |
+| **Lateral Movement Specialist** | Network pivot and credential path validation | Trust-path analysis, credential reuse, multi-host movement |
+| **AD Specialist** | Active Directory and Kerberos security testing | Kerberos, LDAP, BloodHound, AD CS, Windows domain attack paths |
+| **Retest Specialist** | Finding validation and false positive reduction | Reproduction testing, fix validation, regression checks |
+| **Evidence Specialist** | Artifact collection and finding documentation | Evidence capture, artifact handling, proof quality |
+| **Reporting Specialist** | Security assessment report generation | Finding narratives, severity scoring, report structure |
 
 ---
 
@@ -166,6 +187,7 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 - [Research Alignment](docs/project/research-alignment.md)
 - [Upstream Provenance](docs/project/upstream-provenance.md)
 - [Skills-First Architecture](docs/capabilities/skills-first-architecture.md)
+- [Pentest Tool Catalog](docs/capabilities/tool-catalog.md)
 - [Service Surfaces](docs/capabilities/service-surfaces.md)
 
 ---

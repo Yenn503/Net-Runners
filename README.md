@@ -88,16 +88,32 @@ The current Net-Runner slice is organized around explicit operator workflows:
 
 These workflows are backed by bundled security skills and specialist agents rather than by an MCP-heavy framework design.
 
-The first operator-facing project commands are now built in:
+### Commands
 
-- `/engagement init [workflow] [target]` creates the project-scoped `.netrunner/` envelope.
+- `/engagement init [workflow] [target]` creates the project-scoped `.netrunner/` envelope and defaults to `web-app-testing` when no workflow is provided.
 - `/engagement status` shows the current scope, workflow, and evidence counts.
-- `/engagement capabilities [workflow]` shows readiness for workflow capabilities and missing prerequisites.
+- `/engagement capabilities [workflow]` shows readiness for workflow capabilities and missing prerequisites for the requested workflow, then falls back to the active workflow or `web-app-testing`.
 - `/engagement alignment` validates specialist-agent to capability coverage and workflow mapping.
 - `/engagement guard <planned action>` records a typed guardrail decision before higher-impact steps.
-- `/report [file-name]` writes a markdown report from the current evidence ledger.
-- Specialist subagent runs now auto-record execution notes into the evidence ledger when an engagement is active.
-- Security specialist subagent launches are guardrail-checked against active engagement impact settings before execution.
+- `/evidence status|note|finding|artifact|close` appends structured ledger entries without manual JSONL edits.
+- `/report [file-name]` writes a markdown report from the current evidence ledger (`.netrunner/reports/latest.md` by default).
+
+### Runtime Integrations
+
+- When an engagement is active, Net-Runner records security subagent execution summaries in the evidence ledger.
+- Delegated security-agent tasks are checked against the active engagement guardrails before execution.
+- Security specialists run with project-scoped persistent agent memory when auto-memory is enabled.
+- `/memory` opens memory files so assessment learnings can be reviewed or edited between runs.
+- Auto-memory is enabled by default; if disabled (`NET_RUNNER_DISABLE_AUTO_MEMORY=1` or `autoMemoryEnabled=false`), persistent agent-memory prompts are skipped.
+
+## How Engagement Works
+
+1. Start scope framing with bundled skills like `engagement-setup`, `scope-guard`, and `recon-plan`.
+2. Run `/engagement init` to persist workflow and target context to `.netrunner/engagement.json`.
+3. Run specialists for recon, testing, exploitation validation, evidence shaping, and reporting.
+4. Keep high-impact actions explicit with `/engagement guard`.
+5. Append findings, artifacts, and notes with `/evidence`.
+6. Export the engagement ledger with `/report`.
 
 ## Architecture Direction
 
@@ -260,10 +276,13 @@ bun run hardening:strict
 # validate red-team agent/capability alignment
 bun run validate:redteam-alignment
 
-# smoke the engagement/report command surface in an isolated temp workspace
+# validate that specialist toolsets satisfy capability mappings
+bun run validate:redteam-agent-tools
+
+# smoke the engagement/evidence/report command surface in an isolated temp workspace
 bun run smoke:redteam-commands
 
-# run the full red-team runtime pipeline
+# run the current red-team validation pipeline
 bun run pipeline:redteam
 ```
 
@@ -346,7 +365,7 @@ For `dev:ollama`, make sure Ollama is running locally before launch.
 
 ---
 
-## How It Works
+## Provider Shim Internals
 
 The shim (`src/services/api/openaiShim.ts`) sits between Net-Runner and the LLM API:
 

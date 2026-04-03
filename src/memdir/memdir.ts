@@ -373,9 +373,6 @@ function buildAssistantDailyLogPrompt(skipIndex = false): string {
  * Build the "Searching past context" section if the feature gate is enabled.
  */
 export function buildSearchingPastContextSection(autoMemDir: string): string[] {
-  if (!getFeatureValue_CACHED_MAY_BE_STALE('tengu_coral_fern', false)) {
-    return []
-  }
   const projectDir = getProjectDir(getOriginalCwd())
   // Ant-native builds alias grep to embedded ugrep and remove the dedicated
   // Grep tool, so give the model a real shell invocation there.
@@ -491,10 +488,14 @@ export async function loadMemoryPrompt(): Promise<string | null> {
 
   logEvent('tengu_memdir_disabled', {
     disabled_by_env_var: isEnvTruthy(
-      process.env.CLAUDE_CODE_DISABLE_AUTO_MEMORY,
+      process.env.NET_RUNNER_DISABLE_AUTO_MEMORY ??
+        process.env.CLAUDE_CODE_DISABLE_AUTO_MEMORY,
     ),
     disabled_by_setting:
-      !isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_AUTO_MEMORY) &&
+      !isEnvTruthy(
+        process.env.NET_RUNNER_DISABLE_AUTO_MEMORY ??
+          process.env.CLAUDE_CODE_DISABLE_AUTO_MEMORY,
+      ) &&
       getInitialSettings().autoMemoryEnabled === false,
   })
   // Gate on the GB flag directly, not isTeamMemoryEnabled() — that function

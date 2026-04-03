@@ -20,6 +20,7 @@ import diff from './commands/diff/index.js'
 import ctx_viz from './commands/ctx_viz/index.js'
 import doctor from './commands/doctor/index.js'
 import engagement from './commands/engagement/index.js'
+import evidence from './commands/evidence/index.js'
 import memory from './commands/memory/index.js'
 import help from './commands/help/index.js'
 import ide from './commands/ide/index.js'
@@ -276,6 +277,7 @@ const COMMANDS = memoize((): Command[] => [
   diff,
   doctor,
   engagement,
+  evidence,
   effort,
   exit,
   fast,

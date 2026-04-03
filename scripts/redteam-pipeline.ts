@@ -23,6 +23,11 @@ const steps: PipelineStep[] = [
     args: ['run', 'validate:redteam-alignment'],
   },
   {
+    name: 'agent tool coverage validation',
+    command: 'bun',
+    args: ['run', 'validate:redteam-agent-tools'],
+  },
+  {
     name: 'engagement/report command smoke',
     command: 'bun',
     args: ['run', 'smoke:redteam-commands'],
@@ -38,4 +43,3 @@ for (const step of steps) {
 }
 
 console.log('\nRed-team pipeline passed.')
-

@@ -215,6 +215,19 @@ export function resolveAgentTools(
     }
   }
 
+  // MCP tools are dynamic (`mcp__<server>__<tool>`) and cannot be listed
+  // explicitly in frontmatter. Keep them available for agents even when
+  // the agent uses an explicit tool list.
+  const mcpTools = allowedAvailableTools.filter(tool =>
+    tool.name.startsWith('mcp__'),
+  )
+  for (const tool of mcpTools) {
+    if (!resolvedToolsSet.has(tool)) {
+      resolved.push(tool)
+      resolvedToolsSet.add(tool)
+    }
+  }
+
   return {
     hasWildcard: false,
     validTools,

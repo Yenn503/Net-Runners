@@ -15,13 +15,15 @@
 
 ## Common execution shape
 
-1. Run `engagement-setup` to lock scope, objective, and impact boundary.
+1. Use bundled skills like `engagement-setup` to collect scope, targets, goals, and constraints.
 2. Use `/engagement init` to create the workspace-local `.netrunner/` envelope and baseline engagement manifest.
-3. Run `scope-guard` before any higher-impact step.
+3. Run `scope-guard` as a skills layer before any higher-impact step.
 4. Use `recon-plan` to build the phased recon and validation sequence.
 5. Delegate to specialist agents only when a self-contained task is clear.
 6. Use `evidence-capture` to preserve artifacts and report-ready findings.
-7. Use `/report` to export the current evidence ledger into markdown.
+7. Use `/evidence` to append findings, artifacts, and notes to the ledger during execution.
+8. Use `/report` to export the current evidence ledger into markdown.
+9. Use `/memory` to review or refine project memory so successful assessment patterns persist across sessions.
 
 ## Specialist agents
 

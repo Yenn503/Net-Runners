@@ -1,7 +1,9 @@
 import { feature } from 'bun:bundle'
 import { getIsNonInteractiveSession } from '../../bootstrap/state.js'
+import { isAutoMemoryEnabled } from '../../memdir/paths.js'
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js'
 import { isEnvTruthy } from '../../utils/envUtils.js'
+import { loadAgentMemoryPrompt } from './agentMemory.js'
 import { CLAUDE_CODE_GUIDE_AGENT } from './built-in/claudeCodeGuideAgent.js'
 import { ENGAGEMENT_LEAD_AGENT } from './built-in/engagementLeadAgent.js'
 import { EXPLORE_AGENT } from './built-in/exploreAgent.js'
@@ -19,7 +21,7 @@ import { RETEST_SPECIALIST_AGENT } from './built-in/retestSpecialistAgent.js'
 import { STATUSLINE_SETUP_AGENT } from './built-in/statuslineSetup.js'
 import { VERIFICATION_AGENT } from './built-in/verificationAgent.js'
 import { WEB_TESTING_SPECIALIST_AGENT } from './built-in/webTestingSpecialistAgent.js'
-import type { AgentDefinition } from './loadAgentsDir.js'
+import type { AgentDefinition, BuiltInAgentDefinition } from './loadAgentsDir.js'
 
 export function areExplorePlanAgentsEnabled(): boolean {
   if (feature('BUILTIN_EXPLORE_PLAN_AGENTS')) {
@@ -32,6 +34,41 @@ export function areExplorePlanAgentsEnabled(): boolean {
 
 export function areNetRunnerSecurityAgentsEnabled(): boolean {
   return !isEnvTruthy(process.env.NET_RUNNER_DISABLE_SECURITY_AGENTS)
+}
+
+const NET_RUNNER_SECURITY_AGENT_TYPES = new Set([
+  'engagement-lead',
+  'recon-specialist',
+  'web-testing-specialist',
+  'api-testing-specialist',
+  'network-testing-specialist',
+  'exploit-specialist',
+  'privilege-escalation-specialist',
+  'lateral-movement-specialist',
+  'retest-specialist',
+  'evidence-specialist',
+  'reporting-specialist',
+])
+
+function withNetRunnerSecurityMemory(
+  agent: BuiltInAgentDefinition,
+): BuiltInAgentDefinition {
+  if (!NET_RUNNER_SECURITY_AGENT_TYPES.has(agent.agentType)) {
+    return agent
+  }
+
+  const baseGetSystemPrompt = agent.getSystemPrompt
+  return {
+    ...agent,
+    memory: 'project',
+    getSystemPrompt: params => {
+      const basePrompt = baseGetSystemPrompt(params)
+      if (!isAutoMemoryEnabled()) {
+        return basePrompt
+      }
+      return `${basePrompt}\n\n${loadAgentMemoryPrompt(agent.agentType, 'project')}`
+    },
+  }
 }
 
 export function getBuiltInAgents(): AgentDefinition[] {
@@ -99,5 +136,5 @@ export function getBuiltInAgents(): AgentDefinition[] {
     agents.push(VERIFICATION_AGENT)
   }
 
-  return agents
+  return agents.map(withNetRunnerSecurityMemory)
 }

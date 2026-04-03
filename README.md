@@ -99,6 +99,10 @@ Optional memory toggles:
 - disable session memory: `NETRUNNER_DISABLE_SESSION_MEMORY=1`
 - force session memory on: `NETRUNNER_ENABLE_SESSION_MEMORY=1`
 
+Agent runtime toggles:
+- force auto-background for delegated agents: `NETRUNNER_AUTO_BACKGROUND_TASKS=1`
+- disable built-in agents in SDK/noninteractive usage: `NETRUNNER_AGENT_SDK_DISABLE_BUILTIN_AGENTS=1`
+
 ## Optional Control Commands
 
 Use these only when you want manual control:

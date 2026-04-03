@@ -23,6 +23,11 @@ const steps: PipelineStep[] = [
     args: ['run', 'validate:redteam-alignment'],
   },
   {
+    name: 'core agent runtime validation',
+    command: 'bun',
+    args: ['run', 'validate:core-agents'],
+  },
+  {
     name: 'agent tool coverage validation',
     command: 'bun',
     args: ['run', 'validate:redteam-agent-tools'],

@@ -20,10 +20,12 @@
 
 Net-Runner is a final-year university project and research prototype for LLM-assisted red-team assessments. It is built on the public [OpenClaude](https://github.com/Gitlawb/openclaude) fork and adapted into a framework with workflow-aware execution, specialist agents, evidence capture, and project-scoped runtime state.
 
-> Warning
+> ⚠️ **Warning**
 > Use this framework only on targets you are explicitly authorized to test. Net-Runner is for legal security testing, lab work, and research use.
 
-## How It Works
+---
+
+## 🔍 How It Works
 
 Give Net-Runner a target and goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow, routes tasks to specialist agents, and captures evidence throughout the assessment.
 
@@ -32,7 +34,9 @@ Give Net-Runner a target and goal in plain language. It creates a project-scoped
 - Routes tasks to specialist agents for recon, exploitation, privilege escalation, and reporting
 - Skills-first architecture with direct tool execution and selective MCP integration
 
-## Getting Started
+---
+
+## 🚀 Getting Started
 
 ### 1. Install and build
 
@@ -91,7 +95,9 @@ node dist/cli.mjs
 Assess https://target.example. Start with recon, map the attack surface, validate findings, and capture evidence.
 ```
 
-## Execution Flow
+---
+
+## ⚙️ Execution Flow
 
 1. Net-Runner detects assessment intent and target type
 2. Initializes `.netrunner/` state for the project
@@ -99,7 +105,9 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 4. Routes tasks to specialist agents and tools
 5. Records evidence, findings, and reports in the project runtime
 
-## Workflows
+---
+
+## 🎯 Workflows
 
 - `web-app-testing` — route mapping, auth testing, and vulnerability validation
 - `api-testing` — endpoint discovery, schema checks, auth/state testing
@@ -111,7 +119,9 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 
 The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GHunt`, `holehe`, `haklistgen`.
 
-## Specialist Agents
+---
+
+## 🤖 Specialist Agents
 
 | Agent | Role | Primary Tools |
 |-------|------|---------------|
@@ -128,7 +138,9 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 | **Evidence Specialist** | Artifact collection and finding documentation | Evidence capture, screenshot annotation, proof documentation |
 | **Reporting Specialist** | Security assessment report generation | Finding narratives, severity scoring, executive summaries |
 
-## Runtime Layout
+---
+
+## 📁 Runtime Layout
 
 ```text
 .netrunner/
@@ -146,7 +158,9 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 └── instructions/
 ```
 
-## Documentation
+---
+
+## 📚 Documentation
 
 - [Workflow Overview](docs/workflows/overview.md)
 - [Research Alignment](docs/project/research-alignment.md)
@@ -154,10 +168,14 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 - [Skills-First Architecture](docs/capabilities/skills-first-architecture.md)
 - [Service Surfaces](docs/capabilities/service-surfaces.md)
 
-## Provenance
+---
+
+## 🔗 Provenance
 
 The public upstream base for this repository is [OpenClaude](https://github.com/Gitlawb/openclaude). Net-Runner adapts that base into a red-team assessment framework. Research and provenance notes are under `docs/project/`.
 
-## License
+---
+
+## 📜 License
 
 This repository is for educational use and authorized security testing only.

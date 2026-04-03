@@ -310,6 +310,28 @@ export function formatEngagementContextForPrompt(
       : manifest.authorization.maxImpact === 'limited'
         ? 'Proceed inside scope with controlled validation; require guardrail review before high-impact or persistence actions.'
         : 'Proceed inside scope, but require guardrail review before destructive or persistence-heavy actions.'
+  const coreRuntimeAgents = [
+    'general-purpose',
+    'Explore',
+    'Plan',
+    'verification',
+  ].join(', ')
+  const specialistAgents = [
+    'engagement-lead',
+    'recon-specialist',
+    'web-testing-specialist',
+    'api-testing-specialist',
+    'network-testing-specialist',
+    'exploit-specialist',
+    'privilege-escalation-specialist',
+    'lateral-movement-specialist',
+    'ad-specialist',
+    'retest-specialist',
+    'evidence-specialist',
+    'reporting-specialist',
+  ].join(', ')
+  const routingGuidance =
+    'Prefer skills and direct local tools before MCP when the local path is sufficient. Use Plan for multi-phase work or when a written execution plan will reduce drift. Use Explore for broad discovery, repo mapping, or open-ended investigation. Use engagement-lead to coordinate security phases and route domain-specific tasks. Delegate to specialists when the task boundary is clear, expertise changes, or parallel work materially helps. Use verification or retest before claiming exploitability, remediation status, or final completion.'
 
   return [
     '[Net-Runner engagement context]',
@@ -320,7 +342,11 @@ export function formatEngagementContextForPrompt(
     `max_impact=${manifest.authorization.maxImpact}`,
     `scope_summary=${truncateContextValue(manifest.authorization.scopeSummary)}`,
     `restrictions=${truncateContextValue(restrictions)}`,
+    'execution_model=skills-and-tools',
     `default_skills=${manifest.execution.defaultSkills.join(', ')}`,
+    `core_runtime_agents=${coreRuntimeAgents}`,
+    `specialist_agents=${specialistAgents}`,
+    `routing_guidance=${truncateContextValue(routingGuidance, 400)}`,
     `default_behavior=${defaultBehavior}`,
     '[/Net-Runner engagement context]',
   ].join('\n')

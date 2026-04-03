@@ -74,6 +74,19 @@ test('runtime prompt context includes authorization and impact defaults', async 
   assert.match(contextBlock, /\[Net-Runner engagement context\]/)
   assert.match(contextBlock, /authorization_status=confirmed/)
   assert.match(contextBlock, /max_impact=limited/)
+  assert.match(contextBlock, /execution_model=skills-and-tools/)
+  assert.match(
+    contextBlock,
+    /core_runtime_agents=general-purpose, Explore, Plan, verification/,
+  )
+  assert.match(
+    contextBlock,
+    /specialist_agents=engagement-lead, recon-specialist, web-testing-specialist/,
+  )
+  assert.match(
+    contextBlock,
+    /routing_guidance=Prefer skills and direct local tools before MCP when the local path is sufficient\./,
+  )
   assert.match(
     contextBlock,
     /default_behavior=Proceed inside scope with controlled validation; require guardrail review before high-impact or persistence actions\./,

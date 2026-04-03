@@ -77,7 +77,16 @@ test('plain-language assessment prompts auto-bootstrap engagement context into t
   assert.match(allUserText, /workflow=web-app-testing/)
   assert.match(allUserText, /authorization_status=confirmed/)
   assert.match(allUserText, /max_impact=limited/)
+  assert.match(allUserText, /execution_model=skills-and-tools/)
   assert.match(allUserText, /default_skills=engagement-setup, scope-guard/)
+  assert.match(
+    allUserText,
+    /core_runtime_agents=general-purpose, Explore, Plan, verification/,
+  )
+  assert.match(
+    allUserText,
+    /routing_guidance=Prefer skills and direct local tools before MCP when the local path is sufficient\./,
+  )
 })
 
 test('plain-language impact escalation updates the injected engagement context', async () => {

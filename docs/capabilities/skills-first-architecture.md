@@ -11,6 +11,8 @@ The main pieces are:
 - workflow definitions that decide which capability packs, skills, and specialist agents belong to a run
 - skills that hold the actual method for planning, recon, validation, evidence capture, and reporting
 - built-in shell, file, web, and code execution surfaces for the work itself
+- retrieval-backed memory surfaces such as relevant-memory recall, agent memory, session summaries, and background consolidation
+- an optional coordinator path where the main runtime delegates bounded tool work to workers
 - specialist agents for bounded tasks such as recon, API testing, exploitation, retesting, and reporting
 - MCP integrations for cases where an external system or typed interface is genuinely useful
 
@@ -21,9 +23,9 @@ In the normal path:
 1. the operator gives Net-Runner a target and a goal
 2. the runtime selects or initializes the workflow
 3. the active skills shape how the assessment is run
-4. the main agent uses built-in tools directly
+4. the runtime uses built-in tools directly, or the coordinator delegates bounded tool work to workers
 5. specialist agents are used when a task has a clear boundary
-6. evidence, notes, and findings are written back into the same `.netrunner/` project state
+6. evidence, notes, findings, and retrieved context are written back into the project runtime and persistent memory surfaces that support the next run
 
 ## Where MCP fits
 

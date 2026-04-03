@@ -9,37 +9,18 @@
  */
 
 import { readFileSync } from 'fs'
+import {
+  createBundleFeatureShim,
+  NET_RUNNER_FEATURE_FLAGS,
+} from './buildFeatureFlags.ts'
 
 const pkg = JSON.parse(readFileSync('./package.json', 'utf-8'))
 const version = pkg.version
 
-// Feature flags — all disabled for the public build.
-// These gate Anthropic-internal features (voice, proactive, kairos, etc.)
-const featureFlags: Record<string, boolean> = {
-  VOICE_MODE: false,
-  PROACTIVE: false,
-  KAIROS: false,
-  BRIDGE_MODE: false,
-  DAEMON: false,
-  AGENT_TRIGGERS: false,
-  MONITOR_TOOL: false,
-  ABLATION_BASELINE: false,
-  DUMP_SYSTEM_PROMPT: false,
-  CACHED_MICROCOMPACT: false,
-  COORDINATOR_MODE: false,
-  CONTEXT_COLLAPSE: false,
-  COMMIT_ATTRIBUTION: false,
-  TEAMMEM: false,
-  UDS_INBOX: false,
-  BG_SESSIONS: false,
-  AWAY_SUMMARY: false,
-  TRANSCRIPT_CLASSIFIER: false,
-  WEB_BROWSER_TOOL: false,
-  MESSAGE_ACTIONS: false,
-  BUDDY: false,
-  CHICAGO_MCP: false,
-  COWORKER_TYPE_TELEMETRY: false,
-}
+// Feature flags for the public Net-Runners build.
+// Enable only the hidden upstream capabilities that are fully present and
+// useful in this local-first red-team runtime.
+const featureFlags = NET_RUNNER_FEATURE_FLAGS
 
 const result = await Bun.build({
   entrypoints: ['./src/entrypoints/cli.tsx'],
@@ -108,7 +89,7 @@ export async function handleBgFlag() { throw new Error("Background sessions are 
         build.onLoad(
           { filter: /.*/, namespace: 'bun-bundle-shim' },
           () => ({
-            contents: `export function feature(name) { return false; }`,
+            contents: createBundleFeatureShim(featureFlags),
             loader: 'js',
           }),
         )

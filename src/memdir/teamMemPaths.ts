@@ -71,10 +71,17 @@ function sanitizePathKey(key: string): string {
  * disabled via env var or settings.
  */
 export function isTeamMemoryEnabled(): boolean {
-  if (!isAutoMemoryEnabled()) {
-    return false
-  }
-  return getFeatureValue_CACHED_MAY_BE_STALE('tengu_herring_clock', false)
+  return resolveTeamMemoryEnabled(
+    isAutoMemoryEnabled(),
+    getFeatureValue_CACHED_MAY_BE_STALE('tengu_herring_clock', true),
+  )
+}
+
+export function resolveTeamMemoryEnabled(
+  autoMemoryEnabled: boolean,
+  teamMemoryGateEnabled: boolean,
+): boolean {
+  return autoMemoryEnabled && teamMemoryGateEnabled
 }
 
 /**

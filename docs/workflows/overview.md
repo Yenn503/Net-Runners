@@ -1,6 +1,6 @@
 # Workflow Overview
 
-Net-Runner runs assessments through a project-scoped runtime. Workflow state, guardrails, evidence, memory, and reporting all sit inside the same `.netrunner/` directory.
+Net-Runner runs assessments through a project-scoped runtime. Workflow state, guardrails, evidence, findings, and reporting sit inside `.netrunner/`. Persistent memory, session summaries, and optional shared team memory sit outside that project folder and feed context back into later runs.
 
 ## Workflow registry
 
@@ -34,11 +34,12 @@ These fill gaps that matter in external bug bounty, mobile, and enterprise-targe
 
 1. The operator gives a plain-language instruction with a target.
 2. Net-Runner initializes `.netrunner/engagement.json` if needed.
-3. The runtime injects workflow, scope, and impact context into the session.
-4. The main agent uses built-in tools directly and delegates bounded work to specialists when needed.
+3. The runtime injects workflow, scope, impact, and retrieved context into the session.
+4. The main agent uses built-in tools directly, or optional coordinator mode delegates bounded tool work to workers.
 5. Guardrails review or block higher-impact actions.
 6. Evidence, artifacts, findings, and execution notes are written into the same project state.
-7. Reports are generated from that evidence chain.
+7. Background memory consolidation can update persistent memory between runs.
+8. Reports are generated from the evidence chain in `.netrunner/`.
 
 ## Specialist agents
 

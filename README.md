@@ -26,22 +26,25 @@ Net-Runner is a final-year university project and research prototype for red-tea
 
 ## 🔍 How It Works
 
-Give Net-Runner a target and goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow, routes tasks to specialist agents, and captures evidence throughout the assessment.
+Give Net-Runner a target and goal in plain language. It creates a project-scoped `.netrunner/` runtime, selects the right workflow, pulls relevant context back in, and captures evidence throughout the assessment.
 
-- Keeps workflow state, evidence, memory, and reports in one runtime
-- Pulls useful context back in through relevant-memory recall, project memory, agent memory, and session summaries
+- Keeps workflow state, evidence, findings, artifacts, and reports in one runtime
+- Pulls useful context back in through relevant-memory recall, project memory, agent memory, session summaries, and background memory consolidation
+- Can run in its normal direct-tool path or in optional coordinator mode, where the coordinator delegates tool work to workers
 - Uses specialist agents when a task has a clear boundary
 - Applies guardrails before higher-risk or out-of-scope actions
 - Runs locally by default and keeps optional remote-session support from the upstream base
+- Keeps shared team memory available as an optional per-repo sync path when OAuth and a GitHub-backed repo are available
 - Supports web, API, mobile, lab, Active Directory, WiFi, and CTF work
 
 ---
 
 ## 🧠 Core Engine Features
 
-- **Retrieval-backed context** — Net-Runner can bring useful context back into later runs through relevant-memory retrieval, agent memory, and session-memory summaries
+- **Retrieval-backed context** — relevant-memory recall, agent memory, session summaries, and background consolidation keep useful context available across longer assessments
 - **Evidence-first workflow** — findings, artifacts, notes, and reports stay tied to the same `.netrunner/` engagement
-- **Scoped delegation** — the main runtime keeps control of the assessment loop and hands bounded work to specialist agents when that helps
+- **Optional coordinator mode** — when `NETRUNNER_COORDINATOR_MODE=1` is set, the coordinator handles routing and workers handle delegated tool use
+- **Shared team memory** — local memory stays on by default, and shared team memory can sync per repo when OAuth and GitHub remote support are available
 - **Guardrail enforcement** — bash, fetch, and delegated actions all run through engagement-aware guardrails
 - **Skills-first execution** — assessment method lives in reusable skills and runtime structure, while MCP stays for the integrations that actually need it
 - **Remote and local modes** — local execution is the default path, but the engine still keeps optional remote-session support from the upstream base
@@ -110,6 +113,15 @@ node dist/cli.mjs
 Assess https://target.example. Start with recon, map the attack surface, validate findings, and capture evidence.
 ```
 
+### 4. Optional coordinator mode
+
+```bash
+export NETRUNNER_COORDINATOR_MODE=1
+node dist/cli.mjs
+```
+
+Use this when you want the main runtime to stay in a coordinator role and push bounded tool work to workers.
+
 </details>
 
 ---
@@ -118,8 +130,8 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 
 1. Net-Runner detects assessment intent and target type
 2. Initializes `.netrunner/engagement.json` and run-state for the project
-3. Injects workflow, scope, impact, skills, and retrieved context from memory
-4. Runs with shell, file, web, code, and specialist-agent tooling
+3. Injects workflow, scope, impact, skills, and retrieved context from persistent memory
+4. Runs directly with shell, file, web, and code tooling, or uses coordinator mode to delegate bounded tool work to workers
 5. Applies engagement guardrails before higher-risk or out-of-scope actions
 6. Records evidence, findings, artifacts, and reports in the project runtime
 
@@ -196,6 +208,8 @@ Use the full grouped list here: [Pentest Tool Catalog](docs/capabilities/tool-ca
 │   └── agents/
 └── instructions/
 ```
+
+`.netrunner/` is the project runtime for the current assessment. Persistent memory, session summaries, and shared team memory live under the Net-Runner config directory. Shared team memory sync is optional and requires OAuth plus a GitHub-backed repo.
 
 ---
 

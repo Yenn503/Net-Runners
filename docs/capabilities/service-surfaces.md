@@ -145,6 +145,7 @@ Current consumers include:
 - GitHub token import for hosted remote workflows
 - remote managed settings
 - policy limits
+- optional shared team memory sync
 
 Representative routes still in use:
 
@@ -157,6 +158,29 @@ Representative routes still in use:
 - `/api/claude_code/settings`
 - `/api/claude_code/policy_limits`
 
+## Shared Team Memory Sync
+
+Shared team memory is optional.
+
+It uses the local memory directory first. Sync only starts when all of these are true:
+
+- the current build includes team memory support
+- auto memory is enabled
+- the current repo has a GitHub remote
+- the operator has first-party OAuth available
+
+Used by:
+
+- per-repo shared memory sync for team-safe notes
+- startup pull of shared team memory
+- debounced push of shared team memory changes
+
+Local-only behavior without sync:
+
+- team memory files still exist locally
+- prompt injection can still use that local team memory
+- sync watcher stays off when OAuth or GitHub repo support is missing
+
 ## Local-Only Core
 
 These do not require hosted services:
@@ -164,13 +188,16 @@ These do not require hosted services:
 - engagement state under `.netrunner/`
 - evidence ledger and reports
 - specialist-agent orchestration
+- optional coordinator mode
 - plan/explore/verification built-ins
 - skills-first execution
 - shell, file, and local web tooling
 - local provider connections and OpenAI-compatible providers
 - project memory and agent memory
+- local team memory files
 - relevant-memory retrieval (auto memory + `.netrunner/memory/agents/`)
 - session-memory summarization for long conversations
+- background memory consolidation (`autoDream`)
 
 ## Memory Runtime Toggles
 
@@ -180,6 +207,7 @@ These toggles are local-runtime only and do not depend on hosted APIs:
 - `NETRUNNER_ENABLE_RELEVANT_MEMORY_PREFETCH=1` (forces prefetch where supported by the current runtime path)
 - `NETRUNNER_DISABLE_SESSION_MEMORY=1`
 - `NETRUNNER_ENABLE_SESSION_MEMORY=1`
+- `autoDreamEnabled` in `settings.json` (operator override for background memory consolidation)
 
 ## Replacement Queue
 
@@ -189,5 +217,6 @@ These areas still need explicit Net-Runner-native replacements or removal:
 - official marketplace defaults tied to Anthropic-owned plugin repos
 - API routes that still carry `claude_code` naming in path segments
 - hosted MCP connector naming that still uses `claude.ai` labels internally
+- shared team memory sync still depends on first-party OAuth and hosted API routes
 
 Do not add new hosted features without first putting their service contract in this file.

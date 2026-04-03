@@ -502,7 +502,7 @@ export async function loadMemoryPrompt(): Promise<string | null> {
   // Gate on the GB flag directly, not isTeamMemoryEnabled() — that function
   // checks isAutoMemoryEnabled() first, which is definitionally false in this
   // branch. We want "was this user in the team-memory cohort at all."
-  if (getFeatureValue_CACHED_MAY_BE_STALE('tengu_herring_clock', false)) {
+  if (getFeatureValue_CACHED_MAY_BE_STALE('tengu_herring_clock', true)) {
     logEvent('tengu_team_memdir_disabled', {})
   }
   return null

@@ -12,10 +12,18 @@ import { getFeatureValue_CACHED_MAY_BE_STALE } from '../analytics/growthbook.js'
  */
 export function isAutoDreamEnabled(): boolean {
   const setting = getInitialSettings().autoDreamEnabled
-  if (setting !== undefined) return setting
   const gb = getFeatureValue_CACHED_MAY_BE_STALE<{ enabled?: unknown } | null>(
     'tengu_onyx_plover',
     null,
   )
-  return gb?.enabled === true
+  return resolveAutoDreamEnabled(setting, gb)
+}
+
+export function resolveAutoDreamEnabled(
+  setting: boolean | undefined,
+  gb: { enabled?: unknown } | null,
+): boolean {
+  if (setting !== undefined) return setting
+  if (typeof gb?.enabled === 'boolean') return gb.enabled
+  return true
 }

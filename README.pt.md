@@ -2,91 +2,89 @@
 
 # Net-Runner 🥷
 
-### Framework de Avalia&ccedil;&atilde;o Red Team com Agentes Aut&ocirc;nomos
+### Framework de Red Team com Agentes
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
-[![License](https://img.shields.io/badge/Licen%C3%A7a-Uso%20Educacional-red?style=for-the-badge)](#licen%C3%A7a)
+[![License](https://img.shields.io/badge/Licença-Uso%20Educacional-red?style=for-the-badge)](#licença)
 
-**12 Agentes Especialistas &middot; 141 Ferramentas Red Team &middot; 17 Pacotes de Capacidade &middot; 10 Habilidades de Pentest &middot; 6 Workflows**
+**12 agentes especialistas · 141 ferramentas Red Team · 17 pacotes de capacidade · 10 skills de pentest · 6 workflows**
 
 *Fale naturalmente. O Net-Runner cuida do resto.*
 
-[English](README.md) · [Espa&ntilde;ol](README.es.md) · [Fran&ccedil;ais](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · **Portugu&ecirc;s** · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
+[English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · **Português** · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 
 ---
 
 </div>
 
 > ⚠️ **Aviso**
-> Use **apenas** em alvos para os quais voc&ecirc; tem autoriza&ccedil;&atilde;o expl&iacute;cita. O Net-Runner foi projetado para testes de penetra&ccedil;&atilde;o legais, autorizados e para fins educacionais.
+> Use apenas em alvos para os quais você tenha autorização explícita. O Net-Runner foi feito para testes de segurança legais, autorizados e educacionais.
 
-> Nota: Este README traduzido é uma visão geral resumida. A referência completa e atualizada para operadores está em [README.md](README.md) e `docs/`.
+## 🔍 O que é o Net-Runner?
 
-## 🔍 O que &eacute; o Net-Runner?
+O Net-Runner é um framework multiagente de testes de segurança feito para operar em linguagem natural.
 
-Net-Runner &eacute; um framework multi-agente de red team que transforma instru&ccedil;&otilde;es em linguagem natural em avalia&ccedil;&otilde;es de seguran&ccedil;a estruturadas. Voc&ecirc; fala com o **L&iacute;der de Engajamento** &mdash; ele delega reconhecimento, explora&ccedil;&atilde;o, relat&oacute;rios e tudo mais para agentes especialistas dedicados.
+Você conecta um LLM, descreve o alvo e o objetivo em linguagem comum, e o Net-Runner coloca todo o motor em ação:
 
-<details>
-<summary><strong>Por que Net-Runner?</strong></summary>
+- detecta a intenção da avaliação
+- cria um envelope `.netrunner/` dentro do projeto
+- injeta escopo e contexto de workflow na sessão
+- encaminha o trabalho para agentes especialistas quando necessário
+- registra evidências, memória e relatórios conforme a avaliação avança
 
-- **Linguagem natural** &mdash; sem memorizar flags ou sintaxe; descreva o que quer testar
-- **Orquestra&ccedil;&atilde;o multi-agente** &mdash; agentes especialistas em paralelo, cada um com conhecimento profundo de ferramentas
-- **Guardrails integrados** &mdash; checkpoints de escopo impedem a&ccedil;&otilde;es fora dos limites
-- **Evid&ecirc;ncia primeiro** &mdash; cada a&ccedil;&atilde;o &eacute; registrada, cada descoberta &eacute; rastre&aacute;vel
-- **Mem&oacute;ria persistente** &mdash; recupera&ccedil;&atilde;o RAG entre sess&otilde;es, por agente e por projeto
-- **141 ferramentas conectadas** &mdash; de `nmap` a `BloodHound` at&eacute; `Ghidra`, prontas para executar
-
-</details>
+```text
+Você descreve o trabalho.
+O Net-Runner planeja, delega, executa, lembra e reporta.
+```
 
 ---
 
-## 🚀 In&iacute;cio R&aacute;pido
+## ✨ Por que as pessoas usam
+
+- **Linguagem natural em primeiro lugar** — não é preciso decorar comandos para começar
+- **Um sistema inline só** — agentes, ferramentas, evidências, memória e relatórios vivem no mesmo fluxo
+- **Agentes especialistas** — papéis de recon, web, API, rede, exploit, AD, retest, evidência e reporting já estão integrados
+- **Memória persistente** — contexto útil pode ser recuperado entre sessões com busca baseada em RAG
+- **Evidência primeiro** — descobertas, passos de execução, aprovações e relatórios ficam ligados ao mesmo engagement
+
+---
+
+## 🚀 Comece aqui
+
+### 1. Instale e faça o build
 
 ```bash
 bun install
 bun run build
-node dist/cli.mjs
 ```
 
-Digite uma instru&ccedil;&atilde;o em linguagem natural:
+### 2. Conecte um modelo
 
-```
-Avaliar https://alvo.exemplo — come&ccedil;ar com reconhecimento, depois testar vulnerabilidades web.
-```
-
-O Net-Runner detecta sua inten&ccedil;&atilde;o automaticamente, inicializa o engajamento com padr&otilde;es seguros e come&ccedil;a a trabalhar.
-
----
-
-## 🤖 Conectar um Provedor LLM
-
-Net-Runner funciona com m&uacute;ltiplos provedores de LLM. Configure as vari&aacute;veis de ambiente antes de iniciar.
-
-### Com `ANTHROPIC_API_KEY`
+#### `ANTHROPIC_API_KEY`
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 node dist/cli.mjs
 ```
 
-### OpenAI
+#### OpenAI
 
 ```bash
 export OPENAI_API_KEY="sk-..."
-export OPENAI_MODEL="gpt-4o"          # opcional
+export OPENAI_MODEL="gpt-4o"
 node dist/cli.mjs
 ```
 
-### Google Gemini
+#### Google Gemini
 
 ```bash
 export GEMINI_API_KEY="AIza..."
-export GEMINI_MODEL="gemini-2.5-pro"   # opcional
+export GEMINI_MODEL="gemini-2.5-pro"
 node dist/cli.mjs
 ```
 
-### Ollama (Local)
+#### Ollama
 
 ```bash
 ollama serve
@@ -96,82 +94,147 @@ export OPENAI_MODEL="llama3.1:8b"
 node dist/cli.mjs
 ```
 
-### Qualquer API compat&iacute;vel com OpenAI
-
-Funciona com LM Studio, vLLM, Together AI, Groq, Fireworks ou qualquer endpoint compat&iacute;vel:
+#### Qualquer API compatível com OpenAI
 
 ```bash
 export OPENAI_API_KEY="sua-chave"
 export OPENAI_BASE_URL="https://seu-provedor.com/v1"
-export OPENAI_MODEL="nome-do-modelo"
+export OPENAI_MODEL="seu-modelo"
 node dist/cli.mjs
+```
+
+### 3. Fale naturalmente
+
+```text
+Avalie https://alvo.exemplo. Comece pelo reconhecimento, encontre a superfície principal de ataque, valide os problemas mais prováveis e mantenha a evidência durante o processo.
+```
+
+O Net-Runner detecta o alvo, inicia o engagement, injeta o contexto correto e começa a usar o runtime agentic.
+
+---
+
+## ⚙️ Como funciona
+
+```text
+Você
+  ↓
+Sessão principal do LLM
+  ↓
+Contexto de runtime do Net-Runner
+  ↓
+Agentes especialistas + ferramentas + memória + evidência
+  ↓
+Saída estruturada da avaliação
+```
+
+| Etapa | O que o Net-Runner faz |
+|------|-------------------------|
+| **1. Detectar** | Reconhece a intenção da avaliação, o tipo de alvo e o workflow mais provável |
+| **2. Inicializar** | Cria o estado `.netrunner/` do engagement se ele ainda não existir |
+| **3. Injetar** | Adiciona escopo, limite de impacto, workflow e skills padrão na sessão ativa |
+| **4. Rotear** | Usa o runtime principal e os agentes especialistas juntos, sem obrigar você a microgerenciar comandos |
+| **5. Proteger** | Aplica guardrails internos a ações destrutivas, persistentes ou fora de escopo |
+| **6. Registrar** | Salva evidência, passos de execução, findings, reviews, memória e relatórios dentro do mesmo envelope |
+
+No caminho normal, você pode:
+
+- fornecer um alvo
+- dizer que tipo de avaliação quer rodar
+- pedir para continuar, aprofundar, retestar, resumir ou reportar
+- deixar o sistema usar o ambiente, as ferramentas, a memória e os agentes que já estão disponíveis
+
+---
+
+## 🕵️ Agentes
+
+O Net-Runner mantém o fluxo agentic geral original e adiciona papéis especialistas de segurança por cima.
+
+| Agente | O que faz |
+|:-------|:----------|
+| **Engagement Lead** | Orquestra a avaliação, escolhe fases do workflow e roteia trabalho |
+| **Recon Specialist** | Encontra hosts, serviços, subdomínios, tecnologias e superfície de ataque |
+| **Web Testing Specialist** | Testa rotas, parâmetros, fluxos de autenticação e vulnerabilidades web |
+| **API Testing Specialist** | Testa APIs, schemas, JWTs, caminhos IDOR e transições de estado |
+| **Network Testing Specialist** | Cuida da enumeração de serviços, validação de rede e testes em nível de host |
+| **Exploit Specialist** | Valida o impacto real de forma controlada |
+| **Privilege Escalation Specialist** | Cuida de caminhos de escalada após o acesso inicial |
+| **Lateral Movement Specialist** | Cuida de pivôs, relações de confiança e movimento entre múltiplos hosts |
+| **AD Specialist** | Focado em Active Directory e Kerberos |
+| **Retest Specialist** | Reproduz findings e valida correções |
+| **Evidence Specialist** | Organiza artefatos e evidência rastreável |
+| **Reporting Specialist** | Transforma a evidência em um relatório limpo |
+
+Agentes centrais do runtime, como `general-purpose`, `Explore`, `Plan` e `verification`, continuam fazendo parte do sistema.
+
+---
+
+## 🧱 Estrutura do projeto
+
+```text
+.netrunner/
+├── engagement.json
+├── run-state.json
+├── evidence/
+│   └── ledger.jsonl
+├── findings/
+├── reports/
+├── artifacts/
+├── memory/
+│   ├── private.md
+│   ├── team.md
+│   └── agents/
+└── instructions/
+```
+
+- `engagement.json` — workflow atual, alvos, limite de impacto e restrições
+- `run-state.json` — passos de execução e reviews pendentes
+- `evidence/` — ledger append-only de evidência
+- `findings/` — saídas estruturadas de findings
+- `reports/` — relatórios gerados
+- `artifacts/` — saídas coletadas e arquivos de apoio
+- `memory/` — memória persistente de operador, equipe e agentes
+- `instructions/` — instruções de runtime no nível do projeto
+
+---
+
+## 💬 Prompts de exemplo
+
+```text
+Avalie https://alvo.exemplo e mapeie a superfície de ataque externa.
+```
+
+```text
+Continue o engagement atual, foque em fraquezas de autenticação e capture evidência para tudo que for real.
+```
+
+```text
+Escale para validação intrusiva e verifique se o problema identificado é realmente explorável.
+```
+
+```text
+Gere um relatório a partir da evidência atual e resuma primeiro os findings de maior risco.
 ```
 
 ---
 
-## ⚙️ Como Funciona
+## 📚 Documentação
 
-| Etapa | O que Acontece |
-|-------|---------------|
-| **1. Detectar** | Analisar inten&ccedil;&atilde;o de avalia&ccedil;&atilde;o, identificar alvos |
-| **2. Inicializar** | Criar envelope `.netrunner/` com padr&otilde;es seguros |
-| **3. Injetar** | Anexar escopo, autoriza&ccedil;&atilde;o e restri&ccedil;&otilde;es a cada turno |
-| **4. Delegar** | Direcionar trabalho aos agentes especialistas |
-| **5. Proteger** | Checkpoint de escopo antes de a&ccedil;&otilde;es de alto impacto |
-| **6. Registrar** | Registrar evid&ecirc;ncias e descobertas em tempo real |
-| **7. Lembrar** | Persistir conhecimento por agente e projeto para sess&otilde;es futuras |
-| **8. Relatar** | Gerar sa&iacute;da de avalia&ccedil;&atilde;o estruturada baseada em evid&ecirc;ncias |
+Use este README para o caminho do operador. Use `docs/` para o detalhe técnico.
+
+- [Visão geral dos workflows](docs/workflows/overview.md)
+- [Superfícies de serviço](docs/capabilities/service-surfaces.md)
+- `docs/` para detalhes de implementação, mapeamento de capacidades e notas mais profundas do runtime
 
 ---
 
-## 🕵️ Agentes Especialistas
+## 📜 Licença
 
-| Agente | Foco |
-|:-------|:-----|
-| **L&iacute;der de Engajamento** | Orquestra&ccedil;&atilde;o, roteamento de workflows, coordena&ccedil;&atilde;o |
-| **Especialista em Reconhecimento** | Descoberta de rede, DNS, OSINT, enumera&ccedil;&atilde;o de subdom&iacute;nios |
-| **Teste Web** | XSS, SQLi, SSRF, bypass de autentica&ccedil;&atilde;o, varredura CMS |
-| **Teste API** | GraphQL, JWT, IDOR, atribui&ccedil;&atilde;o em massa, an&aacute;lise de esquemas |
-| **Teste de Rede** | SMB, SSH, FTP, explora&ccedil;&atilde;o de servi&ccedil;os, an&aacute;lise de tr&aacute;fego |
-| **Especialista em Explora&ccedil;&atilde;o** | Gera&ccedil;&atilde;o de payloads, execu&ccedil;&atilde;o de PoC controlada |
-| **Escala&ccedil;&atilde;o de Privil&eacute;gios** | SUID, exploits de kernel, abuso de tokens, escape de cont&ecirc;ineres |
-| **Movimento Lateral** | Reutiliza&ccedil;&atilde;o de credenciais, pivoteamento, redirecionamento de portas |
-| **Especialista AD** | LDAP/Kerberos, abuso de confian&ccedil;a, ADCS, BloodHound |
-| **Especialista em Reteste** | Reproduzir descobertas, validar remedia&ccedil;&atilde;o |
-| **Especialista em Evid&ecirc;ncias** | Cura&ccedil;&atilde;o de artefatos, cadeia de cust&oacute;dia, forense |
-| **Especialista em Relat&oacute;rios** | Classifica&ccedil;&atilde;o de severidade, resumo executivo, remedia&ccedil;&atilde;o |
-
----
-
-## 📋 Workflows
-
-| Workflow | Ambiente Alvo | Pacotes Chave |
-|:---------|:-------------|:-------------|
-| `web-app-testing` | Aplica&ccedil;&otilde;es web | recon, web, explora&ccedil;&atilde;o |
-| `api-testing` | REST / GraphQL / SOAP | recon, api, explora&ccedil;&atilde;o |
-| `lab-target-testing` | HTB / Labs / Interno | rede, explora&ccedil;&atilde;o, AD, privesc |
-| `ctf-mode` | Desafios CTF | recon, web, bin&aacute;rio, explora&ccedil;&atilde;o |
-| `ad-testing` | Active Directory | AD, rede, banco de dados, privesc |
-| `wifi-testing` | Redes 802.11 | wifi, rede, explora&ccedil;&atilde;o |
-
----
-
-## 🛠️ Cobertura de Ferramentas
-
-**141 ferramentas em 17 pacotes de capacidade** &mdash; incluindo `nmap`, `nuclei`, `sqlmap`, `msfconsole`, `bloodhound`, `ghidra`, `volatility3`, `trivy`, `aircrack-ng` e muito mais.
-
-Para a lista completa por categoria, consulte o [README principal](README.md).
-
----
-
-## 📜 Licen&ccedil;a
-
-Este reposit&oacute;rio &eacute; para **uso educacional** e **testes de seguran&ccedil;a autorizados** apenas.
+Este repositório é apenas para **uso educacional** e **testes de segurança autorizados**.
 
 ---
 
 <div align="center">
 
-*Constru&iacute;do para operadores que pensam em objetivos, n&atilde;o em flags.*
+*Feito para operadores que pensam em alvos e resultados, não em flags nem em rituais de configuração.*
 
 </div>

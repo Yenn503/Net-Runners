@@ -6,11 +6,11 @@
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
-[![License](https://img.shields.io/badge/ライセンス-教育目的-red?style=for-the-badge)](#ライセンス)
+[![License](https://img.shields.io/badge/ライセンス-教育利用-red?style=for-the-badge)](#ライセンス)
 
-**12の専門エージェント &middot; 141のレッドチームツール &middot; 17の能力パック &middot; 10のペンテストスキル &middot; 6つのワークフロー**
+**12 の専門エージェント · 141 の Red-Team ツール · 17 の能力パック · 10 のペンテストスキル · 6 のワークフロー**
 
-*自然に話しかけてください。Net-Runnerが残りを処理します。*
+*自然に話せば大丈夫です。あとは Net-Runner が処理します。*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · **日本語** · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 
@@ -19,74 +19,72 @@
 </div>
 
 > ⚠️ **警告**
-> 明示的に許可されたターゲットに**のみ**使用してください。Net-Runnerは合法的で許可されたペネトレーションテストおよび教育目的のために設計されています。
+> 明示的に許可された対象に対してのみ使用してください。Net-Runner は、合法かつ許可されたセキュリティテストと教育用途のために設計されています。
 
-> 注記: この翻訳版 README は簡潔な概要です。運用者向けの完全で最新の参照は [README.md](README.md) と `docs/` にあります。
+## 🔍 Net-Runner とは
 
-## 🔍 Net-Runnerとは？
+Net-Runner は、自然言語で操作できるマルチエージェント型のセキュリティテストフレームワークです。
 
-Net-Runnerは、自然言語の指示を構造化されたセキュリティ評価に変換するマルチエージェントのレッドチームフレームワークです。**エンゲージメントリーダー**と会話すると、偵察、エクスプロイト、レポート作成などすべてを専門エージェントに委任します。
+LLM を接続し、対象と目的を普通の言葉で伝えると、Net-Runner が全体の実行エンジンを動かします。
 
-<details>
-<summary><strong>なぜNet-Runner？</strong></summary>
+- 評価の意図を判定する
+- プロジェクト単位の `.netrunner/` 実行領域を作る
+- スコープとワークフローの文脈をセッションへ注入する
+- 必要に応じて専門エージェントへ作業を振り分ける
+- 評価の進行中に証拠、メモリ、レポートを保存する
 
-- **自然言語** — フラグや構文を覚える必要なし；テストしたい内容を説明するだけ
-- **マルチエージェントオーケストレーション** — 並列の専門エージェント、各々がツールの深い知識を持つ
-- **組み込みガードレール** — スコープガードのチェックポイントが境界外の行動を防止
-- **エビデンスファースト** — すべてのアクションが記録され、すべての発見が追跡可能
-- **永続メモリ** — セッション間のRAGベース検索、エージェントごとおよびプロジェクトごと
-- **141ツール接続済み** — `nmap`から`BloodHound`、`Ghidra`まで実行可能
-
-</details>
+```text
+やりたいことを伝える。
+Net-Runner が計画し、委任し、実行し、記憶し、報告する。
+```
 
 ---
 
-## 🚀 クイックスタート
+## ✨ 使われる理由
+
+- **自然言語ファースト** — 開始のためにコマンドを覚える必要がない
+- **ひとつの統合フロー** — エージェント、ツール、証拠、メモリ、レポートが同じ流れで動く
+- **専門エージェント** — Recon、Web、API、Network、Exploit、AD、Retest、Evidence、Reporting が最初から接続済み
+- **永続メモリ** — RAG ベースの取得でセッションをまたいで有用な文脈を呼び戻せる
+- **証拠優先** — 発見、実行手順、承認、レポートが同じ engagement に紐づく
+
+---
+
+## 🚀 ここから始める
+
+### 1. インストールとビルド
 
 ```bash
 bun install
 bun run build
-node dist/cli.mjs
 ```
 
-自然言語で指示を入力：
+### 2. モデルを接続する
 
-```
-https://target.example を評価 — まず偵察から始めて、次にWebの脆弱性をテスト。
-```
-
-Net-Runner は意図を自動検出し、安全なデフォルトでエンゲージメントを初期化して作業を開始します。
-
----
-
-## 🤖 LLMプロバイダーの接続
-
-Net-Runnerは複数のLLMプロバイダーに対応しています。起動前に環境変数を設定してください。
-
-### `ANTHROPIC_API_KEY` を使う
+#### `ANTHROPIC_API_KEY`
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 node dist/cli.mjs
 ```
 
-### OpenAI
+#### OpenAI
 
 ```bash
 export OPENAI_API_KEY="sk-..."
-export OPENAI_MODEL="gpt-4o"          # オプション
+export OPENAI_MODEL="gpt-4o"
 node dist/cli.mjs
 ```
 
-### Google Gemini
+#### Google Gemini
 
 ```bash
 export GEMINI_API_KEY="AIza..."
-export GEMINI_MODEL="gemini-2.5-pro"   # オプション
+export GEMINI_MODEL="gemini-2.5-pro"
 node dist/cli.mjs
 ```
 
-### Ollama（ローカル）
+#### Ollama
 
 ```bash
 ollama serve
@@ -96,82 +94,147 @@ export OPENAI_MODEL="llama3.1:8b"
 node dist/cli.mjs
 ```
 
-### OpenAI互換 API
-
-LM Studio、vLLM、Together AI、Groq、Fireworks、または任意の互換エンドポイントで動作：
+#### OpenAI 互換 API
 
 ```bash
 export OPENAI_API_KEY="your-key"
 export OPENAI_BASE_URL="https://your-provider.com/v1"
-export OPENAI_MODEL="your-model-name"
+export OPENAI_MODEL="your-model"
 node dist/cli.mjs
+```
+
+### 3. 自然に話す
+
+```text
+https://target.example を評価してください。まず偵察を行い、主要な攻撃面を見つけ、可能性の高い問題を検証しながら証拠を残してください。
+```
+
+Net-Runner は対象を判定し、engagement を開始し、適切な文脈を注入して agentic runtime を動かし始めます。
+
+---
+
+## ⚙️ 仕組み
+
+```text
+あなた
+  ↓
+メインの LLM セッション
+  ↓
+Net-Runner のランタイム文脈
+  ↓
+専門エージェント + ツール + メモリ + 証拠
+  ↓
+構造化された評価結果
+```
+
+| ステップ | Net-Runner が行うこと |
+|---------|------------------------|
+| **1. 検出** | 評価意図、対象タイプ、適切なワークフローを判断する |
+| **2. 起動** | まだなければ engagement 用の `.netrunner/` 状態を作成する |
+| **3. 注入** | スコープ、影響境界、ワークフロー、既定スキルを現在のセッションへ追加する |
+| **4. ルーティング** | メイン runtime と専門エージェントを組み合わせて使い、コマンドの細かい管理を不要にする |
+| **5. 保護** | 破壊的、永続的、または範囲外の操作に内部ガードレールを適用する |
+| **6. 記録** | 証拠、実行手順、発見、レビュー、メモリ、レポートを同じ環境に保存する |
+
+通常の流れでは、次のようなことができます。
+
+- 対象を伝える
+- どの種類の評価を走らせるか伝える
+- 続行、深掘り、再検証、要約、レポート生成を依頼する
+- すでに使える環境、ツール、メモリ、エージェントをそのまま使わせる
+
+---
+
+## 🕵️ エージェント
+
+Net-Runner は元の汎用 agentic フローを保ちつつ、その上に専門的なセキュリティ役割を追加します。
+
+| エージェント | 役割 |
+|:-------------|:-----|
+| **Engagement Lead** | 評価全体を統括し、ワークフロー段階を選び、作業を振り分ける |
+| **Recon Specialist** | ホスト、サービス、サブドメイン、技術、攻撃面を見つける |
+| **Web Testing Specialist** | ルート、パラメータ、認証フロー、Web 脆弱性を検証する |
+| **API Testing Specialist** | API、スキーマ、JWT、IDOR 経路、状態遷移を検証する |
+| **Network Testing Specialist** | サービス列挙、ネットワーク検証、ホストレベルのテストを担当する |
+| **Exploit Specialist** | 実際の影響を制御付きで検証する |
+| **Privilege Escalation Specialist** | 初期アクセス後の権限昇格経路を扱う |
+| **Lateral Movement Specialist** | ピボット、信頼経路、複数ホスト間移動を扱う |
+| **AD Specialist** | Active Directory と Kerberos に集中する |
+| **Retest Specialist** | 発見を再現し、修正を検証する |
+| **Evidence Specialist** | 成果物と追跡可能な証拠を整理する |
+| **Reporting Specialist** | 証拠を明確なレポートへまとめる |
+
+`general-purpose`、`Explore`、`Plan`、`verification` などのコア runtime エージェントも引き続きシステムに含まれます。
+
+---
+
+## 🧱 プロジェクト構造
+
+```text
+.netrunner/
+├── engagement.json
+├── run-state.json
+├── evidence/
+│   └── ledger.jsonl
+├── findings/
+├── reports/
+├── artifacts/
+├── memory/
+│   ├── private.md
+│   ├── team.md
+│   └── agents/
+└── instructions/
+```
+
+- `engagement.json` — 現在のワークフロー、対象、影響境界、制約
+- `run-state.json` — 実行手順と保留中レビュー
+- `evidence/` — append-only の証拠台帳
+- `findings/` — 構造化された発見出力
+- `reports/` — 生成された評価レポート
+- `artifacts/` — 収集された出力と補助ファイル
+- `memory/` — オペレーター、チーム、エージェントの永続メモリ
+- `instructions/` — プロジェクト単位のランタイム指示
+
+---
+
+## 💬 プロンプト例
+
+```text
+https://target.example を評価し、外部攻撃面をマッピングしてください。
+```
+
+```text
+現在の engagement を続け、認証の弱点に集中し、実在する問題の証拠を残してください。
+```
+
+```text
+侵入的な検証に進み、特定された問題が本当に悪用可能か確認してください。
+```
+
+```text
+現在の証拠からレポートを生成し、最もリスクの高い発見から先に要約してください。
 ```
 
 ---
 
-## ⚙️ 動作の仕組み
+## 📚 ドキュメント
 
-| ステップ | 実行内容 |
-|---------|---------|
-| **1. 検出** | 評価意図を解析、ターゲットを特定 |
-| **2. 初期化** | `.netrunner/`を安全なデフォルト値で作成 |
-| **3. 注入** | スコープ、認可、制限を各モデルターンに付加 |
-| **4. 委任** | ワークフローと発見に基づき専門エージェントに作業を振り分け |
-| **5. 防護** | 高影響アクション前にスコープガードチェックポイント |
-| **6. 記録** | エビデンスと発見をリアルタイムで記録 |
-| **7. 記憶** | エージェントごと・プロジェクトごとに知識を永続化 |
-| **8. 報告** | エビデンスに基づく構造化評価出力を生成 |
+この README は運用開始用です。技術的な詳細は `docs/` を参照してください。
 
----
-
-## 🕵️ 専門エージェント
-
-| エージェント | 専門分野 |
-|:-----------|:---------|
-| **エンゲージメントリーダー** | オーケストレーション、ワークフロールーティング、スキル調整 |
-| **偵察スペシャリスト** | ネットワーク探索、DNS、OSINT、サブドメイン列挙 |
-| **Webテスト** | XSS、SQLi、SSRF、認証バイパス、CMSスキャン |
-| **APIテスト** | GraphQL、JWT、IDOR、マスアサインメント、スキーマ分析 |
-| **ネットワークテスト** | SMB、SSH、FTP、サービスエクスプロイト、トラフィック分析 |
-| **エクスプロイトスペシャリスト** | ペイロード生成、PoC実行、制御されたエクスプロイト |
-| **権限昇格** | SUID、カーネルエクスプロイト、トークン悪用、コンテナエスケープ |
-| **ラテラルムーブメント** | 認証情報の再利用、ピボッティング、ポートフォワーディング |
-| **ADスペシャリスト** | LDAP/Kerberos、信頼悪用、ADCS、BloodHound |
-| **リテストスペシャリスト** | 発見の再現、修正の検証 |
-| **エビデンススペシャリスト** | アーティファクト管理、証拠チェーン、フォレンジック |
-| **レポートスペシャリスト** | 深刻度分類、エグゼクティブサマリー、修復ガイダンス |
-
----
-
-## 📋 ワークフロー
-
-| ワークフロー | ターゲット環境 | 主要パック |
-|:-----------|:-------------|:---------|
-| `web-app-testing` | Webアプリケーション | 偵察、Web、エクスプロイト |
-| `api-testing` | REST / GraphQL / SOAP | 偵察、API、エクスプロイト |
-| `lab-target-testing` | HTB / ラボ / 内部ネットワーク | ネットワーク、エクスプロイト、AD、権限昇格 |
-| `ctf-mode` | CTFチャレンジ | 偵察、Web、バイナリ、エクスプロイト |
-| `ad-testing` | Active Directory | AD、ネットワーク、データベース、権限昇格 |
-| `wifi-testing` | 802.11無線ネットワーク | WiFi、ネットワーク、エクスプロイト |
-
----
-
-## 🛠️ ツールカバレッジ
-
-**17の能力パックにわたる141ツール** — `nmap`、`nuclei`、`sqlmap`、`msfconsole`、`bloodhound`、`ghidra`、`volatility3`、`trivy`、`aircrack-ng`など。
-
-カテゴリ別の完全なリストは[メインREADME](README.md)をご覧ください。
+- [ワークフロー概要](docs/workflows/overview.md)
+- [サービスサーフェス](docs/capabilities/service-surfaces.md)
+- `docs/` には実装詳細、能力マッピング、より深いランタイムノートがあります
 
 ---
 
 ## 📜 ライセンス
 
-このリポジトリは**教育目的**および**許可されたセキュリティテスト**のみを対象としています。
+このリポジトリは **教育用途** と **許可されたセキュリティテスト** のみを対象としています。
 
 ---
 
 <div align="center">
 
-*フラグではなく目標で考えるオペレーターのために構築。*
+*フラグや設定儀式ではなく、対象と結果で考えるオペレーターのために作られています。*
 
 </div>

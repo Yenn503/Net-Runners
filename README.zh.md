@@ -8,9 +8,9 @@
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/许可-教育用途-red?style=for-the-badge)](#许可证)
 
-**12 个专业代理 &middot; 141 个红队工具 &middot; 17 个能力包 &middot; 10 个渗透测试技能 &middot; 6 个工作流**
+**12 个专业代理 · 141 个红队工具 · 17 个能力包 · 10 个渗透测试技能 · 6 个工作流**
 
-*自然语言交流，Net-Runner 处理一切。*
+*自然交流，Net-Runner 处理剩下的事。*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · **中文** · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [हिन्दी](README.hi.md) · [Deutsch](README.de.md)
 
@@ -19,74 +19,72 @@
 </div>
 
 > ⚠️ **警告**
-> **仅**在您获得明确授权的目标上使用。Net-Runner 专为合法、授权的渗透测试和教育目的而设计。
-
-> 说明：此翻译版 README 是简要概览。面向操作人员的完整且最新参考请查看 [README.md](README.md) 和 `docs/`。
+> 只能在你已获得明确授权的目标上使用。Net-Runner 仅面向合法、授权的安全测试和教育用途。
 
 ## 🔍 什么是 Net-Runner？
 
-Net-Runner 是一个多代理红队框架，将自然语言指令转化为结构化的安全评估。您与**任务负责人**对话——它将侦察、利用、报告等所有工作委派给专门的专业代理。
+Net-Runner 是一个面向自然语言操作的多代理安全测试框架。
 
-<details>
-<summary><strong>为什么选择 Net-Runner？</strong></summary>
+你连接一个 LLM，用自然语言描述目标和任务，Net-Runner 就会启动整套运行引擎：
 
-- **自然语言** — 无需记忆命令参数或语法；描述您想测试的内容即可
-- **多代理编排** — 并行运行的专业代理，每个都具有深厚的工具知识
-- **内置护栏** — 范围守卫检查点防止越界操作
-- **证据优先** — 每个操作都被记录，每个发现都可追溯
-- **持久记忆** — 基于 RAG 的跨会话检索，按代理和按项目
-- **141 个工具已接入** — 从 `nmap` 到 `BloodHound` 再到 `Ghidra`，随时可执行
+- 识别评估意图
+- 创建项目级 `.netrunner/` 运行目录
+- 将范围和工作流上下文注入当前会话
+- 在需要时把工作路由给专业代理
+- 在评估过程中持续记录证据、记忆和报告
 
-</details>
+```text
+你描述任务。
+Net-Runner 负责规划、委派、执行、记忆和报告。
+```
 
 ---
 
-## 🚀 快速开始
+## ✨ 为什么大家会用它
+
+- **自然语言优先** — 不需要先记命令才能开始
+- **单一内联系统** — 代理、工具、证据、记忆和报告都在同一条流程里运行
+- **专业代理已就位** — 侦察、Web、API、网络、利用、AD、复测、证据和报告角色都已接好
+- **持久记忆** — 可通过 RAG 检索在不同会话之间找回有价值的上下文
+- **证据优先** — 发现、执行步骤、审批和报告都绑定在同一次 engagement 里
+
+---
+
+## 🚀 从这里开始
+
+### 1. 安装并构建
 
 ```bash
 bun install
 bun run build
-node dist/cli.mjs
 ```
 
-然后输入自然语言指令：
+### 2. 连接模型
 
-```
-评估 https://target.example — 先进行侦察，然后测试 Web 漏洞。
-```
-
-Net-Runner 会自动识别你的意图，以安全默认值初始化评估流程，并开始执行。
-
----
-
-## 🤖 连接 LLM 提供商
-
-Net-Runner 支持多种 LLM 提供商。启动前设置相应的环境变量。
-
-### 使用 `ANTHROPIC_API_KEY`
+#### `ANTHROPIC_API_KEY`
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 node dist/cli.mjs
 ```
 
-### OpenAI
+#### OpenAI
 
 ```bash
 export OPENAI_API_KEY="sk-..."
-export OPENAI_MODEL="gpt-4o"          # 可选
+export OPENAI_MODEL="gpt-4o"
 node dist/cli.mjs
 ```
 
-### Google Gemini
+#### Google Gemini
 
 ```bash
 export GEMINI_API_KEY="AIza..."
-export GEMINI_MODEL="gemini-2.5-pro"   # 可选
+export GEMINI_MODEL="gemini-2.5-pro"
 node dist/cli.mjs
 ```
 
-### Ollama（本地部署）
+#### Ollama
 
 ```bash
 ollama serve
@@ -96,82 +94,147 @@ export OPENAI_MODEL="llama3.1:8b"
 node dist/cli.mjs
 ```
 
-### 任何 OpenAI 兼容 API
-
-支持 LM Studio、vLLM、Together AI、Groq、Fireworks 或任何兼容端点：
+#### 任意兼容 OpenAI 的 API
 
 ```bash
 export OPENAI_API_KEY="your-key"
 export OPENAI_BASE_URL="https://your-provider.com/v1"
-export OPENAI_MODEL="your-model-name"
+export OPENAI_MODEL="your-model"
 node dist/cli.mjs
+```
+
+### 3. 直接自然交流
+
+```text
+评估 https://target.example。先做侦察，找出主要攻击面，验证最可能的问题，并在过程中持续保留证据。
+```
+
+Net-Runner 会识别目标、启动 engagement、注入正确上下文，并开始使用它的 agentic runtime。
+
+---
+
+## ⚙️ 它是如何工作的
+
+```text
+你
+  ↓
+主 LLM 会话
+  ↓
+Net-Runner 运行时上下文
+  ↓
+专业代理 + 工具 + 记忆 + 证据
+  ↓
+结构化评估输出
+```
+
+| 步骤 | Net-Runner 会做什么 |
+|------|----------------------|
+| **1. 识别** | 判断评估意图、目标类型和最可能的工作流 |
+| **2. 启动** | 如果还不存在，就为本次 engagement 创建 `.netrunner/` 状态 |
+| **3. 注入** | 将范围、影响边界、工作流和默认技能加入当前会话 |
+| **4. 路由** | 同时使用主运行时和专业代理，而不是让你手动管理命令 |
+| **5. 保护** | 对破坏性、持久化或超范围操作应用内部护栏 |
+| **6. 记录** | 将证据、执行步骤、发现、复核、记忆和报告保存到同一套状态中 |
+
+正常使用时，你可以：
+
+- 给出目标
+- 说明要执行哪类评估
+- 要求继续、深入、复测、总结或生成报告
+- 让它自行使用已经可用的环境、工具、记忆和代理
+
+---
+
+## 🕵️ 代理
+
+Net-Runner 保留原有通用 agentic 流程，并在其上增加专业安全角色。
+
+| 代理 | 作用 |
+|:-----|:-----|
+| **Engagement Lead** | 统筹评估、选择工作流阶段并路由任务 |
+| **Recon Specialist** | 发现主机、服务、子域、技术栈和攻击面 |
+| **Web Testing Specialist** | 测试路由、参数、认证流程和 Web 漏洞 |
+| **API Testing Specialist** | 测试 API、模式、JWT、IDOR 路径和状态转换 |
+| **Network Testing Specialist** | 负责服务枚举、网络验证和主机级测试 |
+| **Exploit Specialist** | 以受控方式验证真实影响 |
+| **Privilege Escalation Specialist** | 处理初始访问后的提权路径 |
+| **Lateral Movement Specialist** | 处理 pivot、信任路径和多主机移动 |
+| **AD Specialist** | 聚焦 Active Directory 和 Kerberos |
+| **Retest Specialist** | 复现发现并验证修复 |
+| **Evidence Specialist** | 组织工件和可追溯证据 |
+| **Reporting Specialist** | 将证据整理为清晰报告 |
+
+`general-purpose`、`Explore`、`Plan` 和 `verification` 等核心运行时代理仍然保留在系统中。
+
+---
+
+## 🧱 项目结构
+
+```text
+.netrunner/
+├── engagement.json
+├── run-state.json
+├── evidence/
+│   └── ledger.jsonl
+├── findings/
+├── reports/
+├── artifacts/
+├── memory/
+│   ├── private.md
+│   ├── team.md
+│   └── agents/
+└── instructions/
+```
+
+- `engagement.json` — 当前工作流、目标、影响边界和限制
+- `run-state.json` — 执行步骤和待处理复核
+- `evidence/` — 只追加的证据账本
+- `findings/` — 结构化发现输出
+- `reports/` — 生成的评估报告
+- `artifacts/` — 收集的输出和支撑文件
+- `memory/` — 操作员、团队和代理的持久记忆
+- `instructions/` — 项目级运行时说明
+
+---
+
+## 💬 示例提示词
+
+```text
+评估 https://target.example，并绘制外部攻击面。
+```
+
+```text
+继续当前 engagement，重点检查认证薄弱点，并为所有真实问题保留证据。
+```
+
+```text
+升级到侵入式验证，并确认已识别的问题是否真的可以利用。
+```
+
+```text
+根据当前证据生成报告，并优先总结风险最高的发现。
 ```
 
 ---
 
-## ⚙️ 工作原理
+## 📚 文档
 
-| 步骤 | 执行内容 |
-|------|---------|
-| **1. 检测** | 解析评估意图，识别目标 |
-| **2. 初始化** | 创建 `.netrunner/` 目录，使用安全默认值（未确认授权、只读影响） |
-| **3. 注入** | 将范围、授权和限制附加到每个模型回合 |
-| **4. 委派** | 根据工作流和发现将工作路由到专业代理 |
-| **5. 守卫** | 在任何高影响操作前执行范围守卫检查点 |
-| **6. 记录** | 实时记录证据、执行状态和发现 |
-| **7. 记忆** | 按代理和按项目持久化知识，用于未来会话 |
-| **8. 报告** | 生成结构化的、以证据为基础的评估输出 |
+主 README 用于操作路径，技术细节请查看 `docs/`。
 
----
-
-## 🕵️ 专业代理
-
-| 代理 | 专长 |
-|:-----|:-----|
-| **任务负责人** | 编排、工作流路由、技能协调 |
-| **侦察专家** | 网络发现、DNS、OSINT、子域枚举 |
-| **Web 测试专家** | XSS、SQLi、SSRF、认证绕过、CMS 扫描 |
-| **API 测试专家** | GraphQL、JWT、IDOR、批量分配、模式分析 |
-| **网络测试专家** | SMB、SSH、FTP、服务利用、流量分析 |
-| **利用专家** | Payload 生成、PoC 执行、受控利用 |
-| **权限提升专家** | SUID、内核利用、令牌滥用、容器逃逸 |
-| **横向移动专家** | 凭据重用、枢纽转发、端口转发 |
-| **AD 专家** | LDAP/Kerberos、信任滥用、ADCS、BloodHound |
-| **复测专家** | 复现发现、验证修复 |
-| **证据专家** | 工件管理、证据链、数字取证 |
-| **报告专家** | 严重性分级、执行摘要、修复建议 |
-
----
-
-## 📋 工作流
-
-| 工作流 | 目标环境 | 关键能力包 |
-|:-------|:---------|:----------|
-| `web-app-testing` | Web 应用 | 侦察、Web、利用 |
-| `api-testing` | REST / GraphQL / SOAP | 侦察、API、利用 |
-| `lab-target-testing` | HTB / 实验室 / 内网 | 网络、利用、AD、权限提升 |
-| `ctf-mode` | CTF 挑战 | 侦察、Web、二进制、利用 |
-| `ad-testing` | Active Directory | AD、网络、数据库、权限提升 |
-| `wifi-testing` | 802.11 无线网络 | WiFi、网络、利用 |
-
----
-
-## 🛠️ 工具覆盖
-
-**141 个工具，覆盖 17 个能力包** — 包括 `nmap`、`nuclei`、`sqlmap`、`msfconsole`、`bloodhound`、`ghidra`、`volatility3`、`trivy`、`aircrack-ng` 等。
-
-完整分类列表请参阅[主 README](README.md)。
+- [工作流总览](docs/workflows/overview.md)
+- [服务表面](docs/capabilities/service-surfaces.md)
+- `docs/` 用于实现细节、能力映射和更深入的运行时说明
 
 ---
 
 ## 📜 许可证
 
-本仓库**仅供教育用途**和**授权安全测试**使用。
+本仓库仅用于 **教育用途** 和 **授权安全测试**。
 
 ---
 
 <div align="center">
 
-*为以目标思考而非以命令行参数思考的操作员而构建。*
+*为关注目标和结果，而不是命令参数和设置仪式的操作员而构建。*
 
 </div>

@@ -2,15 +2,15 @@
 
 # Net-Runner 🥷
 
-### एजेंट-आधारित रेड टीम मूल्यांकन फ्रेमवर्क
+### एजेंट-आधारित रेड टीम आकलन फ्रेमवर्क
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Bun](https://img.shields.io/badge/Bun-000000?style=for-the-badge&logo=bun&logoColor=white)](https://bun.sh)
 [![License](https://img.shields.io/badge/लाइसेंस-शैक्षिक%20उपयोग-red?style=for-the-badge)](#लाइसेंस)
 
-**12 विशेषज्ञ एजेंट &middot; 141 रेड टीम टूल &middot; 17 क्षमता पैक &middot; 10 पेनटेस्ट स्किल &middot; 6 वर्कफ़्लो**
+**12 विशेषज्ञ एजेंट · 141 रेड टीम टूल · 17 क्षमता पैक · 10 पेनटेस्ट स्किल्स · 6 वर्कफ़्लो**
 
-*स्वाभाविक रूप से बात करें। Net-Runner बाकी संभाल लेगा।*
+*स्वाभाविक रूप से बात करें। बाकी Net-Runner संभालता है।*
 
 [English](README.md) · [Español](README.es.md) · [Français](README.fr.md) · [中文](README.zh.md) · [العربية](README.ar.md) · [Português](README.pt.md) · [Русский](README.ru.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · **हिन्दी** · [Deutsch](README.de.md)
 
@@ -19,74 +19,72 @@
 </div>
 
 > ⚠️ **चेतावनी**
-> **केवल** उन लक्ष्यों पर उपयोग करें जिनके लिए आपके पास स्पष्ट अधिकार है। Net-Runner कानूनी, अधिकृत पेनेट्रेशन टेस्टिंग और शैक्षिक उद्देश्यों के लिए डिज़ाइन किया गया है।
-
-> नोट: यह अनुवादित README एक संक्षिप्त अवलोकन है। ऑपरेटरों के लिए पूरा और अद्यतन संदर्भ [README.md](README.md) और `docs/` में है।
+> इसे केवल उन्हीं लक्ष्यों पर उपयोग करें जिनके परीक्षण की आपको स्पष्ट अनुमति हो। Net-Runner कानूनी, अधिकृत सुरक्षा परीक्षण और शैक्षिक उपयोग के लिए बनाया गया है।
 
 ## 🔍 Net-Runner क्या है?
 
-Net-Runner एक मल्टी-एजेंट रेड टीम फ्रेमवर्क है जो प्राकृतिक भाषा के निर्देशों को संरचित सुरक्षा मूल्यांकन में बदलता है। आप **एंगेजमेंट लीडर** से बात करते हैं — वह रिकॉनेसेंस, एक्सप्लॉइटेशन, रिपोर्टिंग और बाकी सब कुछ विशेषज्ञ एजेंटों को सौंपता है।
+Net-Runner एक मल्टी-एजेंट सुरक्षा परीक्षण फ्रेमवर्क है जिसे प्राकृतिक भाषा में चलाने के लिए बनाया गया है।
 
-<details>
-<summary><strong>Net-Runner क्यों?</strong></summary>
+आप एक LLM जोड़ते हैं, लक्ष्य और उद्देश्य को सामान्य भाषा में बताते हैं, और Net-Runner पूरा इंजन सक्रिय कर देता है:
 
-- **प्राकृतिक भाषा** — फ्लैग या सिंटैक्स याद करने की जरूरत नहीं; बस बताएं कि आप क्या टेस्ट करना चाहते हैं
-- **मल्टी-एजेंट ऑर्केस्ट्रेशन** — समानांतर विशेषज्ञ एजेंट, हर एक को टूल्स की गहरी जानकारी
-- **बिल्ट-इन गार्डरेल** — स्कोप-गार्ड चेकपॉइंट सीमा से बाहर की कार्रवाइयों को रोकते हैं
-- **साक्ष्य पहले** — हर कार्रवाई रिकॉर्ड होती है, हर खोज ट्रेस करने योग्य है
-- **स्थायी मेमोरी** — सत्रों के बीच RAG-आधारित रिट्रीवल, एजेंट और प्रोजेक्ट के अनुसार
-- **141 टूल कनेक्टेड** — `nmap` से `BloodHound` से `Ghidra` तक, निष्पादन के लिए तैयार
+- यह आकलन की मंशा पहचानता है
+- यह प्रोजेक्ट-स्तर का `.netrunner/` रनटाइम एनवेलप बनाता है
+- यह स्कोप और वर्कफ़्लो कॉन्टेक्स्ट को सत्र में जोड़ता है
+- जरूरत पड़ने पर यह काम को विशेषज्ञ एजेंटों तक रूट करता है
+- आकलन चलते समय यह साक्ष्य, मेमोरी और रिपोर्ट सहेजता है
 
-</details>
+```text
+आप काम बताते हैं।
+Net-Runner योजना बनाता है, काम बाँटता है, चलाता है, याद रखता है और रिपोर्ट देता है।
+```
 
 ---
 
-## 🚀 त्वरित शुरुआत
+## ✨ लोग इसे क्यों इस्तेमाल करते हैं
+
+- **प्राकृतिक भाषा पहले** — शुरू करने के लिए कमांड याद रखने की ज़रूरत नहीं
+- **एक ही इनलाइन सिस्टम** — एजेंट, टूल, साक्ष्य, मेमोरी और रिपोर्ट एक ही फ्लो में चलते हैं
+- **विशेषज्ञ एजेंट** — recon, web, API, network, exploit, AD, retest, evidence और reporting भूमिकाएँ पहले से जुड़ी हैं
+- **स्थायी मेमोरी** — उपयोगी संदर्भ RAG-आधारित retrieval से अलग-अलग सत्रों में वापस लाया जा सकता है
+- **साक्ष्य-प्रथम संचालन** — findings, execution steps, approvals और reports एक ही engagement से जुड़े रहते हैं
+
+---
+
+## 🚀 यहाँ से शुरू करें
+
+### 1. इंस्टॉल और बिल्ड
 
 ```bash
 bun install
 bun run build
-node dist/cli.mjs
 ```
 
-फिर प्राकृतिक भाषा में निर्देश टाइप करें:
+### 2. मॉडल कनेक्ट करें
 
-```
-https://target.example का मूल्यांकन करें — पहले रिकॉनेसेंस से शुरू करें, फिर वेब कमजोरियों का परीक्षण करें।
-```
-
-Net-Runner आपकी मंशा स्वतः पहचानता है, सुरक्षित डिफ़ॉल्ट्स के साथ एंगेजमेंट शुरू करता है, और काम शुरू कर देता है।
-
----
-
-## 🤖 LLM प्रदाता कनेक्ट करें
-
-Net-Runner कई LLM प्रदाताओं के साथ काम करता है। शुरू करने से पहले एन्वायरनमेंट वेरिएबल सेट करें।
-
-### `ANTHROPIC_API_KEY` का उपयोग
+#### `ANTHROPIC_API_KEY`
 
 ```bash
 export ANTHROPIC_API_KEY="sk-ant-..."
 node dist/cli.mjs
 ```
 
-### OpenAI
+#### OpenAI
 
 ```bash
 export OPENAI_API_KEY="sk-..."
-export OPENAI_MODEL="gpt-4o"          # वैकल्पिक
+export OPENAI_MODEL="gpt-4o"
 node dist/cli.mjs
 ```
 
-### Google Gemini
+#### Google Gemini
 
 ```bash
 export GEMINI_API_KEY="AIza..."
-export GEMINI_MODEL="gemini-2.5-pro"   # वैकल्पिक
+export GEMINI_MODEL="gemini-2.5-pro"
 node dist/cli.mjs
 ```
 
-### Ollama (लोकल)
+#### Ollama
 
 ```bash
 ollama serve
@@ -96,82 +94,147 @@ export OPENAI_MODEL="llama3.1:8b"
 node dist/cli.mjs
 ```
 
-### कोई भी OpenAI-संगत API
-
-LM Studio, vLLM, Together AI, Groq, Fireworks या किसी भी संगत एंडपॉइंट के साथ काम करता है:
+#### कोई भी OpenAI-compatible API
 
 ```bash
 export OPENAI_API_KEY="your-key"
 export OPENAI_BASE_URL="https://your-provider.com/v1"
-export OPENAI_MODEL="your-model-name"
+export OPENAI_MODEL="your-model"
 node dist/cli.mjs
 ```
+
+### 3. स्वाभाविक रूप से बात करें
+
+```text
+https://target.example का आकलन करें। पहले recon करें, मुख्य attack surface खोजें, सबसे संभावित समस्याओं को validate करें और आगे बढ़ते हुए साक्ष्य रखते जाएँ।
+```
+
+Net-Runner लक्ष्य पहचानेगा, engagement शुरू करेगा, सही कॉन्टेक्स्ट inject करेगा और अपना agentic runtime उपयोग करना शुरू कर देगा।
 
 ---
 
 ## ⚙️ यह कैसे काम करता है
 
-| चरण | क्या होता है |
-|------|------------|
-| **1. पहचान** | मूल्यांकन इरादे का विश्लेषण, लक्ष्यों की पहचान |
-| **2. आरंभ** | सुरक्षित डिफ़ॉल्ट मानों के साथ `.netrunner/` बनाएं |
-| **3. इंजेक्शन** | हर मॉडल टर्न में स्कोप, प्राधिकरण और प्रतिबंध जोड़ें |
-| **4. प्रतिनिधिमंडल** | वर्कफ़्लो और खोजों के आधार पर विशेषज्ञ एजेंटों को कार्य सौंपें |
-| **5. सुरक्षा** | किसी भी उच्च-प्रभाव कार्रवाई से पहले स्कोप-गार्ड चेकपॉइंट |
-| **6. रिकॉर्ड** | साक्ष्य और खोजों को रियल-टाइम में रिकॉर्ड करें |
-| **7. याद रखें** | भविष्य के सत्रों के लिए एजेंट और प्रोजेक्ट के अनुसार ज्ञान को स्थायी रूप से संग्रहीत करें |
-| **8. रिपोर्ट** | साक्ष्य-समर्थित संरचित मूल्यांकन आउटपुट तैयार करें |
+```text
+आप
+  ↓
+मुख्य LLM सत्र
+  ↓
+Net-Runner runtime context
+  ↓
+विशेषज्ञ एजेंट + टूल + मेमोरी + साक्ष्य
+  ↓
+संरचित आकलन आउटपुट
+```
+
+| चरण | Net-Runner क्या करता है |
+|------|--------------------------|
+| **1. पहचान** | आकलन की मंशा, लक्ष्य का प्रकार और सबसे उपयुक्त workflow पहचानता है |
+| **2. शुरूआत** | अगर अभी मौजूद नहीं है तो engagement के लिए `.netrunner/` स्टेट बनाता है |
+| **3. इंजेक्ट** | स्कोप, impact boundary, workflow और default skills को live session में जोड़ता है |
+| **4. रूट** | मुख्य runtime और विशेषज्ञ एजेंटों को साथ में उपयोग करता है ताकि आपको commands micro-manage न करनी पड़ें |
+| **5. सुरक्षा** | destructive, persistent या out-of-scope actions पर internal guardrails लागू करता है |
+| **6. रिकॉर्ड** | evidence, execution steps, findings, reviews, memory और reports को उसी envelope में सहेजता है |
+
+सामान्य रास्ते में आप:
+
+- लक्ष्य दे सकते हैं
+- बता सकते हैं कि किस तरह का आकलन चलाना है
+- continue, deepen, retest, summarize या report करने को कह सकते हैं
+- सिस्टम को उपलब्ध environment, tools, memory और agents का उपयोग करने दे सकते हैं
 
 ---
 
-## 🕵️ विशेषज्ञ एजेंट
+## 🕵️ एजेंट
 
-| एजेंट | विशेषज्ञता |
-|:-------|:----------|
-| **एंगेजमेंट लीडर** | ऑर्केस्ट्रेशन, वर्कफ़्लो रूटिंग, स्किल समन्वय |
-| **रिकॉनेसेंस विशेषज्ञ** | नेटवर्क खोज, DNS, OSINT, सबडोमेन एन्यूमरेशन |
-| **वेब टेस्टिंग** | XSS, SQLi, SSRF, ऑथ बायपास, CMS स्कैनिंग |
-| **API टेस्टिंग** | GraphQL, JWT, IDOR, मास असाइनमेंट, स्कीमा विश्लेषण |
-| **नेटवर्क टेस्टिंग** | SMB, SSH, FTP, सर्विस एक्सप्लॉइट, ट्रैफिक विश्लेषण |
-| **एक्सप्लॉइट विशेषज्ञ** | पेलोड जनरेशन, PoC निष्पादन, नियंत्रित एक्सप्लॉइटेशन |
-| **प्रिविलेज एस्केलेशन** | SUID, कर्नेल एक्सप्लॉइट, टोकन दुरुपयोग, कंटेनर एस्केप |
-| **लेटरल मूवमेंट** | क्रेडेंशियल पुन: उपयोग, पिवटिंग, पोर्ट फॉरवर्डिंग |
-| **AD विशेषज्ञ** | LDAP/Kerberos, ट्रस्ट दुरुपयोग, ADCS, BloodHound |
-| **रीटेस्ट विशेषज्ञ** | खोजों को दोबारा प्रमाणित करें, सुधार सत्यापित करें |
-| **साक्ष्य विशेषज्ञ** | आर्टिफैक्ट क्यूरेशन, कस्टडी चेन, फॉरेंसिक |
-| **रिपोर्टिंग विशेषज्ञ** | गंभीरता वर्गीकरण, कार्यकारी सारांश, सुधार मार्गदर्शन |
+Net-Runner मूल general agentic flow को बरकरार रखता है और उसके ऊपर विशेषज्ञ सुरक्षा भूमिकाएँ जोड़ता है।
 
----
+| एजेंट | क्या करता है |
+|:------|:-------------|
+| **Engagement Lead** | आकलन का orchestration करता है, workflow phases चुनता है और काम route करता है |
+| **Recon Specialist** | hosts, services, subdomains, technologies और attack surface ढूँढता है |
+| **Web Testing Specialist** | routes, parameters, auth flows और web vulnerabilities की जाँच करता है |
+| **API Testing Specialist** | APIs, schemas, JWTs, IDOR paths और state transitions की जाँच करता है |
+| **Network Testing Specialist** | service enumeration, network validation और host-level testing संभालता है |
+| **Exploit Specialist** | नियंत्रित तरीके से वास्तविक impact validate करता है |
+| **Privilege Escalation Specialist** | initial access के बाद escalation paths संभालता है |
+| **Lateral Movement Specialist** | pivots, trust paths और multi-host movement संभालता है |
+| **AD Specialist** | Active Directory और Kerberos पर केंद्रित रहता है |
+| **Retest Specialist** | findings reproduce करता है और fixes validate करता है |
+| **Evidence Specialist** | artifacts और traceable evidence व्यवस्थित करता है |
+| **Reporting Specialist** | evidence को साफ़ assessment report में बदलता है |
 
-## 📋 वर्कफ़्लो
-
-| वर्कफ़्लो | लक्ष्य वातावरण | प्रमुख पैक |
-|:---------|:-------------|:----------|
-| `web-app-testing` | वेब एप्लिकेशन | रिकॉन, वेब, एक्सप्लॉइटेशन |
-| `api-testing` | REST / GraphQL / SOAP | रिकॉन, API, एक्सप्लॉइटेशन |
-| `lab-target-testing` | HTB / लैब / आंतरिक | नेटवर्क, एक्सप्लॉइटेशन, AD, प्रिवेस्क |
-| `ctf-mode` | CTF चैलेंज | रिकॉन, वेब, बाइनरी, एक्सप्लॉइटेशन |
-| `ad-testing` | Active Directory | AD, नेटवर्क, डेटाबेस, प्रिवेस्क |
-| `wifi-testing` | 802.11 वायरलेस नेटवर्क | WiFi, नेटवर्क, एक्सप्लॉइटेशन |
+`general-purpose`, `Explore`, `Plan` और `verification` जैसे core runtime agents अभी भी सिस्टम का हिस्सा हैं।
 
 ---
 
-## 🛠️ टूल कवरेज
+## 🧱 प्रोजेक्ट संरचना
 
-**17 क्षमता पैक में 141 टूल** — `nmap`, `nuclei`, `sqlmap`, `msfconsole`, `bloodhound`, `ghidra`, `volatility3`, `trivy`, `aircrack-ng` और अधिक शामिल।
+```text
+.netrunner/
+├── engagement.json
+├── run-state.json
+├── evidence/
+│   └── ledger.jsonl
+├── findings/
+├── reports/
+├── artifacts/
+├── memory/
+│   ├── private.md
+│   ├── team.md
+│   └── agents/
+└── instructions/
+```
 
-श्रेणी के अनुसार पूरी सूची के लिए [मुख्य README](README.md) देखें।
+- `engagement.json` — मौजूदा workflow, targets, impact boundary और restrictions
+- `run-state.json` — execution steps और pending reviews
+- `evidence/` — append-only evidence ledger
+- `findings/` — structured finding outputs
+- `reports/` — generated assessment reports
+- `artifacts/` — collected outputs और supporting files
+- `memory/` — operator, team और agents की persistent memory
+- `instructions/` — project-scoped runtime instructions
+
+---
+
+## 💬 उदाहरण prompts
+
+```text
+https://target.example का आकलन करें और external attack surface map करें।
+```
+
+```text
+मौजूदा engagement जारी रखें, authentication weaknesses पर फोकस करें और जो भी वास्तविक हो उसके लिए evidence capture करें।
+```
+
+```text
+intrusive validation तक बढ़ें और verify करें कि पहचानी गई समस्या वास्तव में exploitable है या नहीं।
+```
+
+```text
+मौजूदा evidence से report बनाएँ और सबसे high-risk findings पहले summarize करें।
+```
+
+---
+
+## 📚 प्रलेखन
+
+यह README operator path के लिए है। तकनीकी विवरण के लिए `docs/` देखें।
+
+- [Workflow overview](docs/workflows/overview.md)
+- [Service surfaces](docs/capabilities/service-surfaces.md)
+- `docs/` में implementation detail, capability mapping और गहरे runtime notes हैं
 
 ---
 
 ## 📜 लाइसेंस
 
-यह रिपॉजिटरी **केवल शैक्षिक उपयोग** और **अधिकृत सुरक्षा परीक्षण** के लिए है।
+यह repository केवल **शैक्षिक उपयोग** और **अधिकृत सुरक्षा परीक्षण** के लिए है।
 
 ---
 
 <div align="center">
 
-*उन ऑपरेटरों के लिए बनाया गया जो फ्लैग में नहीं, उद्देश्यों में सोचते हैं।*
+*उन operators के लिए बनाया गया है जो flags और setup rituals की जगह targets और outcomes में सोचते हैं।*
 
 </div>

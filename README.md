@@ -113,18 +113,20 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 
 ## Specialist Agents
 
-- `engagement-lead`
-- `recon-specialist`
-- `web-testing-specialist`
-- `api-testing-specialist`
-- `network-testing-specialist`
-- `exploit-specialist`
-- `privilege-escalation-specialist`
-- `lateral-movement-specialist`
-- `ad-specialist`
-- `retest-specialist`
-- `evidence-specialist`
-- `reporting-specialist`
+| Agent | Role | Primary Tools |
+|-------|------|---------------|
+| **Engagement Lead** | Coordinates scoped testing engagements and workflow execution | Workflow orchestration, scope validation, task routing |
+| **Recon Specialist** | Discovery and attack surface mapping | nmap, masscan, subfinder, amass, theHarvester, httpx, whatweb |
+| **Web Testing Specialist** | HTTP and web application security validation | feroxbuster, sqlmap, nuclei, nikto, ffuf, dalfox, burp |
+| **API Testing Specialist** | API endpoint discovery and security testing | Swagger/OpenAPI analysis, schema validation, auth testing |
+| **Network Testing Specialist** | Network and service assessment | Service enumeration, protocol analysis, network mapping |
+| **Exploit Specialist** | Controlled proof-of-impact validation | msfconsole, searchsploit, msfvenom, exploit research |
+| **Privilege Escalation Specialist** | Post-access privilege boundary testing | LinPEAS, WinPEAS, GTFOBins, sudo misconfig detection |
+| **Lateral Movement Specialist** | Network pivot and credential path validation | Pass-the-hash, credential enumeration, trust path analysis |
+| **AD Specialist** | Active Directory and Kerberos security testing | BloodHound, Rubeus, Impacket, LDAP enumeration, AD CS attacks |
+| **Retest Specialist** | Finding validation and false positive reduction | Reproduction testing, evidence verification |
+| **Evidence Specialist** | Artifact collection and finding documentation | Evidence capture, screenshot annotation, proof documentation |
+| **Reporting Specialist** | Security assessment report generation | Finding narratives, severity scoring, executive summaries |
 
 ## Runtime Layout
 

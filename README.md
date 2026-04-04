@@ -28,12 +28,13 @@ Net-Runner is a final-year university project and research prototype that lets a
 
 ## 🔍 What It Does
 
-Give Net-Runner a target in plain language. It picks the right workflow, delegates to specialist agents, runs tools, enforces scope, and logs everything.
+Give Net-Runner a target in plain language. It sets up a `.netrunner/` project folder, picks the right workflow, and runs the full assessment — capturing evidence as it goes.
 
-- **Persistent memory** — agents remember findings across sessions
-- **Evidence-first** — every finding auto-saved to `.netrunner/`
-- **Guardrails** — scope and impact checks on every action
-- **Specialist delegation** — 12 domain agents for recon, web, AD, network, etc.
+- **Persistent memory** — the LLM and each specialist agent remember what they found in previous sessions, so multi-day assessments stay coherent
+- **Evidence-first workflow** — every finding, artifact, and report is saved to the `.netrunner/` project folder automatically
+- **Guardrail enforcement** — every action is checked against your declared scope and impact level before it runs
+- **Specialist delegation** — 12 domain agents for recon, web, API, network, AD, exploit, evidence, and reporting
+- **Auto-engagement setup** — type a target and goal in plain English; Net-Runner detects the intent and starts the assessment
 
 ---
 
@@ -105,9 +106,6 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 
 ## ⚙️ Execution Flow
 
-<details>
-<summary><strong>Open execution flow details</strong></summary>
-
 1. Net-Runner detects assessment intent and target type from your prompt
 2. Creates a `.netrunner/` project folder with engagement config and run state
 3. Loads the matching workflow, scope rules, skills, and any memory from previous sessions
@@ -115,14 +113,9 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 5. Checks every action against your scope and impact rules before executing
 6. Saves evidence, findings, artifacts, and reports throughout the assessment
 
-</details>
-
 ---
 
 ## 🎯 Workflows
-
-<details>
-<summary><strong>Open workflows list</strong></summary>
 
 - `web-app-testing` — route mapping, auth testing, and vulnerability validation
 - `api-testing` — endpoint discovery, schema checks, auth/state testing
@@ -134,14 +127,9 @@ Assess https://target.example. Start with recon, map the attack surface, validat
 
 The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GHunt`, `holehe`, `haklistgen`.
 
-</details>
-
 ---
 
 ## 🧰 Tool Catalog
-
-<details>
-<summary><strong>Open tool catalog details</strong></summary>
 
 **153 red-team tools** across 12 categories — [full catalog](docs/capabilities/tool-catalog.md)
 
@@ -152,8 +140,13 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 | AD | 12 | bloodhound, netexec, mimikatz |
 | Cloud | 13 | cloud_enum, pacu, GHunt |
 | Mobile | 8 | frida, objection, mobsf, drozer |
-
-</details>
+| Network | 13 | wireshark, tcpdump,Responder |
+| Exploitation | 11 | metasploit, covenant |
+| WiFi | 13 | aircrack-ng, wifite, bettercap |
+| Binary/RE | 22 | ghidra, radare2, binwalk |
+| Evidence | 5 | volatility, autopsy |
+| API | 3 | postman, openapi-generator |
+| Coordination | 2 | — |
 
 ---
 

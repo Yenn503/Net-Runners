@@ -26,27 +26,14 @@ Net-Runner is a final-year university project and research prototype that lets a
 
 ---
 
-## 🔍 How It Works
+## 🔍 What It Does
 
-Give Net-Runner a target and goal in plain language. It sets up a `.netrunner/` project folder, picks the right workflow, and runs the full assessment autonomously — capturing evidence as it goes.
+Give Net-Runner a target in plain language. It picks the right workflow, delegates to specialist agents, runs tools, enforces scope, and logs everything.
 
-- Stores all evidence, findings, artifacts, and reports in one project folder
-- The LLM and each specialist agent remember what they found before, so multi-session assessments stay on track
-- Picks from 153 red-team tools and delegates to 12 specialist agents when domain expertise is needed
-- Blocks or flags any action that goes out of scope or exceeds the allowed impact level
-- Supports web, API, mobile, lab, Active Directory, WiFi, CTF assessments, and APT threat simulations
-
----
-
-## 🧠 Core Engine Features
-
-- **Persistent memory** — the LLM and each specialist agent remember what they found in previous sessions, so multi-day assessments stay coherent and every agent picks up where it left off
-- **Evidence-first workflow** — every finding, artifact, and report is saved to the `.netrunner/` project folder automatically
-- **Guardrail enforcement** — every action is checked against your declared scope and impact level before it runs
-- **Skills-first execution** — reusable pentest playbooks (recon, exploit validation, reporting, etc.) that the LLM can trigger on demand
-- **12 specialist agents** — each agent focuses on a specific domain (recon, web, network, AD, etc.) and is deployed when its expertise is needed
-- **Auto-engagement setup** — type a target and goal in plain English; Net-Runner detects the intent, picks the workflow, and starts the assessment
-- **APT simulation** — simulate real-world threat actors (APT29, Lazarus, Volt Typhoon, etc.) mapped to MITRE ATT&CK, with industry-specific attack chains and phase-by-phase guidance
+- **Persistent memory** — agents remember findings across sessions
+- **Evidence-first** — every finding auto-saved to `.netrunner/`
+- **Guardrails** — scope and impact checks on every action
+- **Specialist delegation** — 12 domain agents for recon, web, AD, network, etc.
 
 ---
 
@@ -112,15 +99,6 @@ node dist/cli.mjs
 Assess https://target.example. Start with recon, map the attack surface, validate findings, and capture evidence.
 ```
 
-### 4. Coordinator mode (experimental)
-
-```bash
-export NETRUNNER_COORDINATOR_MODE=1
-node dist/cli.mjs
-```
-
-In this mode, the main LLM acts as a coordinator and delegates tool work to separate worker agents.
-
 </details>
 
 ---
@@ -165,22 +143,15 @@ The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GH
 <details>
 <summary><strong>Open tool catalog details</strong></summary>
 
-The current build registers **153 imported red-team tools** from [pentestToolCatalog.ts](src/security/pentestToolCatalog.ts).
+**153 red-team tools** across 12 categories — [full catalog](docs/capabilities/tool-catalog.md)
 
-- Recon: `22`
-- Web: `28`
-- API: `3`
-- Mobile: `8`
-- Network: `13`
-- Exploitation: `11`
-- Active Directory: `12`
-- Cloud: `13`
-- Binary / Reverse Engineering: `22`
-- WiFi: `13`
-- Evidence / Forensics: `5`
-- Coordination / C2: `2`
-
-Use the full grouped list here: [Pentest Tool Catalog](docs/capabilities/tool-catalog.md)
+| Category | Count | Examples |
+|----------|-------|----------|
+| Recon | 22 | nmap, masscan, amass, ffuf |
+| Web | 28 | sqlmap, nuclei, wpscan, burp |
+| AD | 12 | bloodhound, netexec, mimikatz |
+| Cloud | 13 | cloud_enum, pacu, GHunt |
+| Mobile | 8 | frida, objection, mobsf, drozer |
 
 </details>
 
@@ -217,20 +188,15 @@ Full reference: [APT Simulation Docs](docs/apt-simulation/README.md) · [Industr
 
 ## 🤖 Specialist Agents
 
-| Agent | Role | Coverage |
-|-------|------|----------|
-| **Engagement Lead** | Coordinates scoped testing engagements and workflow execution | Workflow orchestration, scope validation, task routing |
-| **Recon Specialist** | Discovery and attack surface mapping | External recon, asset discovery, cloud and identity enumeration |
-| **Web Testing Specialist** | HTTP and web application security validation | Route discovery, content fuzzing, web vuln validation |
-| **API Testing Specialist** | API endpoint discovery and security testing | API schemas, auth/state testing, GraphQL and JWT checks |
-| **Network Testing Specialist** | Network and service assessment | Service enumeration, protocol testing, packet capture |
-| **Exploit Specialist** | Controlled proof-of-impact validation | Exploit research, payload generation, runtime validation |
-| **Privilege Escalation Specialist** | Post-access privilege boundary testing | Local privilege checks, escalation-path validation, post-access review |
-| **Lateral Movement Specialist** | Network pivot and credential path validation | Trust-path analysis, credential reuse, multi-host movement |
-| **AD Specialist** | Active Directory and Kerberos security testing | Kerberos, LDAP, BloodHound, AD CS, Windows domain attack paths |
-| **Retest Specialist** | Finding validation and false positive reduction | Reproduction testing, fix validation, regression checks |
-| **Evidence Specialist** | Artifact collection and finding documentation | Evidence capture, artifact handling, proof quality |
-| **Reporting Specialist** | Security assessment report generation | Finding narratives, severity scoring, report structure |
+12 domain-focused agents for specific assessment phases — [full roster](docs/agents/overview.md)
+
+| Agent | Role |
+|-------|------|
+| **Engagement Lead** | Workflow orchestration and scope validation |
+| **Recon Specialist** | Attack surface discovery and enumeration |
+| **Web Testing Specialist** | HTTP and web application security testing |
+| **Exploit Specialist** | Proof-of-impact validation |
+| **AD Specialist** | Active Directory and Kerberos testing |
 
 ---
 
@@ -251,7 +217,7 @@ Full reference: [APT Simulation Docs](docs/apt-simulation/README.md) · [Industr
 └── instructions/
 ```
 
-`.netrunner/` is the project folder for the current assessment. Everything the LLM finds, logs, and produces stays here. Each specialist agent also stores its own memory under `memory/agents/`, so it remembers what it found when it runs again in a future session.
+Everything the LLM finds, logs, and produces stays here. Agents store their memory under `memory/agents/` for session continuity.
 
 ---
 

@@ -127,6 +127,9 @@ In this mode, the main LLM acts as a coordinator and delegates tool work to sepa
 
 ## ⚙️ Execution Flow
 
+<details>
+<summary><strong>Open execution flow details</strong></summary>
+
 1. Net-Runner detects assessment intent and target type from your prompt
 2. Creates a `.netrunner/` project folder with engagement config and run state
 3. Loads the matching workflow, scope rules, skills, and any memory from previous sessions
@@ -134,9 +137,14 @@ In this mode, the main LLM acts as a coordinator and delegates tool work to sepa
 5. Checks every action against your scope and impact rules before executing
 6. Saves evidence, findings, artifacts, and reports throughout the assessment
 
+</details>
+
 ---
 
 ## 🎯 Workflows
+
+<details>
+<summary><strong>Open workflows list</strong></summary>
 
 - `web-app-testing` — route mapping, auth testing, and vulnerability validation
 - `api-testing` — endpoint discovery, schema checks, auth/state testing
@@ -148,9 +156,14 @@ In this mode, the main LLM acts as a coordinator and delegates tool work to sepa
 
 The recon stack includes cloud and identity enumeration tools: `cloud_enum`, `GHunt`, `holehe`, `haklistgen`.
 
+</details>
+
 ---
 
 ## 🧰 Tool Catalog
+
+<details>
+<summary><strong>Open tool catalog details</strong></summary>
 
 The current build registers **153 imported red-team tools** from [pentestToolCatalog.ts](src/security/pentestToolCatalog.ts).
 
@@ -168,6 +181,8 @@ The current build registers **153 imported red-team tools** from [pentestToolCat
 - Coordination / C2: `2`
 
 Use the full grouped list here: [Pentest Tool Catalog](docs/capabilities/tool-catalog.md)
+
+</details>
 
 ---
 

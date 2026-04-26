@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join, resolve } from 'node:path'
+
 import { spawnSync } from 'node:child_process'
 import {
   resolveCodexApiCredentials,
@@ -31,6 +32,13 @@ function isTruthy(value: string | undefined): boolean {
   if (!value) return false
   const normalized = value.trim().toLowerCase()
   return normalized !== '' && normalized !== '0' && normalized !== 'false' && normalized !== 'no'
+}
+
+function isCopilotMode(): boolean {
+  return (
+    isTruthy(process.env.NETRUNNER_USE_COPILOT) ||
+    (process.env.OPENAI_BASE_URL ?? '').includes('api.githubcopilot.com')
+  )
 }
 
 function parseOptions(argv: string[]): CliOptions {
@@ -83,9 +91,9 @@ function checkBunRuntime(): CheckResult {
 function checkBuildArtifacts(): CheckResult {
   const distCli = resolve(process.cwd(), 'dist', 'cli.mjs')
   if (!existsSync(distCli)) {
-    return fail('Build artifacts', `Missing ${distCli}. Run: bun run build`)
+    return fail('Build artifacts', 'Missing dist/cli.mjs. Run: bun run build')
   }
-  return pass('Build artifacts', distCli)
+  return pass('Build artifacts', 'dist/cli.mjs')
 }
 
 function isLocalBaseUrl(baseUrl: string): boolean {
@@ -146,6 +154,7 @@ function checkOpenAIEnv(): CheckResult[] {
   }
 
   if (useGithub) {
+    const copilotMode = isCopilotMode()
     const request = resolveProviderRequest({
       model: process.env.OPENAI_MODEL,
       baseUrl: process.env.OPENAI_BASE_URL,
@@ -155,11 +164,15 @@ function checkOpenAIEnv(): CheckResult[] {
       process.env.GH_TOKEN ??
       process.env.OPENAI_API_KEY
 
-    results.push(pass('Provider mode', 'GitHub Models provider enabled.'))
+    results.push(pass('Provider mode', copilotMode ? 'GitHub Copilot provider enabled.' : 'GitHub Models provider enabled.'))
     results.push(pass('OPENAI_MODEL', request.resolvedModel))
     results.push(pass('OPENAI_BASE_URL', request.baseUrl))
 
-    if (!githubToken) {
+    if (copilotMode && !process.env.OPENAI_API_KEY) {
+      results.push(fail('GITHUB_COPILOT_TOKEN', 'Missing. Run: bun run setup'))
+    } else if (copilotMode) {
+      results.push(pass('GITHUB_COPILOT_TOKEN', 'Configured.'))
+    } else if (!githubToken) {
       results.push(fail('GITHUB_TOKEN', 'Missing. Set GITHUB_TOKEN or GH_TOKEN with GitHub Models access.'))
     } else {
       results.push(pass('GITHUB_TOKEN', 'Configured.'))
@@ -204,7 +217,7 @@ function checkOpenAIEnv(): CheckResult[] {
     const credentials = resolveCodexApiCredentials(process.env)
     if (!credentials.apiKey) {
       const authHint = credentials.authPath
-        ? `Missing CODEX_API_KEY and no usable auth.json at ${credentials.authPath}.`
+        ? 'Missing CODEX_API_KEY and no usable auth.json in the local auth directory.'
         : 'Missing CODEX_API_KEY and auth.json fallback.'
       results.push(fail('CODEX auth', authHint))
     } else if (!credentials.accountId) {
@@ -212,7 +225,7 @@ function checkOpenAIEnv(): CheckResult[] {
     } else {
       const detail = credentials.source === 'env'
         ? 'Using CODEX_API_KEY.'
-        : `Using ${credentials.authPath}.`
+        : 'Using local auth.json.'
       results.push(pass('CODEX auth', detail))
     }
     return results
@@ -255,6 +268,7 @@ async function checkBaseUrlReachability(): Promise<CheckResult> {
     model: process.env.OPENAI_MODEL,
     baseUrl: resolvedBaseUrl ?? process.env.OPENAI_BASE_URL,
   })
+  const copilotMode = useGithub && isCopilotMode()
   const endpoint = useGithub
     ? `${request.baseUrl}/chat/completions`
     : request.transport === 'codex_responses'
@@ -271,12 +285,19 @@ async function checkBaseUrlReachability(): Promise<CheckResult> {
 
     if (useGithub) {
       const token =
-        process.env.GITHUB_TOKEN ??
-        process.env.GH_TOKEN ??
-        process.env.OPENAI_API_KEY
+        copilotMode
+          ? process.env.OPENAI_API_KEY
+          : process.env.GITHUB_TOKEN ??
+            process.env.GH_TOKEN ??
+            process.env.OPENAI_API_KEY
       headers.Authorization = `Bearer ${token ?? ''}`
-      headers.Accept = 'application/vnd.github+json'
-      headers['X-GitHub-Api-Version'] = '2026-03-10'
+      headers.Accept = copilotMode ? 'application/json' : 'application/vnd.github+json'
+      if (copilotMode) {
+        headers['Editor-Version'] = 'vscode/1.95.0'
+        headers['Copilot-Integration-Id'] = 'vscode-chat'
+      } else {
+        headers['X-GitHub-Api-Version'] = '2026-03-10'
+      }
       headers['Content-Type'] = 'application/json'
       method = 'POST'
       body = JSON.stringify({
@@ -320,7 +341,12 @@ async function checkBaseUrlReachability(): Promise<CheckResult> {
       signal: controller.signal,
     })
 
-    if (response.status === 200 || response.status === 401 || response.status === 403) {
+    if (
+      response.status === 200 ||
+      response.status === 401 ||
+      response.status === 403 ||
+      (copilotMode && response.status === 400)
+    ) {
       return pass('Provider reachability', `Reached ${endpoint} (status ${response.status}).`)
     }
 
@@ -402,17 +428,18 @@ function serializeSafeEnvSummary(): Record<string, string | boolean> {
     }
   }
   if (useGithub) {
+    const copilotMode = isCopilotMode()
     const request = resolveProviderRequest({
       model: process.env.OPENAI_MODEL,
       baseUrl: process.env.OPENAI_BASE_URL,
     })
     return {
       NETRUNNER_USE_GITHUB: true,
+      NETRUNNER_USE_COPILOT: copilotMode,
       OPENAI_MODEL: request.resolvedModel,
       OPENAI_BASE_URL: request.baseUrl,
-      GITHUB_TOKEN_SET: Boolean(
-        process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN ?? process.env.OPENAI_API_KEY,
-      ),
+      GITHUB_TOKEN_SET: copilotMode ? undefined : Boolean(process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN ?? process.env.OPENAI_API_KEY),
+      GITHUB_COPILOT_TOKEN_SET: copilotMode ? Boolean(process.env.GITHUB_COPILOT_TOKEN ?? process.env.OPENAI_API_KEY) : undefined,
     }
   }
   const request = resolveProviderRequest({
@@ -442,7 +469,7 @@ function writeJsonReport(
 ): void {
   const payload = {
     timestamp: new Date().toISOString(),
-    cwd: process.cwd(),
+    cwd: '.',
     summary: {
       total: results.length,
       passed: results.filter(result => result.ok).length,
@@ -461,7 +488,7 @@ function writeJsonReport(
     mkdirSync(dirname(outputPath), { recursive: true })
     writeFileSync(outputPath, JSON.stringify(payload, null, 2), 'utf8')
     if (!options.json) {
-      console.log(`Report written to ${outputPath}`)
+      console.log(`Report written to ${options.outFile}`)
     }
   }
 }

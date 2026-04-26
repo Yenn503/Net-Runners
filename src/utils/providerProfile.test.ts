@@ -461,3 +461,31 @@ test('auto profile detects openai/github/gemini from environment credentials', (
   assert.equal(selectAutoProfile(null, { GH_TOKEN: 'ghp_real' }), 'github')
   assert.equal(selectAutoProfile(null, { GEMINI_API_KEY: 'AIza-real' }), 'gemini')
 })
+
+test('auto profile routes github-shaped tokens in OPENAI_API_KEY to github profile', () => {
+  assert.equal(selectAutoProfile(null, { OPENAI_API_KEY: 'github_pat_realtoken' }), 'github')
+  assert.equal(selectAutoProfile(null, { OPENAI_API_KEY: 'ghp_realtoken' }), 'github')
+  assert.equal(selectAutoProfile(null, { OPENAI_API_KEY: 'gho_realtoken' }), 'github')
+})
+
+test('openai profile builder refuses github-shaped tokens', () => {
+  const env = buildOpenAIProfileEnv({
+    goal: 'balanced',
+    apiKey: 'github_pat_xyz',
+    processEnv: {},
+  })
+  assert.equal(env, null)
+})
+
+test('github profile builder accepts github-shaped tokens from OPENAI_API_KEY', () => {
+  const env = buildGithubProfileEnv({
+    processEnv: {
+      OPENAI_API_KEY: 'github_pat_xyz',
+    },
+  })
+  assert.deepEqual(env, {
+    OPENAI_BASE_URL: 'https://models.github.ai/inference',
+    OPENAI_MODEL: 'openai/gpt-4.1',
+    GITHUB_TOKEN: 'github_pat_xyz',
+  })
+})

@@ -109,10 +109,20 @@ export function buildGithubProfileEnv(options: {
   processEnv?: NodeJS.ProcessEnv
 }): ProfileEnv | null {
   const processEnv = options.processEnv ?? process.env
+  // Accept GitHub-shaped tokens that users have pasted into OPENAI_API_KEY by
+  // mistake (a common confusion since GitHub Models docs describe the API as
+  // "OpenAI-compatible"). This prevents a github_pat_* token from being
+  // forwarded to api.openai.com and rejected as invalid.
+  const openAiAsGithub =
+    processEnv.OPENAI_API_KEY &&
+    /^(github_pat_|ghp_|gho_|ghu_|ghs_)/.test(processEnv.OPENAI_API_KEY)
+      ? processEnv.OPENAI_API_KEY
+      : undefined
   const token = sanitizeApiKey(
     options.token ??
       processEnv.GITHUB_TOKEN ??
-      processEnv.GH_TOKEN,
+      processEnv.GH_TOKEN ??
+      openAiAsGithub,
   )
   if (!token) {
     return null
@@ -141,6 +151,15 @@ export function buildOpenAIProfileEnv(options: {
   const processEnv = options.processEnv ?? process.env
   const key = sanitizeApiKey(options.apiKey ?? processEnv.OPENAI_API_KEY)
   if (!key) {
+    return null
+  }
+
+  // Refuse to forward GitHub-issued tokens to OpenAI's endpoint. Users who
+  // paste a github_pat_* into OPENAI_API_KEY belong on the github profile,
+  // not openai. Returning null here lets the launcher fall through to the
+  // walkthrough or the github profile path instead of producing a misleading
+  // 401 from api.openai.com.
+  if (/^(github_pat_|ghp_|gho_|ghu_|ghs_)/.test(key)) {
     return null
   }
 
@@ -264,10 +283,22 @@ export function selectAutoProfile(
   env: NodeJS.ProcessEnv = process.env,
 ): ProviderProfile | null {
   if (recommendedOllamaModel) return 'ollama'
-  // Auto-detect a usable profile from environment credentials.
+
+  // GitHub-issued tokens are routinely pasted into OPENAI_API_KEY by users
+  // following GitHub Models docs that talk about "OpenAI-compatible APIs".
+  // Detect that case explicitly and route to the github profile so the request
+  // hits models.github.ai/inference, not api.openai.com.
+  const openAiKey = env.OPENAI_API_KEY
+  const looksLikeGithubToken = (value: string | undefined): boolean =>
+    !!value && (value.startsWith('github_pat_') || value.startsWith('ghp_') || value.startsWith('gho_') || value.startsWith('ghu_') || value.startsWith('ghs_'))
+
+  if (env.GITHUB_TOKEN || env.GH_TOKEN || looksLikeGithubToken(openAiKey)) {
+    return 'github'
+  }
+
+  // Auto-detect a usable OpenAI profile from environment credentials.
   // SUA_CHAVE is the documented placeholder string and must never count as a real key.
-  if (env.OPENAI_API_KEY && env.OPENAI_API_KEY !== 'SUA_CHAVE') return 'openai'
-  if (env.GITHUB_TOKEN || env.GH_TOKEN) return 'github'
+  if (openAiKey && openAiKey !== 'SUA_CHAVE') return 'openai'
   if (env.GEMINI_API_KEY) return 'gemini'
   // No usable credentials — let the CLI's first-run walkthrough configure one.
   return null

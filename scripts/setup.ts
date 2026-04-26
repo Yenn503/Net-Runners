@@ -132,33 +132,74 @@ async function pickProvider(rl: ReturnType<typeof createInterface>): Promise<Pro
   return 'github'
 }
 
-async function runCopilotDeviceFlow(): Promise<{ githubAccessToken: string; copilotToken: string; copilotExpiresAt: number }> {
+async function runCopilotAuth(
+  rl: ReturnType<typeof createInterface>,
+): Promise<{ githubAccessToken: string; copilotToken: string; copilotExpiresAt: number } | undefined> {
   console.log()
-  console.log(bold(cyan('GitHub Copilot — device authorisation')))
-  console.log(dim('  Net-Runner will exchange a one-time code for an OAuth token.'))
+  console.log(bold(cyan('GitHub Copilot — choose how to authenticate')))
   console.log(dim('  Requires an active Copilot subscription (Pro / Pro+ / Business / Enterprise).'))
   console.log()
-
-  const device = await startDeviceCodeFlow()
-  console.log(bold('1. Open this URL in any browser:'))
-  console.log(`   ${cyan(device.verification_uri)}`)
+  console.log(`  ${cyan('1')}. Paste a fine-grained PAT with 'Copilot Requests' permission  ${green('(default — fastest)')}`)
+  console.log(`  ${cyan('2')}. Browser device-code OAuth flow                                 ${dim('(if you do not want to manage a PAT)')}`)
   console.log()
-  console.log(bold('2. Enter this code:'))
-  console.log(`   ${bold(green(device.user_code))}`)
-  console.log()
-  console.log(dim(`   (Expires in ${Math.round(device.expires_in / 60)} min. Polling every ${device.interval}s ...)`))
 
-  const githubAccessToken = await pollForAccessToken(device)
-  console.log(green('✔ GitHub OAuth complete.'))
+  const choice = (await prompt(rl, dim('Enter 1 or 2 (Enter for 1): '))).trim()
 
+  let githubAccessToken: string
+
+  if (choice === '' || choice === '1') {
+    // PAT path — official, supported. PATs prefixed github_pat_ with the
+    // 'Copilot Requests' permission are accepted by /copilot_internal/v2/token.
+    console.log()
+    console.log(bold('Create a fine-grained PAT here:'))
+    console.log(`   ${cyan('https://github.com/settings/personal-access-tokens/new')}`)
+    console.log(dim('   Permissions needed: Account permissions → Copilot Requests → Read & write'))
+    console.log(dim('   (Classic ghp_* tokens are NOT supported. Use a fine-grained github_pat_* token.)'))
+    console.log()
+    const pasted = (await prompt(rl, dim('Paste fine-grained PAT (github_pat_...): '))).trim()
+    if (!pasted) return undefined
+    if (!/^github_pat_/.test(pasted) && !/^gh[opus]_/.test(pasted)) {
+      console.log(yellow(`Warning: token doesn't look like a fine-grained PAT or OAuth token.`))
+      const confirm = (await prompt(rl, dim('Continue anyway? [y/N]: '))).trim().toLowerCase()
+      if (confirm !== 'y' && confirm !== 'yes') return undefined
+    }
+    githubAccessToken = pasted
+  } else if (choice === '2') {
+    // Device-code OAuth fallback path.
+    const device = await startDeviceCodeFlow()
+    console.log()
+    console.log(bold('1. Open this URL in any browser:'))
+    console.log(`   ${cyan(device.verification_uri)}`)
+    console.log()
+    console.log(bold('2. Enter this code:'))
+    console.log(`   ${bold(green(device.user_code))}`)
+    console.log()
+    console.log(dim(`   (Expires in ${Math.round(device.expires_in / 60)} min. Polling every ${device.interval}s ...)`))
+    githubAccessToken = await pollForAccessToken(device)
+    console.log(green('✔ GitHub OAuth complete.'))
+  } else {
+    console.log(red(`'${choice}' is not a valid choice.`))
+    return undefined
+  }
+
+  // Both paths converge here: exchange the GitHub credential for a short-lived
+  // Copilot service token usable against api.githubcopilot.com.
   console.log(dim('Exchanging for Copilot service token ...'))
-  const copilot = await exchangeForCopilotToken(githubAccessToken)
-  console.log(green(`✔ Got Copilot token (expires at ${new Date(copilot.expires_at * 1000).toISOString()}).`))
-
-  return {
-    githubAccessToken,
-    copilotToken: copilot.token,
-    copilotExpiresAt: copilot.expires_at,
+  try {
+    const copilot = await exchangeForCopilotToken(githubAccessToken)
+    console.log(green(`✔ Got Copilot token (expires at ${new Date(copilot.expires_at * 1000).toISOString()}).`))
+    return {
+      githubAccessToken,
+      copilotToken: copilot.token,
+      copilotExpiresAt: copilot.expires_at,
+    }
+  } catch (err) {
+    console.log()
+    console.log(red(`Copilot exchange failed: ${(err as Error).message}`))
+    if (choice === '' || choice === '1') {
+      console.log(dim('  Verify the PAT has the "Copilot Requests" permission and that your account has an active Copilot subscription.'))
+    }
+    return undefined
   }
 }
 
@@ -366,12 +407,10 @@ async function main(): Promise<void> {
     let token: string | undefined
 
     if (provider === 'copilot') {
-      try {
-        copilotAuth = await runCopilotDeviceFlow()
-      } catch (err) {
+      copilotAuth = await runCopilotAuth(rl)
+      if (!copilotAuth) {
         console.log()
-        console.log(red(`Copilot setup failed: ${(err as Error).message}`))
-        console.log(dim('  Re-run with `bun run setup --force` and try again, or pick a different provider.'))
+        console.log(red('Copilot setup failed. Re-run `bun run setup --force` to try again, or pick a different provider.'))
         process.exit(1)
       }
       try {

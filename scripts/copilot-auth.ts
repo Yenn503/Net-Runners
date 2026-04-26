@@ -54,14 +54,44 @@ export type CopilotModelEntry = {
   name?: string
   vendor?: string
   version?: string
+  /**
+   * Whether VS Code's Copilot Chat picker exposes this model. Models with
+   * model_picker_enabled === false are typically embedding-only or scoped
+   * to a different surface (e.g. completions) and reject /chat/completions
+   * with HTTP 400 'model_not_supported'.
+   */
+  model_picker_enabled?: boolean
+  /** Some Copilot service versions return this field at the top level. */
+  policy?: { state?: string; terms?: string }
   capabilities?: {
     family?: string
-    type?: string
+    /**
+     * 'chat' for chat-completion-capable models, 'embeddings' for embedding
+     * models, 'completion' for legacy completions-only models. Only 'chat'
+     * is usable through Net-Runner's OpenAI-compatible chat completions
+     * endpoint.
+     */
+    type?: 'chat' | 'embeddings' | 'completion' | string
     supports?: { tool_calls?: boolean; streaming?: boolean }
     limits?: { max_context_window_tokens?: number; max_output_tokens?: number }
   }
   /** Top-level fields vary per Copilot service version. */
   [key: string]: unknown
+}
+
+/**
+ * Returns true if the model is usable for /chat/completions on
+ * api.githubcopilot.com. Filters out embedding-only models and any model
+ * the picker isn't supposed to expose. Defensive about missing fields:
+ * if neither model_picker_enabled nor capabilities.type is present, the
+ * model is included (better UX than silently hiding usable models when
+ * the catalog shape changes).
+ */
+export function isCopilotChatModel(m: CopilotModelEntry): boolean {
+  if (m.model_picker_enabled === false) return false
+  const t = m.capabilities?.type
+  if (t === 'embeddings' || t === 'completion') return false
+  return true
 }
 
 const JSON_HEADERS = {

@@ -22,6 +22,7 @@ import {
   COPILOT_API_BASE,
   exchangeForCopilotToken,
   fetchCopilotModels,
+  isCopilotChatModel,
   pollForAccessToken,
   startDeviceCodeFlow,
   type CopilotModelEntry,
@@ -319,8 +320,13 @@ async function getModel(
   console.log()
 
   if (provider === 'copilot' && copilotModels && copilotModels.length > 0) {
-    console.log(green(`Found ${copilotModels.length} models in your Copilot subscription.`))
-    const items = copilotModels
+    const chatOnly = copilotModels.filter(isCopilotChatModel)
+    const filteredOut = copilotModels.length - chatOnly.length
+    console.log(green(
+      `Found ${chatOnly.length} chat-capable models in your Copilot subscription` +
+      (filteredOut > 0 ? ` (${filteredOut} embedding/completion-only models hidden).` : '.')
+    ))
+    const items = chatOnly
       .slice()
       .sort((a, b) => a.id.localeCompare(b.id))
       .map(m => {

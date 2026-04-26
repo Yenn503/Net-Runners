@@ -143,22 +143,124 @@ async function getToken(
   return token
 }
 
+type CatalogModel = {
+  id: string
+  name?: string
+  publisher?: string
+  summary?: string
+  rate_limit_tier?: string
+  supported_input_modalities?: string[]
+  supported_output_modalities?: string[]
+  tags?: string[]
+}
+
+async function fetchGithubModelsCatalog(token: string): Promise<CatalogModel[] | null> {
+  try {
+    const res = await fetch('https://models.github.ai/catalog/models', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+    })
+    if (!res.ok) {
+      console.log(yellow(`Could not fetch live model catalog (HTTP ${res.status}). Falling back to common defaults.`))
+      return null
+    }
+    const data = await res.json() as CatalogModel[] | { models?: CatalogModel[] }
+    const models = Array.isArray(data) ? data : data?.models
+    if (!Array.isArray(models) || models.length === 0) return null
+    return models
+  } catch (err) {
+    console.log(yellow(`Could not fetch live model catalog (${(err as Error).message}). Falling back to common defaults.`))
+    return null
+  }
+}
+
+async function fetchOllamaModels(): Promise<string[] | null> {
+  try {
+    const res = await fetch('http://localhost:11434/api/tags')
+    if (!res.ok) return null
+    const data = await res.json() as { models?: { name: string }[] }
+    return (data.models ?? []).map(m => m.name).filter(Boolean)
+  } catch {
+    return null
+  }
+}
+
+async function pickFromList(
+  rl: ReturnType<typeof createInterface>,
+  items: { id: string; label: string }[],
+  defaultIndex: number,
+): Promise<string> {
+  const pageSize = 20
+  let cursor = 0
+  while (true) {
+    console.log()
+    const slice = items.slice(cursor, cursor + pageSize)
+    slice.forEach((it, i) => {
+      const idx = cursor + i + 1
+      const marker = cursor + i === defaultIndex ? green(' (default)') : ''
+      console.log(`  ${cyan(String(idx).padStart(3))}. ${it.label}${marker}`)
+    })
+    const more = cursor + pageSize < items.length
+    if (more) console.log(dim(`  ... ${items.length - cursor - pageSize} more — type 'm' for more, or pick a number`))
+    console.log()
+    const ans = (await prompt(rl, dim(`Pick model 1-${items.length} (Enter for default${defaultIndex >= 0 ? ` = ${items[defaultIndex].id}` : ''}, 'm' for more, or paste a model id): `))).trim()
+    if (ans === '' && defaultIndex >= 0) return items[defaultIndex].id
+    if (ans === 'm' || ans === 'M') {
+      cursor = more ? cursor + pageSize : 0
+      continue
+    }
+    const n = Number(ans)
+    if (Number.isInteger(n) && n >= 1 && n <= items.length) return items[n - 1].id
+    if (ans.length > 0) return ans
+    console.log(red(`Could not parse '${ans}'. Try a number, 'm', or a literal model id.`))
+  }
+}
+
 async function getModel(
   rl: ReturnType<typeof createInterface>,
   preset: typeof PROVIDER_PRESETS[Provider],
   provider: Provider,
+  token: string | undefined,
 ): Promise<string> {
   console.log()
-  if (provider === 'github') {
+
+  if (provider === 'github' && token) {
+    console.log(dim('Fetching live model catalog from https://models.github.ai/catalog/models ...'))
+    const catalog = await fetchGithubModelsCatalog(token)
+    if (catalog && catalog.length > 0) {
+      console.log(green(`Found ${catalog.length} models on your GitHub Models account.`))
+      const items = catalog
+        .slice()
+        .sort((a, b) => a.id.localeCompare(b.id))
+        .map(m => {
+          const summary = (m.summary || m.name || '').toString().replace(/\s+/g, ' ').slice(0, 70)
+          const tier = m.rate_limit_tier ? dim(` [${m.rate_limit_tier}]`) : ''
+          const id = bold(m.id.padEnd(36))
+          return { id: m.id, label: `${id}${tier}  ${dim(summary)}` }
+        })
+      const defaultIdx = items.findIndex(m => m.id === preset.defaultModel)
+      return await pickFromList(rl, items, defaultIdx >= 0 ? defaultIdx : 0)
+    }
+    // fallthrough to hardcoded fallback
     console.log(bold('Common GitHub Models:'))
     console.log(`  ${cyan('•')} openai/gpt-4.1          ${green('(default — strong general)')}`)
     console.log(`  ${cyan('•')} openai/gpt-4o           ${dim('(fast, good tool calling)')}`)
     console.log(`  ${cyan('•')} openai/o1-mini          ${dim('(cheaper reasoning)')}`)
     console.log(`  ${cyan('•')} meta/Llama-3.3-70B-Instruct ${dim('(open weights)')}`)
+  } else if (provider === 'ollama') {
+    const models = await fetchOllamaModels()
+    if (models && models.length > 0) {
+      console.log(green(`Found ${models.length} local Ollama models.`))
+      const items = models.sort().map(name => ({ id: name, label: bold(name) }))
+      const defaultIdx = items.findIndex(m => m.id === preset.defaultModel)
+      return await pickFromList(rl, items, defaultIdx >= 0 ? defaultIdx : 0)
+    }
+    console.log(bold('Common Ollama models: llama3.1:8b, qwen2.5-coder:7b'))
   } else if (provider === 'openai') {
     console.log(bold('Common OpenAI models: gpt-4o, gpt-4o-mini, o1-mini'))
-  } else if (provider === 'ollama') {
-    console.log(bold('Common Ollama models: llama3.1:8b, qwen2.5-coder:7b'))
   }
   console.log()
   const ans = (await prompt(rl, dim(`Model (Enter for ${preset.defaultModel}): `))).trim()
@@ -189,7 +291,7 @@ async function main(): Promise<void> {
     const provider = await pickProvider(rl)
     const preset = PROVIDER_PRESETS[provider]
     const token = await getToken(rl, preset)
-    const model = await getModel(rl, preset, provider)
+    const model = await getModel(rl, preset, provider, token)
 
     if (preset.tokenVar && !token) {
       console.log()
